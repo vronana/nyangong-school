@@ -571,8 +571,10 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <script src="firebase-init.js"></script>
+    <script src="bgm-continuity.js"></script>
     <script>
         const bgmAudio = document.getElementById('bgmAudio');
+        initBgmContinuity(bgmAudio);
         bgmAudio.volume = 0.3;
 
         function getSavedName() {
