@@ -356,8 +356,12 @@
                 feedbackEl.textContent = `🎉 정답이다냥! 💡 ${note.explanation}`;
                 if (typeof recordReviewClear === 'function') recordReviewClear();
                 setTimeout(() => {
+                    // getNotes()는 매번 JSON.parse로 새 객체를 만들기 때문에
+                    // note와 참조가 달라 indexOf로는 절대 못 찾음 -> 내용으로 매칭해야 함
                     const latest = getNotes();
-                    const stillIdx = latest.indexOf(note);
+                    const stillIdx = latest.findIndex(n =>
+                        n.date === note.date && n.question === note.question && n.url === note.url
+                    );
                     if (stillIdx !== -1) {
                         latest.splice(stillIdx, 1);
                     }
