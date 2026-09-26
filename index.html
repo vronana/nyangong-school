@@ -411,7 +411,6 @@
         let selectedOption = null;
 
         function loadQuestion() {
-            startBGM(); // 배경음악 시작
             const q = questions[currentQuestion];
             document.getElementById('question').textContent = q.q;
             document.getElementById('current-q').textContent = currentQuestion + 1;
@@ -442,6 +441,7 @@
         }
 
         function submitAnswer() {
+            startBGM(); // 첫 클릭시 음악 시작
             if (selectedOption === null) {
                 alert('선택지를 선택해주세요');
                 return;
