@@ -496,12 +496,10 @@
             </div>
         </div>
 
-        <!-- 시작 화면 -->
-        <div id="start-section" style="text-align: center; padding: 2rem 0;">
-            <div style="font-size: 80px; margin-bottom: 1rem;">😸</div>
-            <div style="font-size: 16px; color: #a5a2c4; margin-bottom: 2rem; line-height: 1.8;" id="start-subtitle"></div>
-            <button onclick="startGame()" style="font-size: 20px; padding: 18px 40px;">🎮 게임 시작!</button>
-            <div style="margin-top: 1rem;"><a href="wrong-notes.html" id="wrong-notes-link" style="color:#8b93ff; font-size:13px; text-decoration:none; border-bottom:1px dashed #8b93ff;">📓 오답노트 보기</a></div>
+        <!-- 데이터 로딩 중에만 잠깐 보이는 화면. 로딩 끝나면 바로 문제로 넘어감 -->
+        <div id="start-section" style="text-align: center; padding: 3rem 0; display:none;">
+            <div style="font-size: 60px; margin-bottom: 1rem;">😸</div>
+            <div style="font-size: 15px; color: #a5a2c4;" id="start-subtitle">불러오는 중이다냥...</div>
         </div>
 
         <div id="quiz-section" style="display:none;">
@@ -552,10 +550,11 @@
             <div class="fish-total">모은 물고기</div>
             <div class="fish-total-display" id="fishTotal"></div>
             <div class="final-message" id="final-message"></div>
-            <div style="display:flex; gap:10px; justify-content:center; margin-top:0.5rem;">
+            <div style="display:flex; gap:10px; justify-content:center; margin-top:0.5rem; flex-wrap:wrap;">
                 <button onclick="resetGame()">다시 시작하기</button>
                 <a href="hub.html" id="game-over-home-link" style="display:flex; align-items:center; justify-content:center; padding:14px 20px; border-radius:30px; background:#3a2a54; color:#f5f4fb; font-weight:700; text-decoration:none; font-size:15px;">🏠 홈으로</a>
             </div>
+            <div style="margin-top: 1rem;"><a href="wrong-notes.html" id="wrong-notes-link" style="color:#8b93ff; font-size:13px; text-decoration:none; border-bottom:1px dashed #8b93ff;">📓 오답노트 보기</a></div>
         </div>
     </div>
 
@@ -618,12 +617,26 @@
             if (el) el.textContent = name ? `${name}님, 화이팅이다냥! 🔥` : '';
         }
 
+        // 카드를 누르면 바로 문제가 나오게, "게임 시작!" 버튼 화면 없이
+        // 데이터 로딩이 끝나는 즉시(그리고 이름이 정해지면) 자동으로 시작함
+        let dataReady = false;
+        let pendingAutoStart = false;
+
+        function tryAutoStart() {
+            if (dataReady) {
+                startGame();
+            } else {
+                pendingAutoStart = true;
+            }
+        }
+
         function initNameGate() {
             const existing = localStorage.getItem('sciencePlayerName_v2');
             if (!existing) {
                 document.getElementById('name-modal').classList.add('show');
             } else {
                 registerPlayer(existing);
+                tryAutoStart();
             }
         }
 
@@ -635,6 +648,7 @@
             registerPlayer(val);
             document.getElementById('name-modal').classList.remove('show');
             updateGreeting();
+            tryAutoStart();
         }
 
         initNameGate();
@@ -1005,18 +1019,21 @@
             fishCount = 0;
             answered = false;
             selectedOption = null;
-            document.getElementById('start-section').style.display = 'block';
             document.getElementById('quiz-section').style.display = 'none';
             document.getElementById('game-over-section').style.display = 'none';
             document.getElementById('fishDisplay').innerHTML = '';
+            startGame(); // 버튼 화면 없이 바로 다시 시작
         }
 
         // ===== 데이터 로딩 =====
         async function boot() {
             if (!quizId) {
                 document.getElementById('quiz-header').textContent = '문제를 찾을 수 없다냥 😿';
+                document.getElementById('start-section').style.display = 'block';
+                document.getElementById('start-subtitle').textContent = '문제를 찾을 수 없다냥 😿';
                 return;
             }
+            document.getElementById('start-section').style.display = 'block';
             try {
                 const [manifestRes, questionsRes] = await Promise.all([
                     fetch('data/manifest.json'),
@@ -1028,14 +1045,19 @@
                 const meta = (manifest[subject] && manifest[subject][quizId]) || {};
                 const title = meta.title || quizId;
                 const icon = meta.icon || '📘';
-                const label = (manifest[subject] && manifest[subject]._meta && manifest[subject]._meta.label) || '중간고사 준비!';
 
                 document.title = title;
                 document.getElementById('quiz-header').textContent = `${icon} ${title} ${icon}`;
-                document.getElementById('start-subtitle').innerHTML = `${label}<br>${icon} ${title} 문제`;
+
+                dataReady = true;
+                if (pendingAutoStart) {
+                    document.getElementById('start-section').style.display = 'none';
+                    startGame();
+                }
             } catch (e) {
                 console.log('문제 불러오기 실패:', e);
                 document.getElementById('quiz-header').textContent = '문제를 불러오지 못했다냥 😿';
+                document.getElementById('start-subtitle').textContent = '문제를 불러오지 못했다냥 😿';
             }
         }
 
