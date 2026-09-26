@@ -641,6 +641,17 @@
             selectedOption = idx;
         }
 
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                speechSynthesis.cancel();
+                const utter = new SpeechSynthesisUtterance(text);
+                utter.lang = 'ko-KR';
+                utter.rate = 1.0;
+                utter.pitch = 1.1;
+                speechSynthesis.speak(utter);
+            }
+        }
+
         function submitAnswer() {
             if (selectedOption === null) {
                 alert('선택지를 선택해주세요');
@@ -668,6 +679,7 @@
                 document.getElementById('modal-icon').textContent = '😸';
                 document.getElementById('modal-title').textContent = '✓ 정답입니다!';
                 document.getElementById('modal-title').className = 'modal-title correct';
+                speak('정답입니다!');
             } else {
                 catEl.textContent = '😿';
                 catEl.classList.add('cat-sad');
@@ -676,6 +688,7 @@
                 document.getElementById('modal-icon').textContent = '😿';
                 document.getElementById('modal-title').textContent = '✗ 오답입니다';
                 document.getElementById('modal-title').className = 'modal-title incorrect';
+                speak('틀렸습니다!');
             }
 
             options.forEach((opt, idx) => {
@@ -729,6 +742,7 @@
 
             // 만점이면 특별 축하!
             if (correctCount === questions.length) {
+                speak('만점입니다! 축하합니다! 정말 대단해요!');
                 setTimeout(() => {
                     launchConfetti();
                     document.getElementById('perfect-overlay').classList.add('show');
