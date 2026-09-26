@@ -243,18 +243,9 @@
         <div class="hero">
             <div class="cat">😸</div>
             <h1>냥공스쿨</h1>
-            <p>중학교 중간고사 준비 · 원하는 과목을 골라 풀어보냥!</p>
+            <p id="hero-subtitle">중학교 중간고사 준비 · 원하는 과목을 골라 풀어보냥!</p>
             <div class="greeting" id="hub-greeting"></div>
         </div>
-
-        <a href="wrong-notes.html" class="notes-link">
-            📓 오답노트 보기
-            <span class="badge">복습</span>
-        </a>
-        <a href="ranking.html" class="notes-link">
-            🏆 랭킹 보기
-            <span class="badge" style="background:var(--gold, #ffd700); color:#3a2a00;">경쟁</span>
-        </a>
 
         <div class="section-title">📚 과목을 골라보냥</div>
         <div class="subject-grid">
@@ -308,10 +299,20 @@
             try { return localStorage.getItem('sciencePlayerName_v2') || ''; }
             catch (e) { return ''; }
         }
+        const greetingLines = [
+            name => `어서 와 ${name}, 중3 중간고사 고민되냥? 이거 풀어봐라! 😼`,
+            name => `${name} 왔구나! 중간고사 전에 한 문제라도 더 풀어보자냥 💪`,
+            name => `오늘도 냥공하러 온 ${name}, 기특하다냥! 얼른 시작해보냥 📚`,
+            name => `${name}야 반갑다냥! 시험 코앞인데 여기서 감 잡고 가라냥 🔥`,
+            name => `${name}, 잘 왔다냥! 오늘은 몇 문제 풀고 갈 거냥? 😸`
+        ];
         function updateGreeting() {
             const name = getSavedName();
             const el = document.getElementById('hub-greeting');
-            if (el) el.textContent = name ? `${name}님 반갑다냥! 😸` : '';
+            if (!el) return;
+            if (!name) { el.textContent = ''; return; }
+            const pick = greetingLines[Math.floor(Math.random() * greetingLines.length)];
+            el.textContent = pick(name);
         }
         function playBgm() {
             const audio = document.getElementById('bgmAudio');

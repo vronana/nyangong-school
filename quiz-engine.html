@@ -471,7 +471,7 @@
     </style>
 </head>
 <body>
-    <a href="hub.html" class="home-float">🏠 홈</a>
+    <a href="hub.html" class="home-float" id="home-float-link">🏠 홈</a>
     <div class="game-container">
         <div class="header" id="quiz-header">불러오는 중...</div>
 
@@ -493,7 +493,7 @@
             <div style="font-size: 80px; margin-bottom: 1rem;">😸</div>
             <div style="font-size: 16px; color: #b0b0ff; margin-bottom: 2rem; line-height: 1.8;" id="start-subtitle"></div>
             <button onclick="startGame()" style="font-size: 20px; padding: 18px 40px;">🎮 게임 시작!</button>
-            <div style="margin-top: 1rem;"><a href="wrong-notes.html" style="color:#00d4ff; font-size:13px; text-decoration:none; border-bottom:1px dashed #00d4ff;">📓 오답노트 보기</a></div>
+            <div style="margin-top: 1rem;"><a href="wrong-notes.html" id="wrong-notes-link" style="color:#00d4ff; font-size:13px; text-decoration:none; border-bottom:1px dashed #00d4ff;">📓 오답노트 보기</a></div>
         </div>
 
         <div id="quiz-section" style="display:none;">
@@ -546,7 +546,7 @@
             <div class="final-message" id="final-message"></div>
             <div style="display:flex; gap:10px; justify-content:center; margin-top:0.5rem;">
                 <button onclick="resetGame()">다시 시작하기</button>
-                <a href="hub.html" style="display:flex; align-items:center; justify-content:center; padding:14px 20px; border-radius:30px; background:#3a2a54; color:#f0f0f0; font-weight:700; text-decoration:none; font-size:15px;">🏠 홈으로</a>
+                <a href="hub.html" id="game-over-home-link" style="display:flex; align-items:center; justify-content:center; padding:14px 20px; border-radius:30px; background:#3a2a54; color:#f0f0f0; font-weight:700; text-decoration:none; font-size:15px;">🏠 홈으로</a>
             </div>
         </div>
     </div>
@@ -579,6 +579,16 @@
         // 기존 오답노트/진도/랭킹은 "reproduction.html" 같은 파일명을 키로 저장해왔기 때문에,
         // 겉으로 보이는 데이터 키는 그대로 유지해서 예전 기록이 깨지지 않도록 함.
         const storageKey = quizId ? (quizId + '.html') : '';
+
+        // 과목별 허브/오답노트 페이지로 연결 (과목이 늘어나도 이 파일은 수정할 필요 없음)
+        const subjectHubUrl = `${subject}-hub.html`;
+        const subjectWrongNotesUrl = `${subject}-wrong-notes.html`;
+        ['home-float-link', 'game-over-home-link'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.href = subjectHubUrl;
+        });
+        const wrongNotesLinkEl = document.getElementById('wrong-notes-link');
+        if (wrongNotesLinkEl) wrongNotesLinkEl.href = subjectWrongNotesUrl;
 
         const bgmAudio = document.getElementById('bgmAudio');
         // 허브(index.html)의 iframe 안에서 열렸으면 음악은 부모가 이미 재생 중이므로 건드리지 않음.
