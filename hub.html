@@ -57,7 +57,7 @@
             border: 1px solid #4a3a6a;
             border-radius: 14px;
             padding: 12px;
-            margin-bottom: 1.8rem;
+            margin-bottom: 1.2rem;
             text-decoration: none;
             color: var(--text);
             font-size: 14px;
@@ -78,82 +78,64 @@
             font-size: 14px;
             color: #b0b0ff;
             font-weight: 700;
-            margin: 1.6rem 0 0.7rem;
+            margin: 1.8rem 0 0.7rem;
             padding-left: 4px;
             letter-spacing: 0.5px;
         }
         .section-title:first-of-type { margin-top: 0; }
 
-        .card-grid {
+        .subject-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 12px;
         }
 
-        .quiz-card {
+        .subject-card {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            gap: 6px;
             background: #2d1f3d;
-            border-radius: 16px;
-            padding: 1rem;
+            border-radius: 18px;
+            padding: 1.6rem 1rem;
             text-decoration: none;
             color: var(--text);
-            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.12);
-            border: 1px solid transparent;
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.14);
+            border: 1px solid rgba(0, 212, 255, 0.3);
             transition: transform 0.15s, border-color 0.15s;
-            min-height: 118px;
+            min-height: 130px;
+            position: relative;
+            cursor: pointer;
         }
-        .quiz-card:active { transform: scale(0.97); }
-        .quiz-card .icon { font-size: 30px; margin-bottom: 0.5rem; }
-        .quiz-card .name {
-            font-size: 14px;
+        .subject-card:active { transform: scale(0.97); }
+        .subject-card .icon { font-size: 36px; }
+        .subject-card .name {
+            font-size: 15px;
             font-weight: 700;
-            line-height: 1.35;
-            margin-bottom: 0.3rem;
         }
-        .quiz-card .count {
+        .subject-card .desc {
             font-size: 11px;
             color: #8a8aa8;
         }
 
-        .quiz-card.tier-basic { border-color: rgba(0, 212, 255, 0.25); }
-        .quiz-card.tier-combined { border-color: rgba(0, 255, 136, 0.3); }
-        .quiz-card.tier-advanced {
-            border-color: rgba(255, 68, 102, 0.4);
-            background: linear-gradient(135deg, #2d1f3d 0%, #3a1f2d 100%);
+        .subject-card.soon {
+            opacity: 0.55;
+            filter: grayscale(0.5);
+            border-color: #4a3a6a;
         }
-        .quiz-card.tier-bonus {
-            border-color: rgba(255, 215, 0, 0.3);
-            opacity: 0.85;
+        .subject-card .soon-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 215, 0, 0.15);
+            color: #ffd700;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 10px;
         }
-
-        .quiz-card.locked {
-            opacity: 0.4;
-            pointer-events: none;
-            filter: grayscale(0.6);
-        }
-        .quiz-card .lock-icon { font-size: 30px; margin-bottom: 0.5rem; }
-
-        .stage-progress {
-            font-size: 11px;
-            color: #6a6a8a;
-            font-weight: 400;
-            margin-left: 6px;
-        }
-
-        .locked-banner {
-            background: rgba(255, 68, 102, 0.08);
-            border: 1px dashed rgba(255, 68, 102, 0.35);
-            border-radius: 14px;
-            padding: 12px 14px;
-            margin-top: 10px;
-            font-size: 12px;
-            color: #ffb3c1;
-            text-align: center;
-            line-height: 1.6;
-        }
-        .locked-banner[hidden] { display: none; }
 
         .footer-note {
             text-align: center;
@@ -164,7 +146,7 @@
         }
 
         @media (max-width: 380px) {
-            .card-grid { grid-template-columns: 1fr; }
+            .subject-grid { grid-template-columns: 1fr 1fr; }
         }
 
         .modal-overlay {
@@ -206,6 +188,31 @@
             font-weight: 600;
             margin-bottom: 0.6rem;
         }
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 32px;
+            transform: translateX(-50%) translateY(20px);
+            background: #2d1f3d;
+            border: 1px solid rgba(0, 212, 255, 0.4);
+            color: var(--text);
+            padding: 12px 18px;
+            border-radius: 14px;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.4);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s, transform 0.2s;
+            z-index: 300;
+            max-width: 85%;
+            text-align: center;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
     </style>
 </head>
 <body>
@@ -236,7 +243,7 @@
         <div class="hero">
             <div class="cat">😸</div>
             <h1>냥공스쿨</h1>
-            <p>중학교 중간고사 준비 · 원하는 단원을 골라 풀어보냥!</p>
+            <p>중학교 중간고사 준비 · 원하는 과목을 골라 풀어보냥!</p>
             <div class="greeting" id="hub-greeting"></div>
         </div>
 
@@ -249,169 +256,40 @@
             <span class="badge" style="background:var(--gold, #ffd700); color:#3a2a00;">경쟁</span>
         </a>
 
-        <div class="section-title">📖 1단계 · 단원별 기초 <span class="stage-progress" id="stage1-progress"></span></div>
-        <div class="card-grid" id="stage1-grid">
-            <a href="quiz-engine.html?id=reproduction" class="quiz-card tier-basic" data-file="reproduction.html">
-                <div>
-                    <div class="icon">🧬</div>
-                    <div class="name">생식과 발생 기초</div>
-                </div>
-                <div class="count">10문제</div>
+        <div class="section-title">📚 과목을 골라보냥</div>
+        <div class="subject-grid">
+            <a href="science-hub.html" class="subject-card">
+                <div class="icon">🔬</div>
+                <div class="name">과학</div>
+                <div class="desc">150문제 · 3단계</div>
             </a>
-            <a href="quiz-engine.html?id=genetics" class="quiz-card tier-basic" data-file="genetics.html">
-                <div>
-                    <div class="icon">🧬</div>
-                    <div class="name">유전 원리 기초</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-            <a href="quiz-engine.html?id=human-genetics" class="quiz-card tier-basic" data-file="human-genetics.html">
-                <div>
-                    <div class="icon">🧬</div>
-                    <div class="name">사람의 유전</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-            <a href="quiz-engine.html?id=energy" class="quiz-card tier-basic" data-file="energy.html">
-                <div>
-                    <div class="icon">⚡</div>
-                    <div class="name">에너지 전환과 보존</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-            <a href="quiz-engine.html?id=electricity" class="quiz-card tier-basic" data-file="electricity.html">
-                <div>
-                    <div class="icon">💡</div>
-                    <div class="name">전기 에너지 발생과 이용</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-        </div>
-
-        <div class="section-title">🔗 2단계 · 단원별 응용 (50문제) <span class="stage-progress" id="stage2-progress"></span></div>
-        <div class="locked-banner" id="stage2-banner" hidden></div>
-        <div class="card-grid" id="stage2-grid">
-            <a href="quiz-engine.html?id=reproduction-adv" class="quiz-card tier-combined" data-file="reproduction-adv.html">
-                <div>
-                    <div class="icon">🧬</div>
-                    <div class="name">생식과 발생 응용</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-            <a href="quiz-engine.html?id=genetics-adv" class="quiz-card tier-combined" data-file="genetics-adv.html">
-                <div>
-                    <div class="icon">🧬</div>
-                    <div class="name">유전 원리 응용</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-            <a href="quiz-engine.html?id=human-genetics-adv" class="quiz-card tier-combined" data-file="human-genetics-adv.html">
-                <div>
-                    <div class="icon">🧬</div>
-                    <div class="name">사람의 유전 응용</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-            <a href="quiz-engine.html?id=energy-adv" class="quiz-card tier-combined" data-file="energy-adv.html">
-                <div>
-                    <div class="icon">⚡</div>
-                    <div class="name">에너지 전환과 보존 응용</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-            <a href="quiz-engine.html?id=electricity-adv" class="quiz-card tier-combined" data-file="electricity-adv.html">
-                <div>
-                    <div class="icon">💡</div>
-                    <div class="name">전기 에너지 응용</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-        </div>
-        <div class="section-title">🔥 3단계 · 단원별 심화 (50문제) <span class="stage-progress" id="stage3-progress"></span></div>
-        <div class="locked-banner" id="stage3-banner" hidden></div>
-        <div class="card-grid" id="stage3-grid">
-            <a href="quiz-engine.html?id=reproduction-master" class="quiz-card tier-advanced" data-file="reproduction-master.html">
-                <div>
-                    <div class="icon">🧬</div>
-                    <div class="name">생식과 발생 심화</div>
-                </div>
-                <div class="count">10문제 · 계산 포함</div>
-            </a>
-            <a href="quiz-engine.html?id=genetics-master" class="quiz-card tier-advanced" data-file="genetics-master.html">
-                <div>
-                    <div class="icon">🧬</div>
-                    <div class="name">유전 원리 심화</div>
-                </div>
-                <div class="count">10문제 · 계산 포함</div>
-            </a>
-            <a href="quiz-engine.html?id=human-genetics-master" class="quiz-card tier-advanced" data-file="human-genetics-master.html">
-                <div>
-                    <div class="icon">🧬</div>
-                    <div class="name">사람의 유전 심화</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-            <a href="quiz-engine.html?id=energy-master" class="quiz-card tier-advanced" data-file="energy-master.html">
-                <div>
-                    <div class="icon">⚡</div>
-                    <div class="name">에너지 전환과 보존 심화</div>
-                </div>
-                <div class="count">10문제 · 계산 포함</div>
-            </a>
-            <a href="quiz-engine.html?id=electricity-master" class="quiz-card tier-advanced" data-file="electricity-master.html">
-                <div>
-                    <div class="icon">💡</div>
-                    <div class="name">전기 에너지 심화</div>
-                </div>
-                <div class="count">10문제 · 계산 포함</div>
-            </a>
-        </div>
-
-        <div class="section-title">🎁 보너스 · 종합·랜덤 퀴즈</div>
-        <div class="card-grid">
-            <a href="quiz-engine.html?id=reproduction-genetics" class="quiz-card tier-bonus">
-                <div>
-                    <div class="icon">🧬</div>
-                    <div class="name">생식과 유전 종합</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-            <a href="quiz-engine.html?id=energy-electricity" class="quiz-card tier-bonus">
-                <div>
-                    <div class="icon">⚡</div>
-                    <div class="name">에너지·전기 종합</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-            <a href="quiz-engine.html?id=stage2-review" class="quiz-card tier-bonus">
-                <div>
-                    <div class="icon">🌟</div>
-                    <div class="name">단원 통합 모음</div>
-                </div>
-                <div class="count">10문제 · 새 유형</div>
-            </a>
-            <a href="quiz-engine.html?id=advanced-all" class="quiz-card tier-bonus">
-                <div>
-                    <div class="icon">🔥</div>
-                    <div class="name">전 단원 통합 심화</div>
-                </div>
-                <div class="count">10문제 · 계산 포함</div>
-            </a>
-            <a href="quiz-engine.html?id=main-quiz" class="quiz-card tier-bonus">
-                <div>
-                    <div class="icon">🎮</div>
-                    <div class="name">전체 종합 퀴즈</div>
-                </div>
-                <div class="count">랜덤 출제</div>
-            </a>
+            <div class="subject-card soon" onclick="comingSoon('사회')">
+                <span class="soon-badge">곧 만나요</span>
+                <div class="icon">🌍</div>
+                <div class="name">사회</div>
+                <div class="desc">준비 중</div>
+            </div>
+            <div class="subject-card soon" onclick="comingSoon('영어')">
+                <span class="soon-badge">곧 만나요</span>
+                <div class="icon">🔤</div>
+                <div class="name">영어</div>
+                <div class="desc">준비 중</div>
+            </div>
+            <div class="subject-card soon" onclick="comingSoon('수학')">
+                <span class="soon-badge">곧 만나요</span>
+                <div class="icon">➗</div>
+                <div class="name">수학</div>
+                <div class="desc">준비 중</div>
+            </div>
         </div>
 
         <div class="footer-note">
-            1·2·3단계 각 50문제 · 총 150문제<br>
             틀린 문제는 자동으로 오답노트에 저장된다냥 🐟<br>
             중간고사 화이팅이다냥!
         </div>
     </div>
+
+    <div class="toast" id="toast"></div>
 
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -477,71 +355,15 @@
         initNameGate();
         updateGreeting();
 
-        const stage1Files = ['reproduction.html', 'genetics.html', 'human-genetics.html', 'energy.html', 'electricity.html'];
-        const stage2Files = ['reproduction-adv.html', 'genetics-adv.html', 'human-genetics-adv.html', 'energy-adv.html', 'electricity-adv.html'];
-
-        function getProgress() {
-            try {
-                return JSON.parse(localStorage.getItem('scienceQuizProgress_v2') || '{}');
-            } catch (e) { return {}; }
+        let toastTimer = null;
+        function comingSoon(subject) {
+            const toast = document.getElementById('toast');
+            if (!toast) return;
+            toast.textContent = `${subject}는 아직 공부 중이다냥! 조금만 기다려줘 😸`;
+            toast.classList.add('show');
+            if (toastTimer) clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
         }
-
-        function countDone(fileList, progress) {
-            return fileList.filter(f => progress[f]).length;
-        }
-
-        function applyLock(gridId, bannerId, locked, progressEl, doneCount, totalCount, unlockMsg) {
-            const grid = document.getElementById(gridId);
-            const cards = grid.querySelectorAll('.quiz-card');
-            cards.forEach(card => {
-                if (locked) {
-                    card.classList.add('locked');
-                    if (!card.querySelector('.lock-icon')) {
-                        const iconEl = card.querySelector('.icon');
-                        if (iconEl) {
-                            const lockSpan = document.createElement('div');
-                            lockSpan.className = 'lock-icon';
-                            lockSpan.textContent = '🔒';
-                            iconEl.replaceWith(lockSpan);
-                        }
-                    }
-                } else {
-                    card.classList.remove('locked');
-                }
-            });
-
-            if (bannerId) {
-                const banner = document.getElementById(bannerId);
-                if (banner) {
-                    if (locked) {
-                        banner.textContent = unlockMsg;
-                        banner.hidden = false;
-                    } else {
-                        banner.hidden = true;
-                    }
-                }
-            }
-
-            if (progressEl) progressEl.textContent = `${doneCount}/${totalCount} 완료`;
-        }
-
-        function renderLocks() {
-            const progress = getProgress();
-            const stage1Done = countDone(stage1Files, progress);
-            const stage2Done = countDone(stage2Files, progress);
-
-            const stage1Locked = false; // 1단계는 항상 열려있음
-            const stage2Locked = stage1Done < stage1Files.length;
-            const stage3Locked = stage2Done < stage2Files.length;
-
-            applyLock('stage1-grid', null, stage1Locked, document.getElementById('stage1-progress'), stage1Done, stage1Files.length, '');
-            applyLock('stage2-grid', 'stage2-banner', stage2Locked, document.getElementById('stage2-progress'), stage2Done, stage2Files.length,
-                `🔒 1단계 5문제를 모두 풀어야 열려요 (${stage1Done}/${stage1Files.length})`);
-            applyLock('stage3-grid', 'stage3-banner', stage3Locked, document.getElementById('stage3-progress'), stage2Done, stage2Files.length,
-                `🔒 2단계 5문제를 모두 풀어야 열려요 (${stage2Done}/${stage2Files.length})`);
-        }
-
-        renderLocks();
     </script>
 </body>
 </html>
