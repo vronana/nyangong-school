@@ -318,7 +318,7 @@
     </style>
 </head>
 <body>
-    <div class="version-tag">v2026.09.27-13</div>
+    <div class="version-tag">v2026.09.27-14</div>
     <a href="science-hub.html" class="home-float">🏠 홈</a>
 
     <div class="modal-overlay" id="answer-modal">
@@ -598,18 +598,31 @@
             const note = notes[idx];
             if (!note || !note.lockedUntil) { render(); return; }
             const remain = note.lockedUntil - Date.now();
-            if (remain <= 0) { render(); return; } // 이미 풀렸는데 화면이 안 갱신된 경우 새로고침
+            if (remain <= 0) {
+                // 이미 풀렸는데 화면이 안 갱신된 경우: lockedUntil도 같이 지워줘야
+                // 다음 tick에서 계속 "방금 만료됨"으로 잡히지 않음
+                delete note.lockedUntil;
+                saveNotes(notes);
+                render();
+                return;
+            }
             showAnswerModal('🔒', '아직 잠겨있어요', `${formatRemain(remain)}<br>조금 있다가 다시 풀어봐냥`, null);
         }
 
         function tickLockTimers() {
             const notes = getNotes();
             let anyExpired = false;
+            let changed = false;
             notes.forEach((note, idx) => {
                 if (!note.lockedUntil) return;
                 const remain = note.lockedUntil - Date.now();
                 if (remain <= 0) {
+                    // 잠금이 풀리면 lockedUntil을 지워야 함. 안 지우면 다음 tick에서도
+                    // 계속 "방금 만료됨"으로 잡혀서 1초마다 render()가 호출되고,
+                    // 그때마다 보기 순서가 다시 섞여서 화면이 계속 바뀌어 보이는 버그가 있었음
+                    delete note.lockedUntil;
                     anyExpired = true;
+                    changed = true;
                 } else {
                     const el = document.getElementById(`lock-timer-${idx}`);
                     if (el) el.textContent = formatRemain(remain);
@@ -617,6 +630,7 @@
                     if (overlayEl) overlayEl.textContent = `${Math.ceil(remain / 1000)}초`;
                 }
             });
+            if (changed) saveNotes(notes);
             if (anyExpired) render();
         }
 
