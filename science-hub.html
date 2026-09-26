@@ -573,8 +573,10 @@
                 if (!entry) return;
 
                 let label = '✔';
+                let detailText = '';
                 if (typeof entry === 'object' && typeof entry.correct === 'number' && typeof entry.total === 'number') {
                     label = `${entry.correct}/${entry.total}`;
+                    detailText = `${entry.total}문제 중 ${entry.correct}개 정답`;
                 }
 
                 if (!card.querySelector('.score-badge')) {
@@ -584,6 +586,12 @@
                     card.appendChild(badge);
                 } else {
                     card.querySelector('.score-badge').textContent = label;
+                }
+
+                // 완료 배지(오른쪽 위) 아래, 카드 본문에도 몇 문제 중 몇 개 맞았는지 표시
+                const countEl = card.querySelector('.count');
+                if (countEl && detailText) {
+                    countEl.textContent = detailText;
                 }
             });
         }
