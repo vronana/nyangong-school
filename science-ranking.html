@@ -9,15 +9,22 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --primary: #00d4ff;
-            --success: #00ff88;
-            --danger: #ff4466;
-            --gold: #ffd700;
-            --text: #f0f0f0;
+            --bg-top: #14121f;
+            --bg-bottom: #0c0b14;
+            --surface: #262340;
+            --surface-soft: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.11);
+            --primary: #8b93ff;
+            --primary-soft: rgba(139, 147, 255, 0.2);
+            --success: #4ade80;
+            --danger: #ff7a90;
+            --gold: #f0c14b;
+            --text: #f5f4fb;
+            --text-muted: #a5a2c4;
         }
 
         body {
-            background: linear-gradient(135deg, #2d1f4e 0%, #1f1447 100%);
+            background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
             min-height: 100vh;
             font-family: 'Noto Sans KR', sans-serif;
             padding: 1.5rem 1rem 3rem;
@@ -39,7 +46,7 @@
         }
         .sub {
             text-align: center;
-            color: #b0b0ff;
+            color: #a5a2c4;
             font-size: 14px;
             margin-bottom: 1.5rem;
         }
@@ -48,7 +55,7 @@
             display: flex;
             gap: 6px;
             margin-bottom: 1.2rem;
-            background: #2d1f3d;
+            background: #262340;
             border-radius: 14px;
             padding: 4px;
         }
@@ -60,19 +67,19 @@
             font-size: 13px;
             font-weight: 700;
             cursor: pointer;
-            color: #b0b0ff;
+            color: #a5a2c4;
         }
         .tab.active {
             background: var(--primary);
-            color: #1a1230;
+            color: #0c0b14;
         }
 
         .quiz-select {
             width: 100%;
             padding: 10px;
             border-radius: 12px;
-            background: #2d1f3d;
-            border: 1px solid #4a3a6a;
+            background: #262340;
+            border: 1px solid rgba(255,255,255,0.11);
             color: var(--text);
             font-size: 13px;
             margin-bottom: 1.2rem;
@@ -83,7 +90,7 @@
         .loading, .empty-state {
             text-align: center;
             padding: 3rem 1rem;
-            color: #b0b0ff;
+            color: #a5a2c4;
         }
         .empty-state .icon { font-size: 50px; margin-bottom: 1rem; }
 
@@ -91,13 +98,13 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            background: #2d1f3d;
+            background: #262340;
             border-radius: 14px;
             padding: 0.9rem 1rem;
             margin-bottom: 8px;
             box-shadow: 0 3px 14px rgba(0, 0, 0, 0.25);
         }
-        .rank-row.top1 { border: 1px solid rgba(255, 215, 0, 0.5); background: linear-gradient(135deg, #2d1f3d, #3a3320); }
+        .rank-row.top1 { border: 1px solid rgba(255, 215, 0, 0.5); background: linear-gradient(135deg, #262340, #3a3320); }
         .rank-row.top2 { border: 1px solid rgba(192, 192, 192, 0.4); }
         .rank-row.top3 { border: 1px solid rgba(205, 127, 50, 0.4); }
 
@@ -118,7 +125,7 @@
         }
         .rank-detail {
             font-size: 11px;
-            color: #8a8aa8;
+            color: #8985a8;
             margin-top: 2px;
         }
         .rank-score {
@@ -131,7 +138,7 @@
         .footer-note {
             text-align: center;
             font-size: 12px;
-            color: #6a6a8a;
+            color: #6f6c8c;
             margin-top: 2rem;
             line-height: 1.7;
         }
@@ -142,8 +149,8 @@
             left: 14px;
             z-index: 150;
             background: rgba(45, 31, 61, 0.9);
-            color: #00d4ff;
-            border: 1px solid #4a3a6a;
+            color: #8b93ff;
+            border: 1px solid rgba(255,255,255,0.11);
             border-radius: 20px;
             padding: 6px 14px;
             font-size: 13px;
@@ -156,7 +163,7 @@
             right: 10px;
             bottom: 6px;
             font-size: 10px;
-            color: #b0b0ff;
+            color: #a5a2c4;
             background: rgba(0, 0, 0, 0.3);
             padding: 3px 8px;
             border-radius: 8px;
@@ -166,7 +173,7 @@
     </style>
 </head>
 <body>
-    <div class="version-tag">v2026.09.27-5</div>
+    <div class="version-tag">v2026.09.27-10</div>
     <a href="science-hub.html" class="home-float">🏠 홈</a>
     <div class="wrap">
         <div class="header">🏆 랭킹 🏆</div>

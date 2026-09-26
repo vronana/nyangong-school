@@ -9,14 +9,22 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --primary: #00d4ff;
-            --success: #00ff88;
-            --danger: #ff4466;
-            --text: #f0f0f0;
+            --bg-top: #14121f;
+            --bg-bottom: #0c0b14;
+            --surface: #262340;
+            --surface-soft: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.11);
+            --primary: #8b93ff;
+            --primary-soft: rgba(139, 147, 255, 0.2);
+            --success: #4ade80;
+            --danger: #ff7a90;
+            --gold: #f0c14b;
+            --text: #f5f4fb;
+            --text-muted: #a5a2c4;
         }
 
         body {
-            background: linear-gradient(135deg, #2d1f4e 0%, #1f1447 100%);
+            background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
             min-height: 100vh;
             font-family: 'Noto Sans KR', sans-serif;
             padding: 1.5rem 1rem 3rem;
@@ -39,7 +47,7 @@
 
         .sub {
             text-align: center;
-            color: #b0b0ff;
+            color: #a5a2c4;
             font-size: 14px;
             margin-bottom: 1.5rem;
         }
@@ -48,7 +56,7 @@
             display: flex;
             justify-content: center;
             gap: 1.5rem;
-            background: #2d1f3d;
+            background: #262340;
             border-radius: 16px;
             padding: 1rem;
             margin-bottom: 1.5rem;
@@ -57,7 +65,7 @@
 
         .stat-item { text-align: center; }
         .stat-num { font-size: 24px; font-weight: 700; color: var(--danger); }
-        .stat-label { font-size: 12px; color: #b0b0ff; margin-top: 2px; }
+        .stat-label { font-size: 12px; color: #a5a2c4; margin-top: 2px; }
 
         .filter-bar {
             display: flex;
@@ -68,8 +76,8 @@
         }
 
         .filter-btn {
-            background: #2d1f3d;
-            border: 1px solid #4a3a6a;
+            background: #262340;
+            border: 1px solid rgba(255,255,255,0.11);
             color: #d0d0f0;
             padding: 6px 12px;
             border-radius: 20px;
@@ -79,7 +87,7 @@
         }
         .filter-btn.active {
             background: var(--primary);
-            color: #1a1230;
+            color: #0c0b14;
             border-color: var(--primary);
             font-weight: 700;
         }
@@ -87,7 +95,7 @@
         .empty-state {
             text-align: center;
             padding: 3rem 1rem;
-            color: #b0b0ff;
+            color: #a5a2c4;
         }
         .empty-state .icon { font-size: 60px; margin-bottom: 1rem; }
         .empty-state a {
@@ -102,7 +110,7 @@
         }
 
         .note-card {
-            background: #2d1f3d;
+            background: #262340;
             border-radius: 16px;
             padding: 1.2rem;
             margin-bottom: 1rem;
@@ -113,7 +121,7 @@
         .note-card.locked {
             opacity: 0.7;
             filter: grayscale(0.4);
-            border-left-color: #6a6a8a;
+            border-left-color: #6f6c8c;
         }
 
         .note-meta {
@@ -130,13 +138,13 @@
             padding: 3px 10px;
             border-radius: 12px;
         }
-        .note-date { font-size: 11px; color: #8a8aa8; margin-left: auto; }
+        .note-date { font-size: 11px; color: #8985a8; margin-left: auto; }
         .lock-badge {
             font-size: 11px;
             font-weight: 700;
             color: #d0d0f0;
             background: rgba(255, 255, 255, 0.08);
-            border: 1px solid #4a3a6a;
+            border: 1px solid rgba(255,255,255,0.11);
             padding: 3px 10px;
             border-radius: 12px;
             white-space: nowrap;
@@ -161,7 +169,7 @@
             border-radius: 10px;
             font-size: 13px;
             background: rgba(255,255,255,0.05);
-            border: 1px solid #4a3a6a;
+            border: 1px solid rgba(255,255,255,0.11);
             color: var(--text);
             cursor: pointer;
             font-family: inherit;
@@ -198,7 +206,7 @@
         .note-explain {
             margin-top: 0.6rem;
             padding-top: 0.6rem;
-            border-top: 1px dashed #4a3a6a;
+            border-top: 1px dashed rgba(255,255,255,0.11);
             font-size: 13px;
             color: #d0d0f0;
             line-height: 1.7;
@@ -230,8 +238,8 @@
             left: 14px;
             z-index: 150;
             background: rgba(45, 31, 61, 0.9);
-            color: #00d4ff;
-            border: 1px solid #4a3a6a;
+            color: #8b93ff;
+            border: 1px solid rgba(255,255,255,0.11);
             border-radius: 20px;
             padding: 6px 14px;
             font-size: 13px;
@@ -244,7 +252,7 @@
             right: 10px;
             bottom: 6px;
             font-size: 10px;
-            color: #b0b0ff;
+            color: #a5a2c4;
             background: rgba(0, 0, 0, 0.3);
             padding: 3px 8px;
             border-radius: 8px;
@@ -263,7 +271,7 @@
         }
         .modal-overlay.show { display: flex; }
         .modal-box {
-            background: #2d1f3d;
+            background: #262340;
             border-radius: 20px;
             padding: 2rem 1.5rem;
             max-width: 380px;
@@ -280,20 +288,20 @@
             border: none;
             border-radius: 12px;
             background: var(--primary);
-            color: #1a1230;
+            color: #0c0b14;
             cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <div class="version-tag">v2026.09.27-5</div>
+    <div class="version-tag">v2026.09.27-10</div>
     <a href="science-hub.html" class="home-float">🏠 홈</a>
 
     <div class="modal-overlay" id="answer-modal">
         <div class="modal-box">
             <div style="font-size:50px; margin-bottom:0.8rem;" id="answer-modal-icon">😸</div>
-            <div class="modal-title" id="answer-modal-title" style="color:#00d4ff;"></div>
-            <div style="font-size:13px; color:#b0b0ff; margin-bottom:1.2rem; line-height:1.7;" id="answer-modal-msg"></div>
+            <div class="modal-title" id="answer-modal-title" style="color:#8b93ff;"></div>
+            <div style="font-size:13px; color:#a5a2c4; margin-bottom:1.2rem; line-height:1.7;" id="answer-modal-msg"></div>
             <button class="modal-btn" onclick="closeAnswerModal()">확인</button>
         </div>
     </div>
@@ -363,7 +371,7 @@
                     <div class="empty-state">
                         <div class="icon">🎉</div>
                         <div>아직 틀린 문제가 없다냥!</div>
-                        <div style="font-size:13px; margin-top:6px; color:#8a8aa8;">퀴즈를 풀다가 틀리면 여기에 자동으로 저장되고,<br>여기서 다시 맞히면 사라진다냥.</div>
+                        <div style="font-size:13px; margin-top:6px; color:#8985a8;">퀴즈를 풀다가 틀리면 여기에 자동으로 저장되고,<br>여기서 다시 맞히면 사라진다냥.</div>
                         <a href="science-hub.html">🎮 퀴즈 풀러 가기</a>
                     </div>
                 `;
@@ -404,7 +412,7 @@
                     optionsHtml += `<button type="button" class="note-option-btn${isAnswer ? ' correct-pick' : ''}" ${locked ? 'disabled' : ''} onclick="checkAnswer(${note.idx}, ${i}, this)">${opt}</button>`;
                 });
                 const feedbackHtml = locked
-                    ? `땡! 정답은 <b>${note.options[note.correctIdx]}</b> 이다냥 😿<br>💡 ${note.explanation}<br><span id="lock-timer-${note.idx}" style="display:inline-block;margin-top:4px;color:#8a8aa8;"></span>`
+                    ? `땡! 정답은 <b>${note.options[note.correctIdx]}</b> 이다냥 😿<br>💡 ${note.explanation}<br><span id="lock-timer-${note.idx}" style="display:inline-block;margin-top:4px;color:#8985a8;"></span>`
                     : '';
                 const lockBadgeHtml = locked ? `<span class="lock-badge" id="lock-badge-${note.idx}">🔒 잠김</span>` : '';
                 cardsHtml += `
@@ -487,7 +495,7 @@
                 }
 
                 feedbackEl.className = 'note-feedback wrong';
-                feedbackEl.innerHTML = `땡! 정답은 <b>${note.options[note.correctIdx]}</b> 이다냥 😿<br>💡 ${note.explanation}<br><span id="lock-timer-${idx}" style="display:inline-block;margin-top:4px;color:#8a8aa8;"></span>`;
+                feedbackEl.innerHTML = `땡! 정답은 <b>${note.options[note.correctIdx]}</b> 이다냥 😿<br>💡 ${note.explanation}<br><span id="lock-timer-${idx}" style="display:inline-block;margin-top:4px;color:#8985a8;"></span>`;
 
                 showAnswerModal('😿', '틀렸습니다', `정답은 <b>${note.options[note.correctIdx]}</b> 이다냥<br>💡 ${note.explanation}<br><br>⏱ 1분 동안 이 문제는 잠긴다냥`, null);
 

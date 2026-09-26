@@ -9,13 +9,23 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --primary: #00d4ff;
-            --text: #f0f0f0;
+            --bg-top: #14121f;
+            --bg-bottom: #0c0b14;
+            --surface: #262340;
+            --surface-soft: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.11);
+            --primary: #8b93ff;
+            --primary-soft: rgba(139, 147, 255, 0.2);
+            --success: #4ade80;
+            --danger: #ff7a90;
+            --gold: #f0c14b;
+            --text: #f5f4fb;
+            --text-muted: #a5a2c4;
         }
 
         html, body {
             height: 100%;
-            background: #1f1447;
+            background: #0c0b14;
             font-family: 'Noto Sans KR', sans-serif;
             color: var(--text);
         }
@@ -40,7 +50,7 @@
         }
         .modal-overlay.show { display: flex; }
         .modal-box {
-            background: #2d1f3d;
+            background: #262340;
             border-radius: 20px;
             padding: 2rem 1.5rem;
             max-width: 380px;
@@ -57,7 +67,7 @@
             border: none;
             border-radius: 12px;
             background: var(--primary);
-            color: #1a1230;
+            color: #0c0b14;
             cursor: pointer;
         }
     </style>
@@ -67,16 +77,16 @@
         <div class="modal-box">
             <div style="font-size:50px; margin-bottom:0.8rem;">😸</div>
             <div id="name-modal-new">
-                <div class="modal-title" style="color:#00d4ff;">이름(별명)을 알려주냥!</div>
-                <div style="font-size:13px; color:#b0b0ff; margin-bottom:1rem;">랭킹에 이 이름으로 표시된다냥 🏆</div>
+                <div class="modal-title" style="color:#8b93ff;">이름(별명)을 알려주냥!</div>
+                <div style="font-size:13px; color:#a5a2c4; margin-bottom:1rem;">랭킹에 이 이름으로 표시된다냥 🏆</div>
                 <input type="text" id="name-input" placeholder="예: 나나" maxlength="10"
                     onkeypress="if(event.key==='Enter') confirmName()"
-                    style="width:100%; padding:12px; border-radius:10px; border:1px solid #4a3a6a; background:#1f1730; color:#f0f0f0; font-size:15px; margin-bottom:1rem; text-align:center; box-sizing:border-box;">
+                    style="width:100%; padding:12px; border-radius:10px; border:1px solid rgba(255,255,255,0.11); background:#14121f; color:#f5f4fb; font-size:15px; margin-bottom:1rem; text-align:center; box-sizing:border-box;">
                 <button class="modal-btn" onclick="confirmName()">확인</button>
             </div>
             <div id="name-modal-returning" style="display:none;">
-                <div class="modal-title" id="welcome-title" style="color:#00d4ff;"></div>
-                <div style="font-size:13px; color:#b0b0ff; margin-bottom:1.2rem;">오늘도 화이팅이다냥! 🔥</div>
+                <div class="modal-title" id="welcome-title" style="color:#8b93ff;"></div>
+                <div style="font-size:13px; color:#a5a2c4; margin-bottom:1.2rem;">오늘도 화이팅이다냥! 🔥</div>
                 <button class="modal-btn" onclick="enterHub()">🎮 시작하기</button>
             </div>
         </div>

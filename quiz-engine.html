@@ -9,17 +9,25 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --primary: #00d4ff;
-            --primary-light: #4dd4ff;
-            --accent: #00d4ff;
-            --success: #00ff88;
-            --danger: #ff4466;
-            --bg: #2d1f3d;
-            --text: #f0f0f0;
+            --bg-top: #14121f;
+            --bg-bottom: #0c0b14;
+            --surface: #262340;
+            --surface-soft: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.11);
+            --primary: #8b93ff;
+            --primary-light: #a3aaff;
+            --primary-soft: rgba(139, 147, 255, 0.2);
+            --accent: #8b93ff;
+            --success: #4ade80;
+            --danger: #ff7a90;
+            --gold: #f0c14b;
+            --bg: #262340;
+            --text: #f5f4fb;
+            --text-muted: #a5a2c4;
         }
 
         body {
-            background: linear-gradient(135deg, #2d1f4e 0%, #1f1447 100%);
+            background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -32,7 +40,7 @@
         .game-container {
             max-width: 500px;
             width: 100%;
-            background: #2d1f3d;
+            background: #262340;
             border: none;
             border-radius: 20px;
             padding: 1.5rem;
@@ -43,7 +51,7 @@
             text-align: center;
             margin-bottom: 1.5rem;
             font-size: 28px;
-            color: #00d4ff;
+            color: #8b93ff;
             font-weight: 700;
             letter-spacing: 1px;
         }
@@ -126,7 +134,7 @@
             font-size: 20px;
             margin-bottom: 1.2rem;
             line-height: 1.8;
-            color: #f0f0f0;
+            color: #f5f4fb;
             font-weight: 600;
         }
 
@@ -148,7 +156,7 @@
             cursor: pointer;
             transition: all 0.2s ease;
             font-size: 16px;
-            color: #f0f0f0;
+            color: #f5f4fb;
         }
 
         .option:hover {
@@ -196,7 +204,7 @@
 
         .feedback.correct {
             background: rgba(0, 255, 136, 0.15);
-            color: #00ff88;
+            color: #4ade80;
             border-left: 4px solid var(--success);
         }
 
@@ -215,7 +223,7 @@
             flex: 1;
             padding: 16px;
             border: none;
-            background: linear-gradient(135deg, #00d4ff 0%, #00b8d4 100%);
+            background: linear-gradient(135deg, #8b93ff 0%, #00b8d4 100%);
             color: white;
             border-radius: 12px;
             cursor: pointer;
@@ -271,7 +279,7 @@
         .perfect-title {
             font-size: 36px;
             font-weight: 900;
-            color: #ffd700;
+            color: #f0c14b;
             text-shadow: 0 0 20px rgba(255,215,0,0.8);
             margin-bottom: 0.5rem;
             animation: glow 1s ease infinite alternate;
@@ -303,7 +311,7 @@
             padding: 14px 40px;
             font-size: 18px;
             font-weight: 700;
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            background: linear-gradient(135deg, #f0c14b, #ff8c00);
             color: #1a1a1a;
             border: none;
             border-radius: 30px;
@@ -335,7 +343,7 @@
 
         .final-message {
             font-size: 16px;
-            color: #f0f0f0;
+            color: #f5f4fb;
             margin-bottom: 2rem;
             line-height: 1.8;
         }
@@ -402,7 +410,7 @@
             display: flex;
         }
         .modal-box {
-            background: #2d1f3d;
+            background: #262340;
             border-radius: 20px;
             padding: 2rem 1.5rem;
             max-width: 400px;
@@ -417,8 +425,8 @@
         }
         .modal-icon { font-size: 60px; margin-bottom: 1rem; }
         .modal-title { font-size: 22px; font-weight: 700; margin-bottom: 1rem; }
-        .modal-title.correct { color: #00ff88; }
-        .modal-title.incorrect { color: #ff4466; }
+        .modal-title.correct { color: #4ade80; }
+        .modal-title.incorrect { color: #ff7a90; }
         .modal-explanation {
             font-size: 15px;
             color: #d0d0f0;
@@ -440,7 +448,7 @@
             width: 100%;
             max-width: 500px;
             padding: 12px 1.5rem;
-            background: #2d1f3d;
+            background: #262340;
             box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
             display: none;
             z-index: 100;
@@ -459,8 +467,8 @@
             left: 14px;
             z-index: 150;
             background: rgba(45, 31, 61, 0.9);
-            color: #00d4ff;
-            border: 1px solid #4a3a6a;
+            color: #8b93ff;
+            border: 1px solid rgba(255,255,255,0.11);
             border-radius: 20px;
             padding: 6px 14px;
             font-size: 13px;
@@ -479,11 +487,11 @@
         <div class="modal-overlay" id="name-modal">
             <div class="modal-box">
                 <div style="font-size:50px; margin-bottom:0.8rem;">😸</div>
-                <div class="modal-title" style="color:#00d4ff;">이름(별명)을 알려주냥!</div>
-                <div style="font-size:13px; color:#b0b0ff; margin-bottom:1rem;">랭킹에 이 이름으로 표시된다냥 🏆</div>
+                <div class="modal-title" style="color:#8b93ff;">이름(별명)을 알려주냥!</div>
+                <div style="font-size:13px; color:#a5a2c4; margin-bottom:1rem;">랭킹에 이 이름으로 표시된다냥 🏆</div>
                 <input type="text" id="name-input" placeholder="예: 나나" maxlength="10"
                     onkeypress="if(event.key==='Enter') confirmName()"
-                    style="width:100%; padding:12px; border-radius:10px; border:1px solid #4a3a6a; background:#1f1730; color:#f0f0f0; font-size:15px; margin-bottom:1rem; text-align:center; box-sizing:border-box;">
+                    style="width:100%; padding:12px; border-radius:10px; border:1px solid rgba(255,255,255,0.11); background:#14121f; color:#f5f4fb; font-size:15px; margin-bottom:1rem; text-align:center; box-sizing:border-box;">
                 <button class="modal-btn" onclick="confirmName()">확인</button>
             </div>
         </div>
@@ -491,13 +499,13 @@
         <!-- 시작 화면 -->
         <div id="start-section" style="text-align: center; padding: 2rem 0;">
             <div style="font-size: 80px; margin-bottom: 1rem;">😸</div>
-            <div style="font-size: 16px; color: #b0b0ff; margin-bottom: 2rem; line-height: 1.8;" id="start-subtitle"></div>
+            <div style="font-size: 16px; color: #a5a2c4; margin-bottom: 2rem; line-height: 1.8;" id="start-subtitle"></div>
             <button onclick="startGame()" style="font-size: 20px; padding: 18px 40px;">🎮 게임 시작!</button>
-            <div style="margin-top: 1rem;"><a href="wrong-notes.html" id="wrong-notes-link" style="color:#00d4ff; font-size:13px; text-decoration:none; border-bottom:1px dashed #00d4ff;">📓 오답노트 보기</a></div>
+            <div style="margin-top: 1rem;"><a href="wrong-notes.html" id="wrong-notes-link" style="color:#8b93ff; font-size:13px; text-decoration:none; border-bottom:1px dashed #8b93ff;">📓 오답노트 보기</a></div>
         </div>
 
         <div id="quiz-section" style="display:none;">
-            <div id="player-greeting" style="text-align:center; font-size:13px; color:#00d4ff; margin-bottom:0.6rem; font-weight:600;"></div>
+            <div id="player-greeting" style="text-align:center; font-size:13px; color:#8b93ff; margin-bottom:0.6rem; font-weight:600;"></div>
             <div class="cat-section">
                 <div class="cat-pixel" id="cat">😸</div>
                 <div class="fish-section">
@@ -546,7 +554,7 @@
             <div class="final-message" id="final-message"></div>
             <div style="display:flex; gap:10px; justify-content:center; margin-top:0.5rem;">
                 <button onclick="resetGame()">다시 시작하기</button>
-                <a href="hub.html" id="game-over-home-link" style="display:flex; align-items:center; justify-content:center; padding:14px 20px; border-radius:30px; background:#3a2a54; color:#f0f0f0; font-weight:700; text-decoration:none; font-size:15px;">🏠 홈으로</a>
+                <a href="hub.html" id="game-over-home-link" style="display:flex; align-items:center; justify-content:center; padding:14px 20px; border-radius:30px; background:#3a2a54; color:#f5f4fb; font-weight:700; text-decoration:none; font-size:15px;">🏠 홈으로</a>
             </div>
         </div>
     </div>
@@ -557,7 +565,7 @@
             <span class="perfect-cat">🏆😸🐟</span>
             <div class="perfect-title">🎉 만점 달성이다냥! 🎉</div>
             <div class="perfect-sub">축하한다냥! 완벽해요! 🌟</div>
-            <div style="font-size: 14px; color: #b0b0ff; line-height: 1.8;">냥공천재 등극! 고양이도 너무 기쁘다냥!</div>
+            <div style="font-size: 14px; color: #a5a2c4; line-height: 1.8;">냥공천재 등극! 고양이도 너무 기쁘다냥!</div>
             <button class="perfect-btn" onclick="closePerfect()">🎮 다시 도전하기</button>
         </div>
     </div>
@@ -953,7 +961,7 @@
         }
 
         function launchConfetti() {
-            const colors = ['#ffd700','#ff4466','#00d4ff','#00ff88','#ff8c00','#ff69b4','#7fff00'];
+            const colors = ['#f0c14b','#ff7a90','#8b93ff','#4ade80','#ff8c00','#ff69b4','#7fff00'];
             for (let i = 0; i < 80; i++) {
                 setTimeout(() => {
                     const el = document.createElement('div');
