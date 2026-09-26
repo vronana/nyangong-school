@@ -266,6 +266,37 @@
             color: var(--primary);
         }
 
+        /* 고양이 축하 애니메이션 */
+        .cat-celebrate {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0px;
+            margin: 1rem 0;
+            font-size: 64px;
+        }
+
+        .celebrate-cat {
+            display: inline-block;
+            animation: catBounce 0.5s ease infinite alternate;
+        }
+
+        .celebrate-fish {
+            display: inline-block;
+            animation: fishWiggle 0.4s ease infinite alternate;
+            transform-origin: center bottom;
+        }
+
+        @keyframes catBounce {
+            0% { transform: translateY(0) rotate(-5deg); }
+            100% { transform: translateY(-12px) rotate(5deg); }
+        }
+
+        @keyframes fishWiggle {
+            0% { transform: rotate(-15deg) translateY(0px); }
+            100% { transform: rotate(15deg) translateY(-8px); }
+        }
+
         .fish-total-display {
             display: flex;
             justify-content: center;
@@ -391,6 +422,13 @@
 
         <div id="game-over-section" class="game-over">
             <div class="header" style="margin-bottom: 1rem;">🎉 게임 종료! 🎉</div>
+
+            <!-- 고양이 물고기 애니메이션 -->
+            <div class="cat-celebrate" id="cat-celebrate">
+                <span class="celebrate-cat">😸</span>
+                <span class="celebrate-fish">🐟</span>
+            </div>
+
             <div class="final-score" id="final-score">0 / 10</div>
             <div class="fish-total">모은 물고기</div>
             <div class="fish-total-display" id="fishTotal"></div>
