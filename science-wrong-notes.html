@@ -309,10 +309,15 @@
             let cardsHtml = '';
             filtered.forEach(note => {
                 const dateStr = note.date ? new Date(note.date).toLocaleDateString('ko-KR', { month: 'short', day: 'numeric' }) : '';
+                const locked = !!(note.lockedUntil && Date.now() < note.lockedUntil);
                 let optionsHtml = '';
                 note.options.forEach((opt, i) => {
-                    optionsHtml += `<button type="button" class="note-option-btn" onclick="checkAnswer(${note.idx}, ${i}, this)">${opt}</button>`;
+                    const isAnswer = locked && i === note.correctIdx;
+                    optionsHtml += `<button type="button" class="note-option-btn${isAnswer ? ' correct-pick' : ''}" ${locked ? 'disabled' : ''} onclick="checkAnswer(${note.idx}, ${i}, this)">${opt}</button>`;
                 });
+                const feedbackHtml = locked
+                    ? `땡! 정답은 <b>${note.options[note.correctIdx]}</b> 이다냥 😿<br>💡 ${note.explanation}<br><span id="lock-timer-${note.idx}" style="display:inline-block;margin-top:4px;color:#8a8aa8;"></span>`
+                    : '';
                 cardsHtml += `
                     <div class="note-card" id="note-card-${note.idx}">
                         <div class="note-meta">
@@ -321,7 +326,7 @@
                         </div>
                         <div class="note-q">Q. ${note.question}</div>
                         <div class="note-options">${optionsHtml}</div>
-                        <div class="note-feedback" id="note-feedback-${note.idx}"></div>
+                        <div class="note-feedback${locked ? ' wrong' : ''}" id="note-feedback-${note.idx}">${feedbackHtml}</div>
                     </div>
                 `;
             });
@@ -345,6 +350,7 @@
             const notes = getNotes();
             const note = notes[idx];
             if (!note) return;
+            if (note.lockedUntil && Date.now() < note.lockedUntil) return; // 잠긴 문제는 클릭 무시
 
             const feedbackEl = document.getElementById(`note-feedback-${idx}`);
 
@@ -369,14 +375,57 @@
                     render();
                 }, 1400);
             } else {
+                // 오답: 정답/해설을 바로 보여주고, 1분 동안 이 문제를 다시 못 누르게 잠가서
+                // 마구 찍어서 우연히 맞히는 걸 막음
+                card.querySelectorAll('.note-option-btn').forEach(b => b.disabled = true);
                 btnEl.classList.add('wrong-pick');
+
+                const lockedUntil = Date.now() + 60 * 1000;
+                const latest = getNotes();
+                if (latest[idx]) {
+                    latest[idx].lockedUntil = lockedUntil;
+                    saveNotes(latest);
+                }
+
                 feedbackEl.className = 'note-feedback wrong';
-                feedbackEl.textContent = '땡! 다시 생각해보고 골라보냥 😿';
-                setTimeout(() => btnEl.classList.remove('wrong-pick'), 400);
+                feedbackEl.innerHTML = `땡! 정답은 <b>${note.options[note.correctIdx]}</b> 이다냥 😿<br>💡 ${note.explanation}<br><span id="lock-timer-${idx}" style="display:inline-block;margin-top:4px;color:#8a8aa8;"></span>`;
+
+                startLockTicker();
+                tickLockTimers();
             }
         }
 
+        let lockTickInterval = null;
+
+        function formatRemain(ms) {
+            const s = Math.max(0, Math.ceil(ms / 1000));
+            return `⏱ ${s}초 후에 다시 풀 수 있어요`;
+        }
+
+        function tickLockTimers() {
+            const notes = getNotes();
+            let anyExpired = false;
+            notes.forEach((note, idx) => {
+                if (!note.lockedUntil) return;
+                const remain = note.lockedUntil - Date.now();
+                if (remain <= 0) {
+                    anyExpired = true;
+                } else {
+                    const el = document.getElementById(`lock-timer-${idx}`);
+                    if (el) el.textContent = formatRemain(remain);
+                }
+            });
+            if (anyExpired) render();
+        }
+
+        function startLockTicker() {
+            if (lockTickInterval) return;
+            lockTickInterval = setInterval(tickLockTimers, 1000);
+        }
+
         render();
+        startLockTicker();
+        tickLockTimers();
     </script>
 </body>
 </html>
