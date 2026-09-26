@@ -459,6 +459,20 @@
     <div class="game-container">
         <div class="header">🔥 유전 원리 심화 🔥</div>
 
+
+        <!-- 이름 입력 팝업 -->
+        <div class="modal-overlay" id="name-modal">
+            <div class="modal-box">
+                <div style="font-size:50px; margin-bottom:0.8rem;">😸</div>
+                <div class="modal-title" style="color:#00d4ff;">이름(별명)을 알려줘!</div>
+                <div style="font-size:13px; color:#b0b0ff; margin-bottom:1rem;">랭킹에 이 이름으로 표시돼요 🏆</div>
+                <input type="text" id="name-input" placeholder="예: 나나" maxlength="10"
+                    onkeypress="if(event.key==='Enter') confirmName()"
+                    style="width:100%; padding:12px; border-radius:10px; border:1px solid #4a3a6a; background:#1f1730; color:#f0f0f0; font-size:15px; margin-bottom:1rem; text-align:center; box-sizing:border-box;">
+                <button class="modal-btn" onclick="confirmName()">확인</button>
+            </div>
+        </div>
+
         <!-- 시작 화면 -->
         <div id="start-section" style="text-align: center; padding: 2rem 0;">
             <div style="font-size: 80px; margin-bottom: 1rem;">😼</div>
@@ -540,6 +554,23 @@
     <script>
         const bgmAudio = document.getElementById('bgmAudio');
         bgmAudio.volume = 0.3;
+
+        function initNameGate() {
+            const existing = localStorage.getItem('sciencePlayerName_v2');
+            if (!existing) {
+                document.getElementById('name-modal').classList.add('show');
+            }
+        }
+
+        function confirmName() {
+            const input = document.getElementById('name-input');
+            const val = input.value.trim();
+            if (!val) { alert('이름을 입력해줘!'); return; }
+            localStorage.setItem('sciencePlayerName_v2', val);
+            document.getElementById('name-modal').classList.remove('show');
+        }
+
+        initNameGate();
 
         function startGame() {
             document.getElementById('start-section').style.display = 'none';
