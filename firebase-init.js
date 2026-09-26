@@ -39,6 +39,20 @@ function registerPlayer(name) {
     }
 }
 
+function recordReviewClear() {
+    try {
+        const name = getPlayerName();
+        if (!name) return;
+        db.collection('players').doc(name).set({
+            name: name,
+            reviewCleared: firebase.firestore.FieldValue.increment(1),
+            lastSeen: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true }).catch(e => console.log('복습 기록 실패:', e));
+    } catch (e) {
+        console.log('복습 기록 실패:', e);
+    }
+}
+
 function submitScore(quizFile, quizTitle, correct, total) {
     try {
         const name = getPlayerName();

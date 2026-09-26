@@ -218,6 +218,9 @@
         <div id="content"></div>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-init.js"></script>
     <script>
         function updateGreeting() {
             try {
@@ -351,6 +354,7 @@
                 btnEl.classList.add('correct-pick');
                 feedbackEl.className = 'note-feedback correct';
                 feedbackEl.textContent = `🎉 정답이다냥! 💡 ${note.explanation}`;
+                if (typeof recordReviewClear === 'function') recordReviewClear();
                 setTimeout(() => {
                     const latest = getNotes();
                     const stillIdx = latest.indexOf(note);

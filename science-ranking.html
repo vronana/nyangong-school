@@ -175,7 +175,7 @@
 
         let mode = 'total';
         let allScores = [];
-        let allPlayers = [];
+        let allPlayers = []; // { name, reviewCleared }
 
         const quizTitles = {
             'reproduction.html': '생식과 발생 기초',
@@ -228,24 +228,45 @@
                 return;
             }
 
-            // 이름 등록한 사람 전원을 0점으로 먼저 깔아두고, 점수 기록으로 합산
+            // 이름 등록한 사람 전원을 0점으로 먼저 깔아두고 시작
             const byPlayer = {};
-            allPlayers.forEach(name => {
-                byPlayer[name] = { name: name, correct: 0, total: 0, count: 0 };
+            allPlayers.forEach(p => {
+                byPlayer[p.name] = { name: p.name, bestByQuiz: {}, reviewCleared: p.reviewCleared || 0 };
             });
+            // 같은 퀴즈를 여러 번 풀었으면 그중 제일 잘 본 기록만 반영 (중복 방지)
             allScores.forEach(s => {
-                if (!byPlayer[s.name]) byPlayer[s.name] = { name: s.name, correct: 0, total: 0, count: 0 };
-                byPlayer[s.name].correct += s.correct;
-                byPlayer[s.name].total += s.total;
-                byPlayer[s.name].count += 1;
+                if (!byPlayer[s.name]) byPlayer[s.name] = { name: s.name, bestByQuiz: {}, reviewCleared: 0 };
+                const best = byPlayer[s.name].bestByQuiz[s.quizFile];
+                if (!best || s.correct > best.correct) {
+                    byPlayer[s.name].bestByQuiz[s.quizFile] = { correct: s.correct, total: s.total };
+                }
             });
 
-            const ranked = Object.values(byPlayer).sort((a, b) => b.correct - a.correct);
+            const ranked = Object.values(byPlayer).map(p => {
+                const quizzes = Object.values(p.bestByQuiz);
+                const quizCorrect = quizzes.reduce((sum, q) => sum + q.correct, 0);
+                const quizTotal = quizzes.reduce((sum, q) => sum + q.total, 0);
+                const score = quizCorrect + p.reviewCleared;
+                return {
+                    name: p.name,
+                    score,
+                    quizCount: quizzes.length,
+                    quizCorrect,
+                    quizTotal,
+                    reviewCleared: p.reviewCleared
+                };
+            }).sort((a, b) => b.score - a.score);
 
             let html = '';
             ranked.forEach((p, i) => {
-                const pct = p.total > 0 ? Math.round((p.correct / p.total) * 100) : 0;
-                const detail = p.count > 0 ? `${p.count}개 퀴즈 응시 · 정답률 ${pct}%` : '아직 퀴즈 안 풀었다냥';
+                let detail;
+                if (p.quizCount === 0 && p.reviewCleared === 0) {
+                    detail = '아직 퀴즈 안 풀었다냥';
+                } else {
+                    const pct = p.quizTotal > 0 ? Math.round((p.quizCorrect / p.quizTotal) * 100) : 0;
+                    detail = `${p.quizCount}개 퀴즈 완료 · 정답률 ${pct}%`;
+                    if (p.reviewCleared > 0) detail += ` · 오답 복습 ${p.reviewCleared}개`;
+                }
                 html += `
                     <div class="${rowClass(i)}">
                         <div class="rank-num">${medalFor(i)}</div>
@@ -253,7 +274,7 @@
                             <div class="rank-name">${escapeHtml(p.name)}</div>
                             <div class="rank-detail">${detail}</div>
                         </div>
-                        <div class="rank-score">${p.correct}점</div>
+                        <div class="rank-score">${p.score}점</div>
                     </div>
                 `;
             });
@@ -321,7 +342,10 @@
             db.collection('players').limit(1000).get()
         ]).then(([scoreSnap, playerSnap]) => {
             allScores = scoreSnap.docs.map(doc => doc.data());
-            allPlayers = playerSnap.docs.map(doc => doc.data().name);
+            allPlayers = playerSnap.docs.map(doc => {
+                const d = doc.data();
+                return { name: d.name, reviewCleared: d.reviewCleared || 0 };
+            });
             render();
         }).catch(e => {
             document.getElementById('content').innerHTML =
