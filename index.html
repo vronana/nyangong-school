@@ -290,7 +290,14 @@
     <div class="game-container">
         <div class="header">🎮 과학 퀴즈 게임 🎮</div>
 
-        <div id="quiz-section">
+        <!-- 시작 화면 -->
+        <div id="start-section" style="text-align: center; padding: 2rem 0;">
+            <div style="font-size: 80px; margin-bottom: 1rem;">😸</div>
+            <div style="font-size: 16px; color: #b0b0ff; margin-bottom: 2rem; line-height: 1.8;">중학교 과학 중간고사 준비!<br>생식과 유전 · 에너지 전환과 보존</div>
+            <button onclick="startGame()" style="font-size: 20px; padding: 18px 40px;">🎮 게임 시작!</button>
+        </div>
+
+        <div id="quiz-section" style="display:none;">
             <div class="cat-section">
                 <div class="cat-pixel" id="cat">😸</div>
                 <div class="fish-section">
@@ -323,23 +330,20 @@
     </div>
 
     <!-- 배경음악 -->
-    <audio id="bgmAudio" loop autoplay muted>
+    <audio id="bgmAudio" loop>
         <source src="PixelPulse.mp3" type="audio/mpeg">
     </audio>
 
     <script>
-        let musicStarted = false;
         const bgmAudio = document.getElementById('bgmAudio');
         bgmAudio.volume = 0.3;
 
-        function startBGM() {
-            if (musicStarted) return;
-            musicStarted = true;
-            bgmAudio.muted = false; // 음소거 해제
+        function startGame() {
+            document.getElementById('start-section').style.display = 'none';
+            document.getElementById('quiz-section').style.display = 'block';
+            bgmAudio.play().catch(e => console.log('음악 재생 실패:', e));
+            loadQuestion();
         }
-
-        // 페이지 어디든 클릭하면 음악 시작
-        document.addEventListener('click', startBGM, { once: true });
 
         const questions = [
             // 생식과 유전 (5개)
@@ -541,13 +545,11 @@
             fishCount = 0;
             answered = false;
             selectedOption = null;
-            document.getElementById('quiz-section').style.display = 'block';
+            document.getElementById('start-section').style.display = 'block';
+            document.getElementById('quiz-section').style.display = 'none';
             document.getElementById('game-over-section').style.display = 'none';
             document.getElementById('fishDisplay').innerHTML = '';
-            loadQuestion();
         }
-
-        loadQuestion();
     </script>
 </body>
 </html>
