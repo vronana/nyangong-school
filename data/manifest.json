@@ -1,6 +1,6 @@
 {
   "science": {
-    "_meta": { "label": "중학교 과학 중간고사 준비!", "hubTitle": "과학 퀴즈 허브" },
+    "_meta": { "label": "중학교 과학 중간고사 준비다냥!", "hubTitle": "냥공스쿨" },
     "reproduction": { "title": "생식과 발생 기초", "icon": "🧬", "tier": "basic", "stage": 1, "count": "10문제" },
     "genetics": { "title": "유전 원리 기초", "icon": "🧬", "tier": "basic", "stage": 1, "count": "10문제" },
     "human-genetics": { "title": "사람의 유전", "icon": "🧬", "tier": "basic", "stage": 1, "count": "10문제" },

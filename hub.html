@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>과학 퀴즈 허브</title>
+    <title>냥공스쿨</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -213,8 +213,8 @@
         <div class="modal-box">
             <div style="font-size:50px; margin-bottom:0.8rem;">😸</div>
             <div id="name-modal-new">
-                <div class="modal-title" style="color:#00d4ff;">이름(별명)을 알려줘!</div>
-                <div style="font-size:13px; color:#b0b0ff; margin-bottom:1rem;">랭킹에 이 이름으로 표시돼요 🏆</div>
+                <div class="modal-title" style="color:#00d4ff;">이름(별명)을 알려주냥!</div>
+                <div style="font-size:13px; color:#b0b0ff; margin-bottom:1rem;">랭킹에 이 이름으로 표시된다냥 🏆</div>
                 <input type="text" id="name-input" placeholder="예: 나나" maxlength="10"
                     onkeypress="if(event.key==='Enter') confirmName()"
                     style="width:100%; padding:12px; border-radius:10px; border:1px solid #4a3a6a; background:#1f1730; color:#f0f0f0; font-size:15px; margin-bottom:1rem; text-align:center; box-sizing:border-box;">
@@ -222,7 +222,7 @@
             </div>
             <div id="name-modal-returning" style="display:none;">
                 <div class="modal-title" id="welcome-title" style="color:#00d4ff;"></div>
-                <div style="font-size:13px; color:#b0b0ff; margin-bottom:1.2rem;">오늘도 화이팅! 🔥</div>
+                <div style="font-size:13px; color:#b0b0ff; margin-bottom:1.2rem;">오늘도 화이팅이다냥! 🔥</div>
                 <button class="modal-btn" onclick="enterHub()">🎮 시작하기</button>
             </div>
         </div>
@@ -235,8 +235,8 @@
     <div class="wrap">
         <div class="hero">
             <div class="cat">😸</div>
-            <h1>과학 퀴즈 허브</h1>
-            <p>중학교 과학 중간고사 준비 · 원하는 단원을 골라 풀어봐!</p>
+            <h1>냥공스쿨</h1>
+            <p>중학교 중간고사 준비 · 원하는 단원을 골라 풀어보냥!</p>
             <div class="greeting" id="hub-greeting"></div>
         </div>
 
@@ -408,8 +408,8 @@
 
         <div class="footer-note">
             1·2·3단계 각 50문제 · 총 150문제<br>
-            틀린 문제는 자동으로 오답노트에 저장돼요 🐟<br>
-            중간고사 화이팅!
+            틀린 문제는 자동으로 오답노트에 저장된다냥 🐟<br>
+            중간고사 화이팅이다냥!
         </div>
     </div>
 
@@ -433,7 +433,7 @@
         function updateGreeting() {
             const name = getSavedName();
             const el = document.getElementById('hub-greeting');
-            if (el) el.textContent = name ? `${name}님 반가워요! 😸` : '';
+            if (el) el.textContent = name ? `${name}님 반갑다냥! 😸` : '';
         }
         function playBgm() {
             const audio = document.getElementById('bgmAudio');
@@ -453,7 +453,7 @@
                 registerPlayer(existing);
                 document.getElementById('name-modal-new').style.display = 'none';
                 document.getElementById('name-modal-returning').style.display = 'block';
-                document.getElementById('welcome-title').textContent = `${existing}님 반가워요! 😸`;
+                document.getElementById('welcome-title').textContent = `${existing}님 반갑다냥! 😸`;
             } else {
                 document.getElementById('name-modal-new').style.display = 'block';
                 document.getElementById('name-modal-returning').style.display = 'none';
@@ -467,7 +467,7 @@
         function confirmName() {
             const input = document.getElementById('name-input');
             const val = input.value.trim();
-            if (!val) { alert('이름을 입력해줘!'); return; }
+            if (!val) { alert('이름을 입력해달라냥!'); return; }
             localStorage.setItem('sciencePlayerName_v2', val);
             registerPlayer(val);
             document.getElementById('name-modal').classList.remove('show');

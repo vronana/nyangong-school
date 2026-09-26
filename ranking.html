@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>랭킹</title>
+    <title>냥공스쿨 · 랭킹</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -141,7 +141,7 @@
 <body>
     <div class="wrap">
         <div class="header">🏆 랭킹 🏆</div>
-        <div class="sub">친구들이랑 점수로 겨뤄봐!</div>
+        <div class="sub">친구들이랑 점수로 겨뤄보냥!</div>
         <div class="sub" id="page-greeting" style="color:var(--primary); font-weight:600;"></div>
 
         <div class="tabs">
@@ -168,7 +168,7 @@
             try {
                 const name = localStorage.getItem('sciencePlayerName_v2') || '';
                 const el = document.getElementById('page-greeting');
-                if (el) el.textContent = name ? `${name}님 반가워요! 😸` : '';
+                if (el) el.textContent = name ? `${name}님 반갑다냥! 😸` : '';
             } catch (e) {}
         }
         updateGreeting();
@@ -224,7 +224,7 @@
         function renderTotalRanking() {
             const content = document.getElementById('content');
             if (allScores.length === 0 && allPlayers.length === 0) {
-                content.innerHTML = `<div class="empty-state"><div class="icon">🐟</div>아직 아무도 없어요!<br>가장 먼저 이름 등록하고 1등 해보세요.</div>`;
+                content.innerHTML = `<div class="empty-state"><div class="icon">🐟</div>아직 아무도 없다냥!<br>가장 먼저 이름 등록하고 1등 해보냥.</div>`;
                 return;
             }
 
@@ -245,7 +245,7 @@
             let html = '';
             ranked.forEach((p, i) => {
                 const pct = p.total > 0 ? Math.round((p.correct / p.total) * 100) : 0;
-                const detail = p.count > 0 ? `${p.count}개 퀴즈 응시 · 정답률 ${pct}%` : '아직 퀴즈 안 풂';
+                const detail = p.count > 0 ? `${p.count}개 퀴즈 응시 · 정답률 ${pct}%` : '아직 퀴즈 안 풀었다냥';
                 html += `
                     <div class="${rowClass(i)}">
                         <div class="rank-num">${medalFor(i)}</div>
@@ -267,7 +267,7 @@
 
             const filtered = allScores.filter(s => s.quizFile === selected);
             if (filtered.length === 0) {
-                content.innerHTML = `<div class="empty-state"><div class="icon">🐟</div>이 퀴즈는 아직 아무도 안 풀었어요!</div>`;
+                content.innerHTML = `<div class="empty-state"><div class="icon">🐟</div>이 퀴즈는 아직 아무도 안 풀었다냥!</div>`;
                 return;
             }
 
@@ -325,7 +325,7 @@
             render();
         }).catch(e => {
             document.getElementById('content').innerHTML =
-                `<div class="empty-state"><div class="icon">⚠️</div>랭킹을 불러오지 못했어요.<br><span style="font-size:11px">${e.message}</span></div>`;
+                `<div class="empty-state"><div class="icon">⚠️</div>랭킹을 불러오지 못했다냥.<br><span style="font-size:11px">${e.message}</span></div>`;
         });
     </script>
 </body>

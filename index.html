@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>과학 퀴즈 허브</title>
+    <title>냥공스쿨</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -67,8 +67,8 @@
         <div class="modal-box">
             <div style="font-size:50px; margin-bottom:0.8rem;">😸</div>
             <div id="name-modal-new">
-                <div class="modal-title" style="color:#00d4ff;">이름(별명)을 알려줘!</div>
-                <div style="font-size:13px; color:#b0b0ff; margin-bottom:1rem;">랭킹에 이 이름으로 표시돼요 🏆</div>
+                <div class="modal-title" style="color:#00d4ff;">이름(별명)을 알려주냥!</div>
+                <div style="font-size:13px; color:#b0b0ff; margin-bottom:1rem;">랭킹에 이 이름으로 표시된다냥 🏆</div>
                 <input type="text" id="name-input" placeholder="예: 나나" maxlength="10"
                     onkeypress="if(event.key==='Enter') confirmName()"
                     style="width:100%; padding:12px; border-radius:10px; border:1px solid #4a3a6a; background:#1f1730; color:#f0f0f0; font-size:15px; margin-bottom:1rem; text-align:center; box-sizing:border-box;">
@@ -76,7 +76,7 @@
             </div>
             <div id="name-modal-returning" style="display:none;">
                 <div class="modal-title" id="welcome-title" style="color:#00d4ff;"></div>
-                <div style="font-size:13px; color:#b0b0ff; margin-bottom:1.2rem;">오늘도 화이팅! 🔥</div>
+                <div style="font-size:13px; color:#b0b0ff; margin-bottom:1.2rem;">오늘도 화이팅이다냥! 🔥</div>
                 <button class="modal-btn" onclick="enterHub()">🎮 시작하기</button>
             </div>
         </div>
@@ -86,7 +86,7 @@
         <source src="PixelPulse.mp3" type="audio/mpeg">
     </audio>
 
-    <iframe id="content-frame" src="hub.html" title="과학 퀴즈 허브"></iframe>
+    <iframe id="content-frame" src="hub.html" title="냥공스쿨"></iframe>
 
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -106,7 +106,7 @@
                 registerPlayer(existing);
                 document.getElementById('name-modal-new').style.display = 'none';
                 document.getElementById('name-modal-returning').style.display = 'block';
-                document.getElementById('welcome-title').textContent = `${existing}님 반가워요! 😸`;
+                document.getElementById('welcome-title').textContent = `${existing}님 반갑다냥! 😸`;
             } else {
                 document.getElementById('name-modal-new').style.display = 'block';
                 document.getElementById('name-modal-returning').style.display = 'none';
@@ -121,7 +121,7 @@
         function confirmName() {
             const input = document.getElementById('name-input');
             const val = input.value.trim();
-            if (!val) { alert('이름을 입력해줘!'); return; }
+            if (!val) { alert('이름을 입력해달라냥!'); return; }
             localStorage.setItem('sciencePlayerName_v2', val);
             registerPlayer(val);
             document.getElementById('name-modal').classList.remove('show');

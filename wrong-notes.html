@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>오답노트</title>
+    <title>냥공스쿨 · 오답노트</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -212,7 +212,7 @@
 <body>
     <div class="wrap">
         <div class="header">📓 오답노트</div>
-        <div class="sub">문제를 다시 풀어서 정답을 맞히면 자동으로 사라져요! 😸</div>
+        <div class="sub">문제를 다시 풀어서 정답을 맞히면 자동으로 사라진다냥! 😸</div>
         <div class="sub" id="page-greeting" style="color:var(--primary); font-weight:600;"></div>
 
         <div id="content"></div>
@@ -223,7 +223,7 @@
             try {
                 const name = localStorage.getItem('sciencePlayerName_v2') || '';
                 const el = document.getElementById('page-greeting');
-                if (el) el.textContent = name ? `${name}님 반가워요! 😸` : '';
+                if (el) el.textContent = name ? `${name}님 반갑다냥! 😸` : '';
             } catch (e) {}
         }
         updateGreeting();
@@ -271,8 +271,8 @@
                 contentEl.innerHTML = `
                     <div class="empty-state">
                         <div class="icon">🎉</div>
-                        <div>아직 틀린 문제가 없어요!</div>
-                        <div style="font-size:13px; margin-top:6px; color:#8a8aa8;">퀴즈를 풀다가 틀리면 여기에 자동으로 저장되고,<br>여기서 다시 맞히면 사라져요.</div>
+                        <div>아직 틀린 문제가 없다냥!</div>
+                        <div style="font-size:13px; margin-top:6px; color:#8a8aa8;">퀴즈를 풀다가 틀리면 여기에 자동으로 저장되고,<br>여기서 다시 맞히면 사라진다냥.</div>
                         <a href="hub.html">🎮 퀴즈 풀러 가기</a>
                     </div>
                 `;
@@ -350,7 +350,7 @@
                 card.querySelectorAll('.note-option-btn').forEach(b => b.disabled = true);
                 btnEl.classList.add('correct-pick');
                 feedbackEl.className = 'note-feedback correct';
-                feedbackEl.textContent = `🎉 정답이에요! 💡 ${note.explanation}`;
+                feedbackEl.textContent = `🎉 정답이다냥! 💡 ${note.explanation}`;
                 setTimeout(() => {
                     const latest = getNotes();
                     const stillIdx = latest.indexOf(note);
@@ -363,7 +363,7 @@
             } else {
                 btnEl.classList.add('wrong-pick');
                 feedbackEl.className = 'note-feedback wrong';
-                feedbackEl.textContent = '땡! 다시 생각해보고 골라봐 😿';
+                feedbackEl.textContent = '땡! 다시 생각해보고 골라보냥 😿';
                 setTimeout(() => btnEl.classList.remove('wrong-pick'), 400);
             }
         }
