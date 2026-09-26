@@ -188,6 +188,7 @@
             color: #a3ffd6;
         }
         .note-option-btn:disabled { cursor: not-allowed; opacity: 0.55; }
+        .note-option-btn.is-locked { opacity: 0.55; }
         @keyframes shakeIt {
             0%, 100% { transform: translateX(0); }
             25% { transform: translateX(-4px); }
@@ -294,7 +295,7 @@
     </style>
 </head>
 <body>
-    <div class="version-tag">v2026.09.27-10</div>
+    <div class="version-tag">v2026.09.27-11</div>
     <a href="science-hub.html" class="home-float">🏠 홈</a>
 
     <div class="modal-overlay" id="answer-modal">
@@ -409,7 +410,8 @@
                 let optionsHtml = '';
                 note.options.forEach((opt, i) => {
                     const isAnswer = locked && i === note.correctIdx;
-                    optionsHtml += `<button type="button" class="note-option-btn${isAnswer ? ' correct-pick' : ''}" ${locked ? 'disabled' : ''} onclick="checkAnswer(${note.idx}, ${i}, this)">${opt}</button>`;
+                    const clickHandler = locked ? `lockedClick(${note.idx})` : `checkAnswer(${note.idx}, ${i}, this)`;
+                    optionsHtml += `<button type="button" class="note-option-btn${isAnswer ? ' correct-pick' : ''}${locked ? ' is-locked' : ''}" onclick="${clickHandler}">${opt}</button>`;
                 });
                 const feedbackHtml = locked
                     ? `땡! 정답은 <b>${note.options[note.correctIdx]}</b> 이다냥 😿<br>💡 ${note.explanation}<br><span id="lock-timer-${note.idx}" style="display:inline-block;margin-top:4px;color:#8985a8;"></span>`
@@ -471,9 +473,13 @@
                 });
             } else {
                 // 오답: 정답/해설을 바로 보여주고, 1분 동안 이 문제를 다시 못 누르게 잠가서
-                // 마구 찍어서 우연히 맞히는 걸 막음
+                // 마구 찍어서 우연히 맞히는 걸 막음. disabled 속성 대신 onclick을 lockedClick으로
+                // 바꿔서, 눌러도 "잠겼어요" 안내가 뜨도록 해 클릭이 씹히는 것처럼 보이지 않게 함
                 card.classList.add('locked');
-                card.querySelectorAll('.note-option-btn').forEach(b => b.disabled = true);
+                card.querySelectorAll('.note-option-btn').forEach(b => {
+                    b.classList.add('is-locked');
+                    b.setAttribute('onclick', `lockedClick(${idx})`);
+                });
                 btnEl.classList.add('wrong-pick');
 
                 const metaEl = card.querySelector('.note-meta');
@@ -529,6 +535,17 @@
         function formatRemain(ms) {
             const s = Math.max(0, Math.ceil(ms / 1000));
             return `⏱ ${s}초 후에 다시 풀 수 있어요`;
+        }
+
+        // 잠긴 문제의 보기를 눌렀을 때 호출됨. 그냥 씹히는 것처럼 보이지 않도록
+        // "아직 잠겨있다"는 걸 팝업으로 명확히 알려줌
+        function lockedClick(idx) {
+            const notes = getNotes();
+            const note = notes[idx];
+            if (!note || !note.lockedUntil) { render(); return; }
+            const remain = note.lockedUntil - Date.now();
+            if (remain <= 0) { render(); return; } // 이미 풀렸는데 화면이 안 갱신된 경우 새로고침
+            showAnswerModal('🔒', '아직 잠겨있어요', `${formatRemain(remain)}<br>조금 있다가 다시 풀어봐냥`, null);
         }
 
         function tickLockTimers() {
