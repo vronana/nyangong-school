@@ -797,6 +797,16 @@
             perfectTimeout = setTimeout(playPerfect, 10200);
         }
 
+        // 0~n-1 인덱스를 무작위로 섞은 배열을 반환 (피셔-예이츠)
+        function shuffledIndices(n) {
+            const arr = Array.from({ length: n }, (_, i) => i);
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
         function saveWrongAnswer(q, selected) {
             try {
                 const notes = JSON.parse(localStorage.getItem('scienceWrongNotes_v2') || '[]');
@@ -829,9 +839,13 @@
 
             const optionsDiv = document.getElementById('options');
             optionsDiv.innerHTML = '';
-            q.options.forEach((opt, idx) => {
+            // 보기 순서를 문제마다 무작위로 섞어서 위치만 외워서 맞히는 걸 방지.
+            // 정답 판정은 원래 인덱스(q.correct) 기준이라 순서를 섞어도 채점 로직은 그대로
+            shuffledIndices(q.options.length).forEach(idx => {
+                const opt = q.options[idx];
                 const label = document.createElement('label');
                 label.className = 'option';
+                label.dataset.idx = idx;
                 label.innerHTML = `
                     <input type="radio" name="answer" value="${idx}" onchange="selectOption(${idx})">
                     <span>${opt}</span>
@@ -888,7 +902,8 @@
                 saveWrongAnswer(q, selectedOption);
             }
 
-            options.forEach((opt, idx) => {
+            options.forEach(opt => {
+                const idx = parseInt(opt.dataset.idx, 10);
                 opt.classList.add('disabled');
                 if (idx === q.correct) opt.classList.add('correct');
                 else if (idx === selectedOption && !isCorrect) opt.classList.add('incorrect');
