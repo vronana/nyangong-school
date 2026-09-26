@@ -10,161 +10,23 @@
 
         :root {
             --primary: #00d4ff;
-            --success: #00ff88;
-            --danger: #ff4466;
             --text: #f0f0f0;
         }
 
-        body {
-            background: linear-gradient(135deg, #2d1f4e 0%, #1f1447 100%);
-            min-height: 100vh;
+        html, body {
+            height: 100%;
+            background: #1f1447;
             font-family: 'Noto Sans KR', sans-serif;
-            padding: 1.5rem 1rem 3rem;
             color: var(--text);
         }
 
-        .wrap {
-            max-width: 640px;
-            margin: 0 auto;
-        }
-
-        .hero {
-            text-align: center;
-            margin-bottom: 1.8rem;
-        }
-        .hero .cat {
-            font-size: 64px;
-            margin-bottom: 0.5rem;
-        }
-        .hero h1 {
-            font-size: 26px;
-            color: var(--primary);
-            font-weight: 700;
-            letter-spacing: 1px;
-            margin-bottom: 0.4rem;
-        }
-        .hero p {
-            color: #b0b0ff;
-            font-size: 14px;
-        }
-
-        .notes-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: #2d1f3d;
-            border: 1px solid #4a3a6a;
-            border-radius: 14px;
-            padding: 12px;
-            margin-bottom: 1.8rem;
-            text-decoration: none;
-            color: var(--text);
-            font-size: 14px;
-            font-weight: 600;
-            transition: transform 0.15s;
-        }
-        .notes-link:active { transform: scale(0.98); }
-        .notes-link .badge {
-            background: var(--danger);
-            color: #fff;
-            font-size: 11px;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-weight: 700;
-        }
-
-        .section-title {
-            font-size: 14px;
-            color: #b0b0ff;
-            font-weight: 700;
-            margin: 1.6rem 0 0.7rem;
-            padding-left: 4px;
-            letter-spacing: 0.5px;
-        }
-        .section-title:first-of-type { margin-top: 0; }
-
-        .card-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .quiz-card {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            background: #2d1f3d;
-            border-radius: 16px;
-            padding: 1rem;
-            text-decoration: none;
-            color: var(--text);
-            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.12);
-            border: 1px solid transparent;
-            transition: transform 0.15s, border-color 0.15s;
-            min-height: 118px;
-        }
-        .quiz-card:active { transform: scale(0.97); }
-        .quiz-card .icon { font-size: 30px; margin-bottom: 0.5rem; }
-        .quiz-card .name {
-            font-size: 14px;
-            font-weight: 700;
-            line-height: 1.35;
-            margin-bottom: 0.3rem;
-        }
-        .quiz-card .count {
-            font-size: 11px;
-            color: #8a8aa8;
-        }
-
-        .quiz-card.tier-basic { border-color: rgba(0, 212, 255, 0.25); }
-        .quiz-card.tier-combined { border-color: rgba(0, 255, 136, 0.3); }
-        .quiz-card.tier-advanced {
-            border-color: rgba(255, 68, 102, 0.4);
-            background: linear-gradient(135deg, #2d1f3d 0%, #3a1f2d 100%);
-        }
-        .quiz-card.tier-bonus {
-            border-color: rgba(255, 215, 0, 0.3);
-            opacity: 0.85;
-        }
-
-        .quiz-card.locked {
-            opacity: 0.4;
-            pointer-events: none;
-            filter: grayscale(0.6);
-        }
-        .quiz-card .lock-icon { font-size: 30px; margin-bottom: 0.5rem; }
-
-        .stage-progress {
-            font-size: 11px;
-            color: #6a6a8a;
-            font-weight: 400;
-            margin-left: 6px;
-        }
-
-        .locked-banner {
-            background: rgba(255, 68, 102, 0.08);
-            border: 1px dashed rgba(255, 68, 102, 0.35);
-            border-radius: 14px;
-            padding: 12px 14px;
-            margin-top: 10px;
-            font-size: 12px;
-            color: #ffb3c1;
-            text-align: center;
-            line-height: 1.6;
-        }
-        .locked-banner[hidden] { display: none; }
-
-        .footer-note {
-            text-align: center;
-            font-size: 12px;
-            color: #6a6a8a;
-            margin-top: 2.5rem;
-            line-height: 1.7;
-        }
-
-        @media (max-width: 380px) {
-            .card-grid { grid-template-columns: 1fr; }
+        #content-frame {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
         }
 
         .modal-overlay {
@@ -198,18 +60,10 @@
             color: #1a1230;
             cursor: pointer;
         }
-
-        .greeting {
-            text-align: center;
-            font-size: 14px;
-            color: var(--primary);
-            font-weight: 600;
-            margin-bottom: 0.6rem;
-        }
     </style>
 </head>
 <body>
-    <div class="modal-overlay" id="name-modal">
+    <div class="modal-overlay show" id="name-modal">
         <div class="modal-box">
             <div style="font-size:50px; margin-bottom:0.8rem;">😸</div>
             <div id="name-modal-new">
@@ -232,210 +86,22 @@
         <source src="PixelPulse.mp3" type="audio/mpeg">
     </audio>
 
-    <div class="wrap">
-        <div class="hero">
-            <div class="cat">😸</div>
-            <h1>과학 퀴즈 허브</h1>
-            <p>중학교 과학 중간고사 준비 · 원하는 단원을 골라 풀어봐!</p>
-            <div class="greeting" id="hub-greeting"></div>
-        </div>
-
-        <a href="wrong-notes.html" class="notes-link">
-            📓 오답노트 보기
-            <span class="badge">복습</span>
-        </a>
-        <a href="ranking.html" class="notes-link">
-            🏆 랭킹 보기
-            <span class="badge" style="background:var(--gold, #ffd700); color:#3a2a00;">경쟁</span>
-        </a>
-
-        <div class="section-title">📖 1단계 · 단원별 기초 <span class="stage-progress" id="stage1-progress"></span></div>
-        <div class="card-grid" id="stage1-grid">
-            <a href="reproduction.html" class="quiz-card tier-basic" data-file="reproduction.html">
-                <div>
-                    <div class="icon">🧬</div>
-                    <div class="name">생식과 발생 기초</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-            <a href="genetics.html" class="quiz-card tier-basic" data-file="genetics.html">
-                <div>
-                    <div class="icon">🧬</div>
-                    <div class="name">유전 원리 기초</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-            <a href="human-genetics.html" class="quiz-card tier-basic" data-file="human-genetics.html">
-                <div>
-                    <div class="icon">🧬</div>
-                    <div class="name">사람의 유전</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-            <a href="energy.html" class="quiz-card tier-basic" data-file="energy.html">
-                <div>
-                    <div class="icon">⚡</div>
-                    <div class="name">에너지 전환과 보존</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-            <a href="electricity.html" class="quiz-card tier-basic" data-file="electricity.html">
-                <div>
-                    <div class="icon">💡</div>
-                    <div class="name">전기 에너지 발생과 이용</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-        </div>
-
-        <div class="section-title">🔗 2단계 · 단원별 응용 (50문제) <span class="stage-progress" id="stage2-progress"></span></div>
-        <div class="locked-banner" id="stage2-banner" hidden></div>
-        <div class="card-grid" id="stage2-grid">
-            <a href="reproduction-adv.html" class="quiz-card tier-combined" data-file="reproduction-adv.html">
-                <div>
-                    <div class="icon">🧬</div>
-                    <div class="name">생식과 발생 응용</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-            <a href="genetics-adv.html" class="quiz-card tier-combined" data-file="genetics-adv.html">
-                <div>
-                    <div class="icon">🧬</div>
-                    <div class="name">유전 원리 응용</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-            <a href="human-genetics-adv.html" class="quiz-card tier-combined" data-file="human-genetics-adv.html">
-                <div>
-                    <div class="icon">🧬</div>
-                    <div class="name">사람의 유전 응용</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-            <a href="energy-adv.html" class="quiz-card tier-combined" data-file="energy-adv.html">
-                <div>
-                    <div class="icon">⚡</div>
-                    <div class="name">에너지 전환과 보존 응용</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-            <a href="electricity-adv.html" class="quiz-card tier-combined" data-file="electricity-adv.html">
-                <div>
-                    <div class="icon">💡</div>
-                    <div class="name">전기 에너지 응용</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-        </div>
-        <div class="section-title">🔥 3단계 · 단원별 심화 (50문제) <span class="stage-progress" id="stage3-progress"></span></div>
-        <div class="locked-banner" id="stage3-banner" hidden></div>
-        <div class="card-grid" id="stage3-grid">
-            <a href="reproduction-master.html" class="quiz-card tier-advanced" data-file="reproduction-master.html">
-                <div>
-                    <div class="icon">🧬</div>
-                    <div class="name">생식과 발생 심화</div>
-                </div>
-                <div class="count">10문제 · 계산 포함</div>
-            </a>
-            <a href="genetics-master.html" class="quiz-card tier-advanced" data-file="genetics-master.html">
-                <div>
-                    <div class="icon">🧬</div>
-                    <div class="name">유전 원리 심화</div>
-                </div>
-                <div class="count">10문제 · 계산 포함</div>
-            </a>
-            <a href="human-genetics-master.html" class="quiz-card tier-advanced" data-file="human-genetics-master.html">
-                <div>
-                    <div class="icon">🧬</div>
-                    <div class="name">사람의 유전 심화</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-            <a href="energy-master.html" class="quiz-card tier-advanced" data-file="energy-master.html">
-                <div>
-                    <div class="icon">⚡</div>
-                    <div class="name">에너지 전환과 보존 심화</div>
-                </div>
-                <div class="count">10문제 · 계산 포함</div>
-            </a>
-            <a href="electricity-master.html" class="quiz-card tier-advanced" data-file="electricity-master.html">
-                <div>
-                    <div class="icon">💡</div>
-                    <div class="name">전기 에너지 심화</div>
-                </div>
-                <div class="count">10문제 · 계산 포함</div>
-            </a>
-        </div>
-
-        <div class="section-title">🎁 보너스 · 종합·랜덤 퀴즈</div>
-        <div class="card-grid">
-            <a href="reproduction-genetics.html" class="quiz-card tier-bonus">
-                <div>
-                    <div class="icon">🧬</div>
-                    <div class="name">생식과 유전 종합</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-            <a href="energy-electricity.html" class="quiz-card tier-bonus">
-                <div>
-                    <div class="icon">⚡</div>
-                    <div class="name">에너지·전기 종합</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-            <a href="stage2-review.html" class="quiz-card tier-bonus">
-                <div>
-                    <div class="icon">🌟</div>
-                    <div class="name">단원 통합 모음</div>
-                </div>
-                <div class="count">10문제 · 새 유형</div>
-            </a>
-            <a href="advanced-all.html" class="quiz-card tier-bonus">
-                <div>
-                    <div class="icon">🔥</div>
-                    <div class="name">전 단원 통합 심화</div>
-                </div>
-                <div class="count">10문제 · 계산 포함</div>
-            </a>
-            <a href="main-quiz.html" class="quiz-card tier-bonus">
-                <div>
-                    <div class="icon">🎮</div>
-                    <div class="name">전체 종합 퀴즈</div>
-                </div>
-                <div class="count">랜덤 출제</div>
-            </a>
-        </div>
-
-        <div class="footer-note">
-            1·2·3단계 각 50문제 · 총 150문제<br>
-            틀린 문제는 자동으로 오답노트에 저장돼요 🐟<br>
-            중간고사 화이팅!
-        </div>
-    </div>
+    <iframe id="content-frame" src="hub.html" title="과학 퀴즈 허브"></iframe>
 
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <script src="firebase-init.js"></script>
-    <script src="bgm-continuity.js"></script>
     <script>
-        initBgmContinuity(document.getElementById('bgmAudio'));
-
-        function getSavedName() {
-            try { return localStorage.getItem('sciencePlayerName_v2') || ''; }
-            catch (e) { return ''; }
-        }
-        function updateGreeting() {
-            const name = getSavedName();
-            const el = document.getElementById('hub-greeting');
-            if (el) el.textContent = name ? `${name}님 반가워요! 😸` : '';
-        }
+        // 이 페이지(index.html)는 절대 다시 불러오지 않는 "셸"이야.
+        // 실제 화면(허브/퀴즈/오답노트/랭킹)은 전부 아래 iframe 안에서 바뀌기 때문에
+        // 음악이 한 번 재생되면 어떤 화면으로 이동해도 끊기지 않고, 팝업도 한 번만 떠.
         function playBgm() {
             const audio = document.getElementById('bgmAudio');
             if (audio) audio.play().catch(e => console.log('음악 재생 실패:', e));
         }
+
         function initNameGate() {
             const existing = localStorage.getItem('sciencePlayerName_v2');
-            document.getElementById('name-modal').classList.add('show');
             if (existing) {
                 registerPlayer(existing);
                 document.getElementById('name-modal-new').style.display = 'none';
@@ -446,11 +112,12 @@
                 document.getElementById('name-modal-returning').style.display = 'none';
             }
         }
+
         function enterHub() {
             document.getElementById('name-modal').classList.remove('show');
             playBgm();
-            updateGreeting();
         }
+
         function confirmName() {
             const input = document.getElementById('name-input');
             const val = input.value.trim();
@@ -459,76 +126,9 @@
             registerPlayer(val);
             document.getElementById('name-modal').classList.remove('show');
             playBgm();
-            updateGreeting();
         }
+
         initNameGate();
-        updateGreeting();
-
-        const stage1Files = ['reproduction.html', 'genetics.html', 'human-genetics.html', 'energy.html', 'electricity.html'];
-        const stage2Files = ['reproduction-adv.html', 'genetics-adv.html', 'human-genetics-adv.html', 'energy-adv.html', 'electricity-adv.html'];
-
-        function getProgress() {
-            try {
-                return JSON.parse(localStorage.getItem('scienceQuizProgress_v2') || '{}');
-            } catch (e) { return {}; }
-        }
-
-        function countDone(fileList, progress) {
-            return fileList.filter(f => progress[f]).length;
-        }
-
-        function applyLock(gridId, bannerId, locked, progressEl, doneCount, totalCount, unlockMsg) {
-            const grid = document.getElementById(gridId);
-            const cards = grid.querySelectorAll('.quiz-card');
-            cards.forEach(card => {
-                if (locked) {
-                    card.classList.add('locked');
-                    if (!card.querySelector('.lock-icon')) {
-                        const iconEl = card.querySelector('.icon');
-                        if (iconEl) {
-                            const lockSpan = document.createElement('div');
-                            lockSpan.className = 'lock-icon';
-                            lockSpan.textContent = '🔒';
-                            iconEl.replaceWith(lockSpan);
-                        }
-                    }
-                } else {
-                    card.classList.remove('locked');
-                }
-            });
-
-            if (bannerId) {
-                const banner = document.getElementById(bannerId);
-                if (banner) {
-                    if (locked) {
-                        banner.textContent = unlockMsg;
-                        banner.hidden = false;
-                    } else {
-                        banner.hidden = true;
-                    }
-                }
-            }
-
-            if (progressEl) progressEl.textContent = `${doneCount}/${totalCount} 완료`;
-        }
-
-        function renderLocks() {
-            const progress = getProgress();
-            const stage1Done = countDone(stage1Files, progress);
-            const stage2Done = countDone(stage2Files, progress);
-
-            const stage1Locked = false; // 1단계는 항상 열려있음
-            const stage2Locked = stage1Done < stage1Files.length;
-            const stage3Locked = stage2Done < stage2Files.length;
-
-            applyLock('stage1-grid', null, stage1Locked, document.getElementById('stage1-progress'), stage1Done, stage1Files.length, '');
-            applyLock('stage2-grid', 'stage2-banner', stage2Locked, document.getElementById('stage2-progress'), stage2Done, stage2Files.length,
-                `🔒 1단계 5문제를 모두 풀어야 열려요 (${stage1Done}/${stage1Files.length})`);
-            applyLock('stage3-grid', 'stage3-banner', stage3Locked, document.getElementById('stage3-progress'), stage2Done, stage2Files.length,
-                `🔒 2단계 5문제를 모두 풀어야 열려요 (${stage2Done}/${stage2Files.length})`);
-        }
-
-        renderLocks();
     </script>
 </body>
 </html>
