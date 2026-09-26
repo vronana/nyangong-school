@@ -212,14 +212,25 @@
     <div class="modal-overlay" id="name-modal">
         <div class="modal-box">
             <div style="font-size:50px; margin-bottom:0.8rem;">😸</div>
-            <div class="modal-title" style="color:#00d4ff;">이름(별명)을 알려줘!</div>
-            <div style="font-size:13px; color:#b0b0ff; margin-bottom:1rem;">랭킹에 이 이름으로 표시돼요 🏆</div>
-            <input type="text" id="name-input" placeholder="예: 나나" maxlength="10"
-                onkeypress="if(event.key==='Enter') confirmName()"
-                style="width:100%; padding:12px; border-radius:10px; border:1px solid #4a3a6a; background:#1f1730; color:#f0f0f0; font-size:15px; margin-bottom:1rem; text-align:center; box-sizing:border-box;">
-            <button class="modal-btn" onclick="confirmName()">확인</button>
+            <div id="name-modal-new">
+                <div class="modal-title" style="color:#00d4ff;">이름(별명)을 알려줘!</div>
+                <div style="font-size:13px; color:#b0b0ff; margin-bottom:1rem;">랭킹에 이 이름으로 표시돼요 🏆</div>
+                <input type="text" id="name-input" placeholder="예: 나나" maxlength="10"
+                    onkeypress="if(event.key==='Enter') confirmName()"
+                    style="width:100%; padding:12px; border-radius:10px; border:1px solid #4a3a6a; background:#1f1730; color:#f0f0f0; font-size:15px; margin-bottom:1rem; text-align:center; box-sizing:border-box;">
+                <button class="modal-btn" onclick="confirmName()">확인</button>
+            </div>
+            <div id="name-modal-returning" style="display:none;">
+                <div class="modal-title" id="welcome-title" style="color:#00d4ff;"></div>
+                <div style="font-size:13px; color:#b0b0ff; margin-bottom:1.2rem;">오늘도 화이팅! 🔥</div>
+                <button class="modal-btn" onclick="enterHub()">🎮 시작하기</button>
+            </div>
         </div>
     </div>
+
+    <audio id="bgmAudio" loop>
+        <source src="PixelPulse.mp3" type="audio/mpeg">
+    </audio>
 
     <div class="wrap">
         <div class="hero">
@@ -416,13 +427,27 @@
             const el = document.getElementById('hub-greeting');
             if (el) el.textContent = name ? `${name}님 반가워요! 😸` : '';
         }
+        function playBgm() {
+            const audio = document.getElementById('bgmAudio');
+            if (audio) audio.play().catch(e => console.log('음악 재생 실패:', e));
+        }
         function initNameGate() {
             const existing = localStorage.getItem('sciencePlayerName_v2');
-            if (!existing) {
-                document.getElementById('name-modal').classList.add('show');
-            } else {
+            document.getElementById('name-modal').classList.add('show');
+            if (existing) {
                 registerPlayer(existing);
+                document.getElementById('name-modal-new').style.display = 'none';
+                document.getElementById('name-modal-returning').style.display = 'block';
+                document.getElementById('welcome-title').textContent = `${existing}님 반가워요! 😸`;
+            } else {
+                document.getElementById('name-modal-new').style.display = 'block';
+                document.getElementById('name-modal-returning').style.display = 'none';
             }
+        }
+        function enterHub() {
+            document.getElementById('name-modal').classList.remove('show');
+            playBgm();
+            updateGreeting();
         }
         function confirmName() {
             const input = document.getElementById('name-input');
@@ -431,6 +456,7 @@
             localStorage.setItem('sciencePlayerName_v2', val);
             registerPlayer(val);
             document.getElementById('name-modal').classList.remove('show');
+            playBgm();
             updateGreeting();
         }
         initNameGate();
