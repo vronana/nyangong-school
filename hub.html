@@ -228,7 +228,7 @@
     </style>
 </head>
 <body>
-    <div class="version-tag">v2026.09.27-2</div>
+    <div class="version-tag">v2026.09.27-3</div>
     <div class="modal-overlay" id="name-modal">
         <div class="modal-box">
             <div style="font-size:50px; margin-bottom:0.8rem;">😸</div>
@@ -285,6 +285,10 @@
                 <div class="desc">준비 중</div>
             </div>
         </div>
+
+        <button type="button" class="notes-link" style="width:100%; border:1px solid rgba(0,212,255,0.35); cursor:pointer; margin-top:1.4rem;" onclick="shareSite()">
+            📤 친구에게 공유하기
+        </button>
 
         <div class="footer-note">
             틀린 문제는 자동으로 오답노트에 저장된다냥 🐟<br>
@@ -376,6 +380,35 @@
             toast.classList.add('show');
             if (toastTimer) clearTimeout(toastTimer);
             toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            if (!toast) return;
+            toast.textContent = msg;
+            toast.classList.add('show');
+            if (toastTimer) clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+
+        function shareSite() {
+            const shareUrl = 'https://vronana.github.io/nyangong-school/';
+            const shareData = {
+                title: '냥공스쿨',
+                text: '중간고사 준비, 냥공스쿨이랑 같이 하자! 🐱📚',
+                url: shareUrl
+            };
+            if (navigator.share) {
+                navigator.share(shareData).catch(() => {});
+                return;
+            }
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(shareUrl)
+                    .then(() => showToast('링크를 복사했다냥! 친구한테 붙여넣기 해서 보내보냥 📋'))
+                    .catch(() => showToast(shareUrl));
+            } else {
+                showToast(shareUrl);
+            }
         }
     </script>
 </body>
