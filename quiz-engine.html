@@ -903,16 +903,19 @@
             }
         }
 
-        function markQuizComplete() {
+        function markQuizComplete(correct, total) {
             try {
                 const progress = JSON.parse(localStorage.getItem('scienceQuizProgress_v2') || '{}');
-                progress[storageKey] = true;
+                const prev = progress[storageKey];
+                // 예전엔 true만 저장했으니, 새 기록이 예전 최고점보다 낮으면 안 덮어씀
+                const prevBest = (prev && typeof prev === 'object' && typeof prev.correct === 'number') ? prev.correct : -1;
+                progress[storageKey] = { done: true, correct: Math.max(correct, prevBest), total: total };
                 localStorage.setItem('scienceQuizProgress_v2', JSON.stringify(progress));
             } catch (e) { console.log('진도 저장 실패:', e); }
         }
 
         function endGame() {
-            markQuizComplete();
+            markQuizComplete(correctCount, questions.length);
             submitScore(storageKey, document.title, correctCount, questions.length);
             document.getElementById('quiz-section').style.display = 'none';
             document.getElementById('fixed-btn-bar').style.display = 'none';

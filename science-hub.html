@@ -101,6 +101,7 @@
         }
 
         .quiz-card {
+            position: relative;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -125,6 +126,17 @@
         .quiz-card .count {
             font-size: 11px;
             color: #8a8aa8;
+        }
+        .quiz-card .score-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--success);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 10px;
         }
 
         .quiz-card.tier-basic { border-color: rgba(0, 212, 255, 0.25); }
@@ -380,28 +392,28 @@
 
         <div class="section-title">🎁 보너스 · 종합·랜덤 퀴즈</div>
         <div class="card-grid">
-            <a href="quiz-engine.html?id=reproduction-genetics" class="quiz-card tier-bonus">
+            <a href="quiz-engine.html?id=reproduction-genetics" class="quiz-card tier-bonus" data-file="reproduction-genetics.html">
                 <div>
                     <div class="icon">🧬</div>
                     <div class="name">생식과 유전 종합</div>
                 </div>
                 <div class="count">10문제</div>
             </a>
-            <a href="quiz-engine.html?id=energy-electricity" class="quiz-card tier-bonus">
+            <a href="quiz-engine.html?id=energy-electricity" class="quiz-card tier-bonus" data-file="energy-electricity.html">
                 <div>
                     <div class="icon">⚡</div>
                     <div class="name">에너지·전기 종합</div>
                 </div>
                 <div class="count">10문제</div>
             </a>
-            <a href="quiz-engine.html?id=stage2-review" class="quiz-card tier-bonus">
+            <a href="quiz-engine.html?id=stage2-review" class="quiz-card tier-bonus" data-file="stage2-review.html">
                 <div>
                     <div class="icon">🌟</div>
                     <div class="name">단원 통합 모음</div>
                 </div>
                 <div class="count">10문제 · 새 유형</div>
             </a>
-            <a href="quiz-engine.html?id=advanced-all" class="quiz-card tier-bonus">
+            <a href="quiz-engine.html?id=advanced-all" class="quiz-card tier-bonus" data-file="advanced-all.html">
                 <div>
                     <div class="icon">🔥</div>
                     <div class="name">전 단원 통합 심화</div>
@@ -552,7 +564,32 @@
                 `🔒 2단계 5문제를 모두 풀어야 열려요 (${stage2Done}/${stage2Files.length})`);
         }
 
+        // 이미 푼 퀴즈는 "완료" 같은 텍스트 대신, 카드에 최고 점수를 배지로 붙여줌 (예: 7/10)
+        function renderScoreBadges() {
+            const progress = getProgress();
+            document.querySelectorAll('.quiz-card[data-file]').forEach(card => {
+                const file = card.dataset.file;
+                const entry = progress[file];
+                if (!entry) return;
+
+                let label = '✔';
+                if (typeof entry === 'object' && typeof entry.correct === 'number' && typeof entry.total === 'number') {
+                    label = `${entry.correct}/${entry.total}`;
+                }
+
+                if (!card.querySelector('.score-badge')) {
+                    const badge = document.createElement('div');
+                    badge.className = 'score-badge';
+                    badge.textContent = label;
+                    card.appendChild(badge);
+                } else {
+                    card.querySelector('.score-badge').textContent = label;
+                }
+            });
+        }
+
         renderLocks();
+        renderScoreBadges();
     </script>
 </body>
 </html>
