@@ -729,7 +729,17 @@
             }
         }
 
+
+        function markQuizComplete() {
+            try {
+                const progress = JSON.parse(localStorage.getItem('scienceQuizProgress') || '{}');
+                progress[location.pathname.split('/').pop()] = true;
+                localStorage.setItem('scienceQuizProgress', JSON.stringify(progress));
+            } catch (e) { console.log('진도 저장 실패:', e); }
+        }
+
         function endGame() {
+            markQuizComplete();
             document.getElementById('quiz-section').style.display = 'none';
             document.getElementById('fixed-btn-bar').style.display = 'none';
             document.getElementById('game-over-section').style.display = 'block';

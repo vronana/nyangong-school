@@ -128,6 +128,32 @@
             opacity: 0.85;
         }
 
+        .quiz-card.locked {
+            opacity: 0.4;
+            pointer-events: none;
+            filter: grayscale(0.6);
+        }
+        .quiz-card .lock-icon { font-size: 30px; margin-bottom: 0.5rem; }
+
+        .stage-progress {
+            font-size: 11px;
+            color: #6a6a8a;
+            font-weight: 400;
+            margin-left: 6px;
+        }
+
+        .locked-banner {
+            grid-column: 1 / -1;
+            background: rgba(255, 68, 102, 0.08);
+            border: 1px dashed rgba(255, 68, 102, 0.35);
+            border-radius: 14px;
+            padding: 12px 14px;
+            font-size: 12px;
+            color: #ffb3c1;
+            text-align: center;
+            line-height: 1.6;
+        }
+
         .footer-note {
             text-align: center;
             font-size: 12px;
@@ -154,37 +180,37 @@
             <span class="badge">복습</span>
         </a>
 
-        <div class="section-title">📖 1단계 · 단원별 기초</div>
-        <div class="card-grid">
-            <a href="reproduction.html" class="quiz-card tier-basic">
+        <div class="section-title">📖 1단계 · 단원별 기초 <span class="stage-progress" id="stage1-progress"></span></div>
+        <div class="card-grid" id="stage1-grid">
+            <a href="reproduction.html" class="quiz-card tier-basic" data-file="reproduction.html">
                 <div>
                     <div class="icon">🧬</div>
                     <div class="name">생식과 발생 기초</div>
                 </div>
                 <div class="count">10문제</div>
             </a>
-            <a href="genetics.html" class="quiz-card tier-basic">
+            <a href="genetics.html" class="quiz-card tier-basic" data-file="genetics.html">
                 <div>
                     <div class="icon">🧬</div>
                     <div class="name">유전 원리 기초</div>
                 </div>
                 <div class="count">10문제</div>
             </a>
-            <a href="human-genetics.html" class="quiz-card tier-basic">
+            <a href="human-genetics.html" class="quiz-card tier-basic" data-file="human-genetics.html">
                 <div>
                     <div class="icon">🧬</div>
                     <div class="name">사람의 유전</div>
                 </div>
                 <div class="count">10문제</div>
             </a>
-            <a href="energy.html" class="quiz-card tier-basic">
+            <a href="energy.html" class="quiz-card tier-basic" data-file="energy.html">
                 <div>
                     <div class="icon">⚡</div>
                     <div class="name">에너지 전환과 보존</div>
                 </div>
                 <div class="count">10문제</div>
             </a>
-            <a href="electricity.html" class="quiz-card tier-basic">
+            <a href="electricity.html" class="quiz-card tier-basic" data-file="electricity.html">
                 <div>
                     <div class="icon">💡</div>
                     <div class="name">전기 에너지 발생과 이용</div>
@@ -193,37 +219,37 @@
             </a>
         </div>
 
-        <div class="section-title">🔗 2단계 · 단원별 응용 (50문제)</div>
-        <div class="card-grid">
-            <a href="reproduction-adv.html" class="quiz-card tier-combined">
+        <div class="section-title">🔗 2단계 · 단원별 응용 (50문제) <span class="stage-progress" id="stage2-progress"></span></div>
+        <div class="card-grid" id="stage2-grid">
+            <a href="reproduction-adv.html" class="quiz-card tier-combined" data-file="reproduction-adv.html">
                 <div>
                     <div class="icon">🧬</div>
                     <div class="name">생식과 발생 응용</div>
                 </div>
                 <div class="count">10문제</div>
             </a>
-            <a href="genetics-adv.html" class="quiz-card tier-combined">
+            <a href="genetics-adv.html" class="quiz-card tier-combined" data-file="genetics-adv.html">
                 <div>
                     <div class="icon">🧬</div>
                     <div class="name">유전 원리 응용</div>
                 </div>
                 <div class="count">10문제</div>
             </a>
-            <a href="human-genetics-adv.html" class="quiz-card tier-combined">
+            <a href="human-genetics-adv.html" class="quiz-card tier-combined" data-file="human-genetics-adv.html">
                 <div>
                     <div class="icon">🧬</div>
                     <div class="name">사람의 유전 응용</div>
                 </div>
                 <div class="count">10문제</div>
             </a>
-            <a href="energy-adv.html" class="quiz-card tier-combined">
+            <a href="energy-adv.html" class="quiz-card tier-combined" data-file="energy-adv.html">
                 <div>
                     <div class="icon">⚡</div>
                     <div class="name">에너지 전환과 보존 응용</div>
                 </div>
                 <div class="count">10문제</div>
             </a>
-            <a href="electricity-adv.html" class="quiz-card tier-combined">
+            <a href="electricity-adv.html" class="quiz-card tier-combined" data-file="electricity-adv.html">
                 <div>
                     <div class="icon">💡</div>
                     <div class="name">전기 에너지 응용</div>
@@ -232,37 +258,37 @@
             </a>
         </div>
 
-        <div class="section-title">🔥 3단계 · 단원별 심화 (50문제)</div>
-        <div class="card-grid">
-            <a href="reproduction-master.html" class="quiz-card tier-advanced">
+        <div class="section-title">🔥 3단계 · 단원별 심화 (50문제) <span class="stage-progress" id="stage3-progress"></span></div>
+        <div class="card-grid" id="stage3-grid">
+            <a href="reproduction-master.html" class="quiz-card tier-advanced" data-file="reproduction-master.html">
                 <div>
                     <div class="icon">🧬</div>
                     <div class="name">생식과 발생 심화</div>
                 </div>
                 <div class="count">10문제 · 계산 포함</div>
             </a>
-            <a href="genetics-master.html" class="quiz-card tier-advanced">
+            <a href="genetics-master.html" class="quiz-card tier-advanced" data-file="genetics-master.html">
                 <div>
                     <div class="icon">🧬</div>
                     <div class="name">유전 원리 심화</div>
                 </div>
                 <div class="count">10문제 · 계산 포함</div>
             </a>
-            <a href="human-genetics-master.html" class="quiz-card tier-advanced">
+            <a href="human-genetics-master.html" class="quiz-card tier-advanced" data-file="human-genetics-master.html">
                 <div>
                     <div class="icon">🧬</div>
                     <div class="name">사람의 유전 심화</div>
                 </div>
                 <div class="count">10문제</div>
             </a>
-            <a href="energy-master.html" class="quiz-card tier-advanced">
+            <a href="energy-master.html" class="quiz-card tier-advanced" data-file="energy-master.html">
                 <div>
                     <div class="icon">⚡</div>
                     <div class="name">에너지 전환과 보존 심화</div>
                 </div>
                 <div class="count">10문제 · 계산 포함</div>
             </a>
-            <a href="electricity-master.html" class="quiz-card tier-advanced">
+            <a href="electricity-master.html" class="quiz-card tier-advanced" data-file="electricity-master.html">
                 <div>
                     <div class="icon">💡</div>
                     <div class="name">전기 에너지 심화</div>
@@ -316,5 +342,72 @@
             중간고사 화이팅!
         </div>
     </div>
+
+    <script>
+        const stage1Files = ['reproduction.html', 'genetics.html', 'human-genetics.html', 'energy.html', 'electricity.html'];
+        const stage2Files = ['reproduction-adv.html', 'genetics-adv.html', 'human-genetics-adv.html', 'energy-adv.html', 'electricity-adv.html'];
+
+        function getProgress() {
+            try {
+                return JSON.parse(localStorage.getItem('scienceQuizProgress') || '{}');
+            } catch (e) { return {}; }
+        }
+
+        function countDone(fileList, progress) {
+            return fileList.filter(f => progress[f]).length;
+        }
+
+        function applyLock(gridId, locked, progressEl, doneCount, totalCount, unlockMsg) {
+            const grid = document.getElementById(gridId);
+            const cards = grid.querySelectorAll('.quiz-card');
+            cards.forEach(card => {
+                if (locked) {
+                    card.classList.add('locked');
+                    if (!card.querySelector('.lock-icon')) {
+                        const nameDiv = card.querySelector('.name');
+                        const lockSpan = document.createElement('div');
+                        lockSpan.className = 'lock-icon';
+                        lockSpan.textContent = '🔒';
+                        card.querySelector('.icon').replaceWith(lockSpan);
+                    }
+                } else {
+                    card.classList.remove('locked');
+                }
+            });
+
+            if (locked) {
+                let banner = grid.querySelector('.locked-banner');
+                if (!banner) {
+                    banner = document.createElement('div');
+                    banner.className = 'locked-banner';
+                    grid.appendChild(banner);
+                }
+                banner.textContent = unlockMsg;
+            } else {
+                const banner = grid.querySelector('.locked-banner');
+                if (banner) banner.remove();
+            }
+
+            if (progressEl) progressEl.textContent = `${doneCount}/${totalCount} 완료`;
+        }
+
+        function renderLocks() {
+            const progress = getProgress();
+            const stage1Done = countDone(stage1Files, progress);
+            const stage2Done = countDone(stage2Files, progress);
+
+            const stage1Locked = false; // 1단계는 항상 열려있음
+            const stage2Locked = stage1Done < stage1Files.length;
+            const stage3Locked = stage2Done < stage2Files.length;
+
+            applyLock('stage1-grid', stage1Locked, document.getElementById('stage1-progress'), stage1Done, stage1Files.length, '');
+            applyLock('stage2-grid', stage2Locked, document.getElementById('stage2-progress'), stage2Done, stage2Files.length,
+                `🔒 1단계 5문제를 모두 풀면 열려요 (${stage1Done}/${stage1Files.length})`);
+            applyLock('stage3-grid', stage3Locked, null, 0, 5,
+                `🔒 2단계 5문제를 모두 풀면 열려요 (${stage2Done}/${stage2Files.length})`);
+        }
+
+        renderLocks();
+    </script>
 </body>
 </html>
