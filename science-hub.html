@@ -138,6 +138,11 @@
             padding: 3px 8px;
             border-radius: 10px;
         }
+        .quiz-card .score-badge.perfect {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.28), rgba(255, 180, 0, 0.2));
+            color: #ffd700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.35);
+        }
 
         .quiz-card.tier-basic { border-color: rgba(0, 212, 255, 0.25); }
         .quiz-card.tier-combined { border-color: rgba(0, 255, 136, 0.3); }
@@ -574,19 +579,23 @@
 
                 let label = '✔';
                 let detailText = '';
+                let perfect = false;
                 if (typeof entry === 'object' && typeof entry.correct === 'number' && typeof entry.total === 'number') {
-                    label = `${entry.correct}/${entry.total}`;
-                    detailText = `${entry.total}문제 중 ${entry.correct}개 정답`;
+                    perfect = entry.total > 0 && entry.correct === entry.total;
+                    label = perfect ? `🌟 만점 ${entry.correct}/${entry.total}` : `${entry.correct}/${entry.total}`;
+                    detailText = perfect
+                        ? `${entry.total}문제 중 ${entry.correct}개 정답 · 만점이다냥!`
+                        : `${entry.total}문제 중 ${entry.correct}개 정답`;
                 }
 
-                if (!card.querySelector('.score-badge')) {
-                    const badge = document.createElement('div');
+                let badge = card.querySelector('.score-badge');
+                if (!badge) {
+                    badge = document.createElement('div');
                     badge.className = 'score-badge';
-                    badge.textContent = label;
                     card.appendChild(badge);
-                } else {
-                    card.querySelector('.score-badge').textContent = label;
                 }
+                badge.textContent = label;
+                badge.classList.toggle('perfect', perfect);
 
                 // 완료 배지(오른쪽 위) 아래, 카드 본문에도 몇 문제 중 몇 개 맞았는지 표시
                 const countEl = card.querySelector('.count');

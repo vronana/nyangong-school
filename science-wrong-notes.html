@@ -108,12 +108,19 @@
             margin-bottom: 1rem;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
             border-left: 4px solid var(--danger);
+            transition: opacity 0.2s, filter 0.2s;
+        }
+        .note-card.locked {
+            opacity: 0.7;
+            filter: grayscale(0.4);
+            border-left-color: #6a6a8a;
         }
 
         .note-meta {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 6px;
             margin-bottom: 0.6rem;
         }
         .note-source {
@@ -123,7 +130,17 @@
             padding: 3px 10px;
             border-radius: 12px;
         }
-        .note-date { font-size: 11px; color: #8a8aa8; }
+        .note-date { font-size: 11px; color: #8a8aa8; margin-left: auto; }
+        .lock-badge {
+            font-size: 11px;
+            font-weight: 700;
+            color: #d0d0f0;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid #4a3a6a;
+            padding: 3px 10px;
+            border-radius: 12px;
+            white-space: nowrap;
+        }
 
         .note-q {
             font-size: 15px;
@@ -162,7 +179,7 @@
             border-color: var(--success);
             color: #a3ffd6;
         }
-        .note-option-btn:disabled { cursor: default; }
+        .note-option-btn:disabled { cursor: not-allowed; opacity: 0.55; }
         @keyframes shakeIt {
             0%, 100% { transform: translateX(0); }
             25% { transform: translateX(-4px); }
@@ -318,10 +335,12 @@
                 const feedbackHtml = locked
                     ? `땡! 정답은 <b>${note.options[note.correctIdx]}</b> 이다냥 😿<br>💡 ${note.explanation}<br><span id="lock-timer-${note.idx}" style="display:inline-block;margin-top:4px;color:#8a8aa8;"></span>`
                     : '';
+                const lockBadgeHtml = locked ? `<span class="lock-badge" id="lock-badge-${note.idx}">🔒 잠김</span>` : '';
                 cardsHtml += `
-                    <div class="note-card" id="note-card-${note.idx}">
+                    <div class="note-card${locked ? ' locked' : ''}" id="note-card-${note.idx}">
                         <div class="note-meta">
                             <span class="note-source">${pageNames[note.url] || note.page}</span>
+                            ${lockBadgeHtml}
                             <span class="note-date">${dateStr}</span>
                         </div>
                         <div class="note-q">Q. ${note.question}</div>
@@ -377,8 +396,20 @@
             } else {
                 // 오답: 정답/해설을 바로 보여주고, 1분 동안 이 문제를 다시 못 누르게 잠가서
                 // 마구 찍어서 우연히 맞히는 걸 막음
+                card.classList.add('locked');
                 card.querySelectorAll('.note-option-btn').forEach(b => b.disabled = true);
                 btnEl.classList.add('wrong-pick');
+
+                const metaEl = card.querySelector('.note-meta');
+                if (metaEl && !metaEl.querySelector('.lock-badge')) {
+                    const badge = document.createElement('span');
+                    badge.className = 'lock-badge';
+                    badge.id = `lock-badge-${idx}`;
+                    badge.textContent = '🔒 잠김';
+                    const dateEl = metaEl.querySelector('.note-date');
+                    if (dateEl) metaEl.insertBefore(badge, dateEl);
+                    else metaEl.appendChild(badge);
+                }
 
                 const lockedUntil = Date.now() + 60 * 1000;
                 const latest = getNotes();
