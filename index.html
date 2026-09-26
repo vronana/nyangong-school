@@ -143,16 +143,17 @@
         }
 
         .locked-banner {
-            grid-column: 1 / -1;
             background: rgba(255, 68, 102, 0.08);
             border: 1px dashed rgba(255, 68, 102, 0.35);
             border-radius: 14px;
             padding: 12px 14px;
+            margin-top: 10px;
             font-size: 12px;
             color: #ffb3c1;
             text-align: center;
             line-height: 1.6;
         }
+        .locked-banner[hidden] { display: none; }
 
         .footer-note {
             text-align: center;
@@ -257,6 +258,7 @@
                 <div class="count">10문제</div>
             </a>
         </div>
+        <div class="locked-banner" id="stage2-banner" hidden></div>
 
         <div class="section-title">🔥 3단계 · 단원별 심화 (50문제) <span class="stage-progress" id="stage3-progress"></span></div>
         <div class="card-grid" id="stage3-grid">
@@ -296,6 +298,7 @@
                 <div class="count">10문제 · 계산 포함</div>
             </a>
         </div>
+        <div class="locked-banner" id="stage3-banner" hidden></div>
 
         <div class="section-title">🎁 보너스 · 종합·랜덤 퀴즈</div>
         <div class="card-grid">
@@ -357,35 +360,36 @@
             return fileList.filter(f => progress[f]).length;
         }
 
-        function applyLock(gridId, locked, progressEl, doneCount, totalCount, unlockMsg) {
+        function applyLock(gridId, bannerId, locked, progressEl, doneCount, totalCount, unlockMsg) {
             const grid = document.getElementById(gridId);
             const cards = grid.querySelectorAll('.quiz-card');
             cards.forEach(card => {
                 if (locked) {
                     card.classList.add('locked');
                     if (!card.querySelector('.lock-icon')) {
-                        const nameDiv = card.querySelector('.name');
-                        const lockSpan = document.createElement('div');
-                        lockSpan.className = 'lock-icon';
-                        lockSpan.textContent = '🔒';
-                        card.querySelector('.icon').replaceWith(lockSpan);
+                        const iconEl = card.querySelector('.icon');
+                        if (iconEl) {
+                            const lockSpan = document.createElement('div');
+                            lockSpan.className = 'lock-icon';
+                            lockSpan.textContent = '🔒';
+                            iconEl.replaceWith(lockSpan);
+                        }
                     }
                 } else {
                     card.classList.remove('locked');
                 }
             });
 
-            if (locked) {
-                let banner = grid.querySelector('.locked-banner');
-                if (!banner) {
-                    banner = document.createElement('div');
-                    banner.className = 'locked-banner';
-                    grid.appendChild(banner);
+            if (bannerId) {
+                const banner = document.getElementById(bannerId);
+                if (banner) {
+                    if (locked) {
+                        banner.textContent = unlockMsg;
+                        banner.hidden = false;
+                    } else {
+                        banner.hidden = true;
+                    }
                 }
-                banner.textContent = unlockMsg;
-            } else {
-                const banner = grid.querySelector('.locked-banner');
-                if (banner) banner.remove();
             }
 
             if (progressEl) progressEl.textContent = `${doneCount}/${totalCount} 완료`;
@@ -400,11 +404,11 @@
             const stage2Locked = stage1Done < stage1Files.length;
             const stage3Locked = stage2Done < stage2Files.length;
 
-            applyLock('stage1-grid', stage1Locked, document.getElementById('stage1-progress'), stage1Done, stage1Files.length, '');
-            applyLock('stage2-grid', stage2Locked, document.getElementById('stage2-progress'), stage2Done, stage2Files.length,
-                `🔒 1단계 5문제를 모두 풀면 열려요 (${stage1Done}/${stage1Files.length})`);
-            applyLock('stage3-grid', stage3Locked, null, 0, 5,
-                `🔒 2단계 5문제를 모두 풀면 열려요 (${stage2Done}/${stage2Files.length})`);
+            applyLock('stage1-grid', null, stage1Locked, document.getElementById('stage1-progress'), stage1Done, stage1Files.length, '');
+            applyLock('stage2-grid', 'stage2-banner', stage2Locked, document.getElementById('stage2-progress'), stage2Done, stage2Files.length,
+                `🔒 1단계 5문제를 모두 풀어야 열려요 (${stage1Done}/${stage1Files.length})`);
+            applyLock('stage3-grid', 'stage3-banner', stage3Locked, document.getElementById('stage3-progress'), stage2Done, stage2Files.length,
+                `🔒 2단계 5문제를 모두 풀어야 열려요 (${stage2Done}/${stage2Files.length})`);
         }
 
         renderLocks();
