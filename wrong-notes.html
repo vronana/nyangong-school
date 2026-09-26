@@ -213,12 +213,12 @@
     <script>
         function getNotes() {
             try {
-                return JSON.parse(localStorage.getItem('scienceWrongNotes') || '[]');
+                return JSON.parse(localStorage.getItem('scienceWrongNotes_v2') || '[]');
             } catch (e) { return []; }
         }
 
         function saveNotes(notes) {
-            localStorage.setItem('scienceWrongNotes', JSON.stringify(notes));
+            localStorage.setItem('scienceWrongNotes_v2', JSON.stringify(notes));
         }
 
         const pageNames = {
@@ -335,7 +335,7 @@
 
         function clearAll() {
             if (confirm('오답노트를 전부 삭제할까요?')) {
-                localStorage.removeItem('scienceWrongNotes');
+                localStorage.removeItem('scienceWrongNotes_v2');
                 currentFilter = 'all';
                 render();
             }

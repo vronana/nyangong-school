@@ -14,12 +14,12 @@ const db = firebase.firestore();
 
 function getPlayerName() {
     try {
-        let name = localStorage.getItem('sciencePlayerName');
+        let name = localStorage.getItem('sciencePlayerName_v2');
         if (!name) {
             name = prompt('이름(별명)을 입력해줘! 랭킹에 표시돼 🏆') || '';
             name = name.trim();
             if (!name) name = '익명';
-            localStorage.setItem('sciencePlayerName', name);
+            localStorage.setItem('sciencePlayerName_v2', name);
         }
         return name;
     } catch (e) {

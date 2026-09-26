@@ -793,7 +793,7 @@
 
         function saveWrongAnswer(q, selected) {
             try {
-                const notes = JSON.parse(localStorage.getItem('scienceWrongNotes') || '[]');
+                const notes = JSON.parse(localStorage.getItem('scienceWrongNotes_v2') || '[]');
                 notes.push({
                     page: document.title,
                     url: location.pathname.split('/').pop(),
@@ -804,7 +804,7 @@
                     explanation: q.explanation,
                     date: new Date().toISOString()
                 });
-                localStorage.setItem('scienceWrongNotes', JSON.stringify(notes));
+                localStorage.setItem('scienceWrongNotes_v2', JSON.stringify(notes));
             } catch (e) { console.log('오답노트 저장 실패:', e); }
         }
 

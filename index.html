@@ -356,7 +356,7 @@
 
         function getProgress() {
             try {
-                return JSON.parse(localStorage.getItem('scienceQuizProgress') || '{}');
+                return JSON.parse(localStorage.getItem('scienceQuizProgress_v2') || '{}');
             } catch (e) { return {}; }
         }
 
