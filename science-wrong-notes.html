@@ -236,10 +236,52 @@
             z-index: 999;
             pointer-events: none;
         }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.show { display: flex; }
+        .modal-box {
+            background: #2d1f3d;
+            border-radius: 20px;
+            padding: 2rem 1.5rem;
+            max-width: 380px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+        }
+        .modal-title { font-size: 20px; font-weight: 700; margin-bottom: 0.6rem; }
+        .modal-btn {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            background: var(--primary);
+            color: #1a1230;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-    <div class="version-tag">v2026.09.27-1</div>
+    <div class="version-tag">v2026.09.27-2</div>
+
+    <div class="modal-overlay" id="answer-modal">
+        <div class="modal-box">
+            <div style="font-size:50px; margin-bottom:0.8rem;" id="answer-modal-icon">😸</div>
+            <div class="modal-title" id="answer-modal-title" style="color:#00d4ff;"></div>
+            <div style="font-size:13px; color:#b0b0ff; margin-bottom:1.2rem; line-height:1.7;" id="answer-modal-msg"></div>
+            <button class="modal-btn" onclick="closeAnswerModal()">확인</button>
+        </div>
+    </div>
+
     <div class="wrap">
         <div class="header">📓 오답노트</div>
         <div class="sub">문제를 다시 풀어서 정답을 맞히면 자동으로 사라진다냥! 😸</div>
@@ -393,7 +435,8 @@
                 feedbackEl.className = 'note-feedback correct';
                 feedbackEl.textContent = `🎉 정답이다냥! 💡 ${note.explanation}`;
                 if (typeof recordReviewClear === 'function') recordReviewClear();
-                setTimeout(() => {
+
+                showAnswerModal('🎉', '맞았습니다!', `💡 ${note.explanation}<br><br>오답노트에서 삭제할게요`, () => {
                     // getNotes()는 매번 JSON.parse로 새 객체를 만들기 때문에
                     // note와 참조가 달라 indexOf로는 절대 못 찾음 -> 내용으로 매칭해야 함
                     const latest = getNotes();
@@ -405,7 +448,7 @@
                     }
                     saveNotes(latest);
                     render();
-                }, 1400);
+                });
             } else {
                 // 오답: 정답/해설을 바로 보여주고, 1분 동안 이 문제를 다시 못 누르게 잠가서
                 // 마구 찍어서 우연히 맞히는 걸 막음
@@ -434,9 +477,31 @@
                 feedbackEl.className = 'note-feedback wrong';
                 feedbackEl.innerHTML = `땡! 정답은 <b>${note.options[note.correctIdx]}</b> 이다냥 😿<br>💡 ${note.explanation}<br><span id="lock-timer-${idx}" style="display:inline-block;margin-top:4px;color:#8a8aa8;"></span>`;
 
+                showAnswerModal('😿', '틀렸습니다', `정답은 <b>${note.options[note.correctIdx]}</b> 이다냥<br>💡 ${note.explanation}<br><br>⏱ 1분 동안 이 문제는 잠긴다냥`, null);
+
                 startLockTicker();
                 tickLockTimers();
             }
+        }
+
+        let pendingModalClose = null;
+
+        function showAnswerModal(icon, title, msgHtml, onClose) {
+            const overlay = document.getElementById('answer-modal');
+            if (!overlay) { if (typeof onClose === 'function') onClose(); return; }
+            document.getElementById('answer-modal-icon').textContent = icon;
+            document.getElementById('answer-modal-title').textContent = title;
+            document.getElementById('answer-modal-msg').innerHTML = msgHtml;
+            overlay.classList.add('show');
+            pendingModalClose = onClose;
+        }
+
+        function closeAnswerModal() {
+            const overlay = document.getElementById('answer-modal');
+            if (overlay) overlay.classList.remove('show');
+            const cb = pendingModalClose;
+            pendingModalClose = null;
+            if (typeof cb === 'function') cb();
         }
 
         let lockTickInterval = null;
