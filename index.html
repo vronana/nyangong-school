@@ -3,239 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>과학 퀴즈 게임</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600&display=swap">
+    <title>과학 퀴즈 - 8비트 고양이</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --primary: #7c3aed;
-            --primary-light: #a78bfa;
-            --primary-dark: #6d28d9;
-            --success: #10b981;
-            --danger: #ef4444;
-            --bg-light: #f9fafb;
-            --bg-white: #ffffff;
-            --text-dark: #1f2937;
-            --text-gray: #6b7280;
-            --border: #e5e7eb;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+            --primary: #00d4ff;
+            --primary-light: #4dd4ff;
+            --accent: #00d4ff;
+            --success: #00ff88;
+            --danger: #ff4466;
+            --bg: #2d1f3d;
+            --text: #f0f0f0;
         }
 
-        @media (prefers-color-scheme: dark) {
-            :root:not([data-theme="light"]) {
-                --primary: #a78bfa;
-                --primary-light: #ddd6fe;
-                --primary-dark: #7c3aed;
-                --success: #34d399;
-                --danger: #f87171;
-                --bg-light: #1f2937;
-                --bg-white: #111827;
-                --text-dark: #f3f4f6;
-                --text-gray: #d1d5db;
-                --border: #374151;
-                --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-                --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
-                --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
-            }
-        }
-
-        :root[data-theme="dark"] {
-            --primary: #a78bfa;
-            --primary-light: #ddd6fe;
-            --primary-dark: #7c3aed;
-            --success: #34d399;
-            --danger: #f87171;
-            --bg-light: #1f2937;
-            --bg-white: #111827;
-            --text-dark: #f3f4f6;
-            --text-gray: #d1d5db;
-            --border: #374151;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
-            --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
-            color-scheme: dark;
-        }
-
-        html, body { height: 100%; }
         body {
-            font-family: 'Inter', system-ui, sans-serif;
-            background: linear-gradient(135deg, var(--bg-light) 0%, var(--bg-white) 100%);
-            color: var(--text-dark);
+            background: linear-gradient(135deg, #2d1f4e 0%, #1f1447 100%);
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-family: 'Noto Sans KR', sans-serif;
             padding: 1rem;
-            min-height: 100vh;
+            color: var(--text);
         }
 
-        .container {
-            max-width: 640px;
+        .game-container {
+            max-width: 500px;
             width: 100%;
-            background: var(--bg-white);
+            background: #2d1f3d;
+            border: none;
             border-radius: 20px;
-            box-shadow: var(--shadow-lg);
-            overflow: hidden;
+            padding: 1.5rem;
+            box-shadow: 0 8px 30px rgba(0, 212, 255, 0.2);
         }
 
         .header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            padding: 2rem 1.5rem;
             text-align: center;
-        }
-
-        .header h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 32px;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.5px;
-        }
-
-        .header p {
-            font-size: 14px;
-            opacity: 0.95;
-            font-weight: 500;
-        }
-
-        .content { padding: 2rem 1.5rem; }
-
-        .score-board {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 2rem;
-        }
-
-        .score-card {
-            background: var(--bg-light);
-            border-radius: 12px;
-            padding: 1rem;
-            text-align: center;
-            border: 1px solid var(--border);
-            transition: all 0.3s ease;
-        }
-
-        .score-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .score-label {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-gray);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.5rem;
-        }
-
-        .score-value {
+            margin-bottom: 1.5rem;
             font-size: 28px;
+            color: #00d4ff;
             font-weight: 700;
-            color: var(--primary);
-            font-variant-numeric: tabular-nums;
+            letter-spacing: 1px;
         }
 
-        .question-section {
-            background: var(--bg-light);
-            border-radius: 16px;
-            padding: 1.5rem;
-            border: 1px solid var(--border);
-        }
-
-        .progress-info {
+        .cat-section {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 1.2rem;
+            padding: 0.8rem;
+            background: transparent;
+        }
+
+        .cat-pixel {
+            font-size: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cat-happy { animation: bounce 0.6s ease; }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .cat-sad { animation: droop 0.6s ease; }
+        @keyframes droop {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(5px) rotateZ(-2deg); }
+            100% { transform: translateY(0); }
+        }
+
+        .fish-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .fish-display {
+            display: flex;
+            justify-content: center;
+            gap: 3px;
+            flex-wrap: wrap;
+            min-height: 40px;
+            align-content: flex-start;
+        }
+
+        .fish {
+            font-size: 28px;
+            animation: popIn 0.4s ease;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0) rotate(0deg); opacity: 0; }
+            50% { transform: scale(1.2) rotate(10deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        .question-box {
+            background: transparent;
+            border: none;
+            border-radius: 15px;
+            padding: 1.2rem;
+            padding-left: 0;
+            padding-right: 0;
             margin-bottom: 1rem;
-            font-size: 13px;
-            color: var(--text-gray);
-            font-weight: 500;
         }
 
-        .progress-bar {
-            height: 8px;
-            background: var(--border);
-            border-radius: 4px;
-            overflow: hidden;
-            margin-bottom: 1.5rem;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
-            transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        .progress {
+            font-size: 12px;
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
         }
 
         .question-text {
-            font-size: 18px;
+            font-size: 20px;
+            margin-bottom: 1.2rem;
+            line-height: 1.8;
+            color: #f0f0f0;
             font-weight: 600;
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-            color: var(--text-dark);
         }
 
         .options {
             display: flex;
             flex-direction: column;
             gap: 10px;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.2rem;
         }
 
         .option {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             padding: 14px;
-            border: 2px solid var(--border);
-            border-radius: 10px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(0, 212, 255, 0.1);
             cursor: pointer;
             transition: all 0.2s ease;
-            background: var(--bg-white);
+            font-size: 16px;
+            color: #f0f0f0;
         }
 
-        .option:hover:not(.disabled) {
-            border-color: var(--primary);
-            background: linear-gradient(135deg, rgba(124, 58, 237, 0.05) 0%, rgba(167, 139, 250, 0.05) 100%);
+        .option:hover {
+            background: rgba(0, 212, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 212, 255, 0.15);
         }
 
         .option input[type="radio"] {
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
             cursor: pointer;
-            accent-color: var(--primary);
-        }
-
-        .option-text {
-            flex: 1;
-            font-size: 15px;
-            font-weight: 500;
-            color: var(--text-dark);
         }
 
         .option.correct {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
-            border-color: var(--success);
-        }
-
-        .option.correct .option-text {
-            color: var(--success);
-            font-weight: 600;
+            background: rgba(0, 255, 136, 0.2);
         }
 
         .option.incorrect {
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%);
-            border-color: var(--danger);
-        }
-
-        .option.incorrect .option-text {
-            color: var(--danger);
-            font-weight: 600;
+            background: rgba(255, 68, 102, 0.2);
         }
 
         .option.disabled {
@@ -243,80 +176,64 @@
         }
 
         .feedback {
-            padding: 14px;
-            border-radius: 10px;
-            margin-bottom: 1.5rem;
+            padding: 12px 14px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
             font-size: 14px;
             line-height: 1.6;
-            font-weight: 500;
-            border-left: 4px solid;
-            animation: slideIn 0.3s ease;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+            animation: slideIn 0.4s ease;
         }
 
         @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .feedback.correct {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
-            color: var(--success);
-            border-color: var(--success);
+            background: rgba(0, 255, 136, 0.15);
+            color: #00ff88;
+            border-left: 4px solid var(--success);
         }
 
         .feedback.incorrect {
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%);
-            color: var(--danger);
-            border-color: var(--danger);
+            background: rgba(255, 68, 102, 0.15);
+            color: #ff8899;
+            border-left: 4px solid var(--danger);
         }
 
         .button-group {
             display: flex;
-            gap: 12px;
+            gap: 8px;
         }
 
         button {
             flex: 1;
-            padding: 12px 16px;
+            padding: 16px;
             border: none;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: 'Inter', system-ui, sans-serif;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            background: linear-gradient(135deg, #00d4ff 0%, #00b8d4 100%);
             color: white;
-            box-shadow: var(--shadow-md);
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.4);
         }
 
-        .btn-primary:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
+        button:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.5);
         }
 
-        .btn-primary:active:not(:disabled) {
-            transform: translateY(0);
-        }
-
-        .btn-secondary {
-            background: var(--bg-light);
-            color: var(--text-dark);
-            border: 2px solid var(--border);
-        }
-
-        .btn-secondary:hover:not(:disabled) {
-            border-color: var(--primary);
-            color: var(--primary);
+        button:active:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 10px rgba(0, 212, 255, 0.4);
         }
 
         button:disabled {
@@ -324,184 +241,181 @@
             cursor: not-allowed;
         }
 
-        .game-over-section {
+        .game-over {
             text-align: center;
-            padding: 2rem 1.5rem;
-        }
-
-        .game-over-section h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 28px;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            color: var(--text-dark);
+            display: none;
         }
 
         .final-score {
-            font-size: 56px;
-            font-weight: 800;
+            font-size: 48px;
+            font-weight: bold;
             color: var(--primary);
-            margin: 1.5rem 0;
-            font-variant-numeric: tabular-nums;
-            animation: scoreReveal 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        @keyframes scoreReveal {
-            from {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+            margin: 2rem 0 1.5rem 0;
         }
 
         .final-message {
-            font-size: 15px;
-            color: var(--text-gray);
+            font-size: 16px;
+            color: #f0f0f0;
             margin-bottom: 2rem;
-            line-height: 1.7;
-            white-space: pre-line;
+            line-height: 1.8;
         }
 
-        [hidden] { display: none !important; }
+        .fish-total {
+            font-size: 24px;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .fish-total-display {
+            display: flex;
+            justify-content: center;
+            gap: 3px;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        #quiz-section { display: block; }
+        #game-over-section { display: none; }
 
         @media (max-width: 480px) {
-            .container { border-radius: 16px; }
-            .header { padding: 1.5rem 1rem; }
-            .header h1 { font-size: 28px; }
-            .content { padding: 1.5rem 1rem; }
-            .question-section { padding: 1.25rem; }
-            button { font-size: 13px; padding: 11px 14px; }
+            .game-container { padding: 1rem; }
+            .header { font-size: 24px; }
+            .question-text { font-size: 18px; }
+            .option { font-size: 15px; padding: 12px; }
+            button { font-size: 15px; padding: 14px; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>과학 퀴즈</h1>
-            <p>중학교 3학년 중간고사 준비</p>
+    <div class="game-container">
+        <div class="header">🎮 과학 퀴즈 게임 🎮</div>
+
+        <div id="quiz-section">
+            <div class="cat-section">
+                <div class="cat-pixel" id="cat">😸</div>
+                <div class="fish-section">
+                    <div class="fish-display" id="fishDisplay"></div>
+                </div>
+            </div>
+
+            <div class="question-box">
+                <div class="progress">
+                    <span id="current-q">1</span> / <span id="total-q">10</span>
+                </div>
+                <div class="question-text" id="question"></div>
+                <div class="options" id="options"></div>
+                <div class="feedback" id="feedback"></div>
+                <div class="button-group">
+                    <button id="submit-btn" onclick="submitAnswer()">정답 제출</button>
+                    <button id="next-btn" onclick="nextQuestion()" style="display:none;">다음 문제 →</button>
+                </div>
+            </div>
         </div>
 
-        <div class="content">
-            <div class="score-board">
-                <div class="score-card">
-                    <div class="score-label">✓ 정답</div>
-                    <div class="score-value" id="correct">0</div>
-                </div>
-                <div class="score-card">
-                    <div class="score-label">✗ 오답</div>
-                    <div class="score-value" id="incorrect">0</div>
-                </div>
-                <div class="score-card">
-                    <div class="score-label">📊 정답률</div>
-                    <div class="score-value" id="percentage">0%</div>
-                </div>
-            </div>
-
-            <div id="quiz-section">
-                <div class="question-section">
-                    <div class="progress-info">
-                        <span id="current-q">1</span><span> / </span><span id="total-q">10</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progress" style="width: 10%;"></div>
-                    </div>
-                    <div class="question-text" id="question"></div>
-                    <div class="options" id="options"></div>
-                    <div id="feedback"></div>
-                    <div class="button-group">
-                        <button class="btn-primary" id="submit-btn" onclick="submitAnswer()">정답 제출</button>
-                        <button class="btn-secondary" id="next-btn" onclick="nextQuestion()" hidden>다음 →</button>
-                    </div>
-                </div>
-            </div>
-
-            <div id="game-over-section" hidden>
-                <div class="game-over-section">
-                    <h2>🎉 완료!</h2>
-                    <div class="final-score" id="final-score">0/10</div>
-                    <div class="final-message" id="final-message"></div>
-                    <button class="btn-primary" onclick="resetGame()" style="width: 100%; max-width: 100%;">다시 시작</button>
-                </div>
-            </div>
+        <div id="game-over-section" class="game-over">
+            <div class="header" style="margin-bottom: 1rem;">🎉 게임 종료! 🎉</div>
+            <div class="final-score" id="final-score">0 / 10</div>
+            <div class="fish-total">모은 물고기</div>
+            <div class="fish-total-display" id="fishTotal"></div>
+            <div class="final-message" id="final-message"></div>
+            <button onclick="resetGame()">다시 시작하기</button>
         </div>
     </div>
 
+    <!-- 배경음악 -->
+    <audio id="bgmAudio" loop>
+        <source src="Pixel_Pulse.mp3" type="audio/mpeg">
+    </audio>
+
     <script>
+        let musicStarted = false;
+        const bgmAudio = document.getElementById('bgmAudio');
+        bgmAudio.volume = 0.3;
+
+        function startBGM() {
+            if (musicStarted) return;
+            musicStarted = true;
+            bgmAudio.play().catch(e => console.log('음악 재생 실패:', e));
+        }
+
         const questions = [
+            // 생식과 유전 (5개)
             {
-                q: "식물의 광합성에서 생기는 산소는 어디에서 나오나요?",
-                options: ["토양에서", "물에서", "공기에서", "비료에서"],
+                q: "사람의 체세포가 가진 염색체는 총 몇 개인가요?",
+                options: ["23개", "46개", "32개", "64개"],
                 correct: 1,
-                explanation: "광합성 중 명반응에서 물(H₂O)이 분해되면서 산소가 생성됩니다."
+                explanation: "사람의 체세포는 46개의 염색체를 가지고 있습니다. (23쌍)"
             },
             {
-                q: "다음 중 화학 변화는 어느 것인가요?",
-                options: ["얼음이 녹는 것", "쇠가 녹슬어지는 것", "물이 끓는 것", "종이를 구기는 것"],
+                q: "DNA의 기본 구조는 어떤 모양일까요?",
+                options: ["원형", "나선형", "직선형", "별 모양"],
                 correct: 1,
-                explanation: "쇠가 녹슬어지는 것은 산소와 화합하면서 새로운 물질이 만들어지는 화학 변화입니다."
+                explanation: "DNA는 이중나선 구조를 가지고 있습니다."
             },
             {
-                q: "인체에서 산소 운반을 담당하는 물질은?",
-                options: ["헤모글로빈", "효소", "호르몬", "항체"],
-                correct: 0,
-                explanation: "적혈구에 포함된 헤모글로빈이 폐에서 산소를 받아 온몸으로 운반합니다."
+                q: "멘델의 우성 법칙에서 우성 형질이란?",
+                options: ["약한 형질", "강한 형질", "드문 형질", "변한 형질"],
+                correct: 1,
+                explanation: "우성 형질은 열성 형질보다 더 잘 나타나는 형질입니다."
             },
             {
-                q: "지구가 자전하는 주기는?",
-                options: ["24시간", "365일", "7일", "30일"],
-                correct: 0,
-                explanation: "지구는 자축을 중심으로 약 24시간에 한 번씩 서쪽에서 동쪽으로 회전합니다."
+                q: "유전자가 위치하는 곳은 어디일까요?",
+                options: ["세포질", "미토콘드리아", "염색체", "리보솜"],
+                correct: 2,
+                explanation: "유전자는 세포핵의 염색체 위에 위치합니다."
+            },
+            {
+                q: "같은 부모에서 자식들이 다른 외형을 가지는 이유는?",
+                options: ["같은 유전자", "다른 유전자 조합", "다른 식이요법", "다른 환경만"],
+                correct: 1,
+                explanation: "부모의 여러 유전자가 다양한 조합으로 자식에게 전달됩니다."
+            },
+
+            // 에너지 전환과 보존 (5개)
+            {
+                q: "에너지 보존의 법칙이란?",
+                options: ["에너지는 생성된다", "에너지는 소멸한다", "에너지는 형태를 바꿀 뿐 사라지지 않는다", "에너지는 증가한다"],
+                correct: 2,
+                explanation: "에너지는 한 형태에서 다른 형태로 변환되지만 총량은 일정합니다."
+            },
+            {
+                q: "태양에서 나오는 빛 에너지는 식물에서 주로 어떤 에너지로 전환되나요?",
+                options: ["열에너지", "음향에너지", "화학에너지", "운동에너지"],
+                correct: 2,
+                explanation: "식물은 광합성을 통해 빛 에너지를 화학에너지로 변환합니다."
+            },
+            {
+                q: "전기 모터에서 전기 에너지는 주로 어떤 에너지로 바뀌나요?",
+                options: ["빛에너지", "열에너지", "운동에너지", "음향에너지"],
+                correct: 2,
+                explanation: "모터는 전기 에너지를 운동에너지로 변환합니다."
             },
             {
                 q: "다음 중 재생 가능한 에너지는?",
                 options: ["석탄", "석유", "태양에너지", "천연가스"],
                 correct: 2,
-                explanation: "태양에너지는 태양이 계속 빛을 내는 한 무한정 사용할 수 있는 재생 가능한 에너지입니다."
+                explanation: "태양에너지는 태양이 존재하는 한 계속 이용할 수 있는 재생 가능한 에너지입니다."
             },
             {
-                q: "인간의 신경계를 구성하는 기본 단위는?",
-                options: ["세포", "뉴런", "조직", "기관"],
-                correct: 1,
-                explanation: "뉴런(신경세포)은 신경계의 기본 단위로, 정보를 수집하고 전달합니다."
-            },
-            {
-                q: "다음 중 가장 작은 단위의 물질은?",
-                options: ["분자", "원자", "입자", "전자"],
-                correct: 1,
-                explanation: "원자는 물질을 구성하는 가장 기본적인 단위입니다."
-            },
-            {
-                q: "지구 대기의 대부분을 차지하는 가스는?",
-                options: ["산소", "이산화탄소", "질소", "수증기"],
+                q: "에너지를 칼로리 단위로 나타낼 때, 어떤 에너지의 척도인가요?",
+                options: ["움직임의 크기", "물질의 양", "열의 크기", "빛의 세기"],
                 correct: 2,
-                explanation: "질소(N₂)가 약 78%로 대기의 대부분을 차지합니다."
-            },
-            {
-                q: "천연 자석의 성질을 띠는 광물은?",
-                options: ["철광석", "자철광", "동광", "석탄"],
-                correct: 1,
-                explanation: "자철광(Fe₃O₄)은 자연에서 자석 성질을 보이는 광물입니다."
-            },
-            {
-                q: "식물이 생장하기 위해 가장 필요한 요소는?",
-                options: ["빛과 물", "빛과 이산화탄소", "물과 무기염류", "빛, 물, 이산화탄소"],
-                correct: 3,
-                explanation: "식물이 성장하려면 빛 에너지와 물, 이산화탄소가 모두 필요합니다."
+                explanation: "칼로리는 열에너지를 나타내는 단위입니다."
             }
         ];
 
         let currentQuestion = 0;
         let correctCount = 0;
-        let incorrectCount = 0;
+        let fishCount = 0;
+        let answered = false;
         let selectedOption = null;
 
         function loadQuestion() {
+            startBGM(); // 배경음악 시작
             const q = questions[currentQuestion];
             document.getElementById('question').textContent = q.q;
             document.getElementById('current-q').textContent = currentQuestion + 1;
+            document.getElementById('total-q').textContent = questions.length;
 
             const optionsDiv = document.getElementById('options');
             optionsDiv.innerHTML = '';
@@ -510,16 +424,17 @@
                 label.className = 'option';
                 label.innerHTML = `
                     <input type="radio" name="answer" value="${idx}" onchange="selectOption(${idx})">
-                    <span class="option-text">${opt}</span>
+                    <span>${opt}</span>
                 `;
                 optionsDiv.appendChild(label);
             });
 
             document.getElementById('feedback').innerHTML = '';
-            document.getElementById('submit-btn').hidden = false;
-            document.getElementById('next-btn').hidden = true;
+            document.getElementById('feedback').classList.remove('show', 'correct', 'incorrect');
+            document.getElementById('submit-btn').style.display = 'block';
+            document.getElementById('next-btn').style.display = 'none';
+            answered = false;
             selectedOption = null;
-            updateProgress();
         }
 
         function selectOption(idx) {
@@ -535,15 +450,36 @@
             const q = questions[currentQuestion];
             const isCorrect = selectedOption === q.correct;
 
+            const catEl = document.getElementById('cat');
+            const options = document.querySelectorAll('.option');
+
             if (isCorrect) {
                 correctCount++;
+                fishCount++;
+                catEl.textContent = '😸';
+                catEl.classList.add('cat-happy');
+                catEl.classList.remove('cat-sad');
+
+                // 물고기 추가
+                const fishDisplay = document.getElementById('fishDisplay');
+                const fish = document.createElement('span');
+                fish.className = 'fish';
+                fish.textContent = '🐟';
+                fishDisplay.appendChild(fish);
+
+                const feedback = document.getElementById('feedback');
+                feedback.className = 'feedback correct show';
+                feedback.innerHTML = '✓ 정답입니다!<br>' + q.explanation;
             } else {
-                incorrectCount++;
+                catEl.textContent = '😿';
+                catEl.classList.add('cat-sad');
+                catEl.classList.remove('cat-happy');
+
+                const feedback = document.getElementById('feedback');
+                feedback.className = 'feedback incorrect show';
+                feedback.innerHTML = '✗ 오답입니다.<br>' + q.explanation;
             }
 
-            updateScore();
-
-            const options = document.querySelectorAll('.option');
             options.forEach((opt, idx) => {
                 opt.classList.add('disabled');
                 if (idx === q.correct) {
@@ -553,12 +489,9 @@
                 }
             });
 
-            const feedback = document.getElementById('feedback');
-            feedback.className = 'feedback ' + (isCorrect ? 'correct' : 'incorrect');
-            feedback.innerHTML = (isCorrect ? '✓ 정답입니다!' : '✗ 다시 생각해보세요') + '\n' + q.explanation;
-
-            document.getElementById('submit-btn').hidden = true;
-            document.getElementById('next-btn').hidden = false;
+            document.getElementById('submit-btn').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'block';
+            answered = true;
         }
 
         function nextQuestion() {
@@ -570,55 +503,44 @@
             }
         }
 
-        function updateScore() {
-            const total = correctCount + incorrectCount;
-            const percentage = total > 0 ? Math.round((correctCount / total) * 100) : 0;
-            document.getElementById('correct').textContent = correctCount;
-            document.getElementById('incorrect').textContent = incorrectCount;
-            document.getElementById('percentage').textContent = percentage + '%';
-        }
-
-        function updateProgress() {
-            const progress = ((currentQuestion + 1) / questions.length) * 100;
-            document.getElementById('progress').style.width = progress + '%';
-        }
-
         function endGame() {
-            document.getElementById('quiz-section').hidden = true;
-            document.getElementById('game-over-section').hidden = false;
+            document.getElementById('quiz-section').style.display = 'none';
+            document.getElementById('game-over-section').style.display = 'block';
 
-            const total = correctCount + incorrectCount;
-            document.getElementById('final-score').textContent = correctCount + '/' + total;
+            document.getElementById('final-score').textContent = correctCount + ' / ' + questions.length;
 
-            let emoji = '😊';
-            let message = '';
-            if (correctCount === total) {
-                emoji = '🌟';
-                message = '완벽합니다!\n과학의 신이 되었어요!\n중간고사 대비 완벽합니다!';
-            } else if (correctCount >= total * 0.8) {
-                emoji = '👏';
-                message = '훌륭합니다!\n과학을 정말 잘 이해하고 있네요!\n중간고사에서 좋은 성적을 기대해요!';
-            } else if (correctCount >= total * 0.6) {
-                emoji = '💪';
-                message = '좋습니다!\n좀 더 복습하면 더 잘할 수 있어요!\n중요한 개념들을 다시 한번 정리해봐요!';
-            } else {
-                emoji = '✨';
-                message = '화이팅!\n다시 한 번 도전해보세요!\n어려운 부분들을 다시 공부해봅시다!';
+            // 물고기 표시
+            const fishTotalDiv = document.getElementById('fishTotal');
+            fishTotalDiv.innerHTML = '';
+            for (let i = 0; i < fishCount; i++) {
+                const fish = document.createElement('span');
+                fish.className = 'fish';
+                fish.textContent = '🐟';
+                fishTotalDiv.appendChild(fish);
             }
-            document.getElementById('game-over-section').querySelector('h2').textContent = emoji + ' 게임 완료!';
+
+            let message = '';
+            if (correctCount === questions.length) {
+                message = '완벽합니다! 🌟 과학의 신이 되었어요!\n중간고사 대비 완벽합니다!';
+            } else if (correctCount >= questions.length * 0.8) {
+                message = '훌륭합니다! 📚 과학을 정말 잘 이해하고 있네요.\n중간고사에서 좋은 성적을 기대해요!';
+            } else if (correctCount >= questions.length * 0.6) {
+                message = '좋습니다! 💪 좀 더 복습하면 더 잘할 수 있어요.\n중요한 개념들을 다시 한번 정리해봐요!';
+            } else {
+                message = '화이팅! ✨ 다시 한 번 도전해보세요.\n어려운 부분들을 다시 공부해봅시다!';
+            }
             document.getElementById('final-message').textContent = message;
         }
 
         function resetGame() {
             currentQuestion = 0;
             correctCount = 0;
-            incorrectCount = 0;
+            fishCount = 0;
+            answered = false;
             selectedOption = null;
-            document.getElementById('quiz-section').hidden = false;
-            document.getElementById('game-over-section').hidden = true;
-            document.getElementById('correct').textContent = '0';
-            document.getElementById('incorrect').textContent = '0';
-            document.getElementById('percentage').textContent = '0%';
+            document.getElementById('quiz-section').style.display = 'block';
+            document.getElementById('game-over-section').style.display = 'none';
+            document.getElementById('fishDisplay').innerHTML = '';
             loadQuestion();
         }
 
