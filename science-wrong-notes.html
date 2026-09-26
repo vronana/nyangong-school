@@ -318,7 +318,7 @@
     </style>
 </head>
 <body>
-    <div class="version-tag">v2026.09.27-12</div>
+    <div class="version-tag">v2026.09.27-13</div>
     <a href="science-hub.html" class="home-float">🏠 홈</a>
 
     <div class="modal-overlay" id="answer-modal">
@@ -359,6 +359,16 @@
 
         function saveNotes(notes) {
             localStorage.setItem('scienceWrongNotes_v2', JSON.stringify(notes));
+        }
+
+        // 0~n-1 인덱스를 무작위로 섞은 배열을 반환 (피셔-예이츠)
+        function shuffledIndices(n) {
+            const arr = Array.from({ length: n }, (_, i) => i);
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
         }
 
         const pageNames = {
@@ -431,7 +441,12 @@
                 const dateStr = note.date ? new Date(note.date).toLocaleDateString('ko-KR', { month: 'short', day: 'numeric' }) : '';
                 const locked = !!(note.lockedUntil && Date.now() < note.lockedUntil);
                 let optionsHtml = '';
-                note.options.forEach((opt, i) => {
+                // 풀 때마다(다시 렌더링될 때마다) 보기 순서를 섞어서 위치만 외워서
+                // 맞히는 걸 막음. 정답 판정은 원래 인덱스(note.correctIdx) 기준이라
+                // 섞어도 정답 로직은 그대로 유지됨
+                const order = shuffledIndices(note.options.length);
+                order.forEach(i => {
+                    const opt = note.options[i];
                     const isAnswer = locked && i === note.correctIdx;
                     const clickHandler = locked ? `lockedClick(${note.idx})` : `checkAnswer(${note.idx}, ${i}, this)`;
                     optionsHtml += `<button type="button" class="note-option-btn${isAnswer ? ' correct-pick' : ''}${locked ? ' is-locked' : ''}" onclick="${clickHandler}">${opt}</button>`;
