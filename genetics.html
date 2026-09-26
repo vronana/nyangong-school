@@ -482,6 +482,7 @@
         </div>
 
         <div id="quiz-section" style="display:none;">
+            <div id="player-greeting" style="text-align:center; font-size:13px; color:#00d4ff; margin-bottom:0.6rem; font-weight:600;"></div>
             <div class="cat-section">
                 <div class="cat-pixel" id="cat">😸</div>
                 <div class="fish-section">
@@ -555,6 +556,17 @@
         const bgmAudio = document.getElementById('bgmAudio');
         bgmAudio.volume = 0.3;
 
+        function getSavedName() {
+            try { return localStorage.getItem('sciencePlayerName_v2') || ''; }
+            catch (e) { return ''; }
+        }
+
+        function updateGreeting() {
+            const name = getSavedName();
+            const el = document.getElementById('player-greeting');
+            if (el) el.textContent = name ? `${name}님, 화이팅! 🔥` : '';
+        }
+
         function initNameGate() {
             const existing = localStorage.getItem('sciencePlayerName_v2');
             if (!existing) {
@@ -568,11 +580,13 @@
             if (!val) { alert('이름을 입력해줘!'); return; }
             localStorage.setItem('sciencePlayerName_v2', val);
             document.getElementById('name-modal').classList.remove('show');
+            updateGreeting();
         }
 
         initNameGate();
 
         function startGame() {
+            updateGreeting();
             document.getElementById('start-section').style.display = 'none';
             document.getElementById('quiz-section').style.display = 'block';
             document.getElementById('fixed-btn-bar').style.display = 'block';
@@ -718,7 +732,7 @@
                 fishDisplay.appendChild(fish);
 
                 document.getElementById('modal-icon').textContent = '😸';
-                document.getElementById('modal-title').textContent = '✓ 정답입니다!';
+                document.getElementById('modal-title').textContent = (getSavedName() ? getSavedName() + '님, ' : '') + '✓ 정답입니다!';
                 document.getElementById('modal-title').className = 'modal-title correct';
             } else {
                 catEl.textContent = '😿';
@@ -726,7 +740,7 @@
                 catEl.classList.remove('cat-happy');
 
                 document.getElementById('modal-icon').textContent = '😿';
-                document.getElementById('modal-title').textContent = '✗ 오답입니다';
+                document.getElementById('modal-title').textContent = (getSavedName() ? getSavedName() + '님, ' : '') + '✗ 오답입니다';
                 document.getElementById('modal-title').className = 'modal-title incorrect';
                 saveWrongAnswer(q, selectedOption);
             }
