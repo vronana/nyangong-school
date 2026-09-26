@@ -464,6 +464,7 @@
             <div style="font-size: 80px; margin-bottom: 1rem;">😸</div>
             <div style="font-size: 16px; color: #b0b0ff; margin-bottom: 2rem; line-height: 1.8;">중학교 과학 중간고사 준비!<br>⚡ 에너지 전환과 보존 문제</div>
             <button onclick="startGame()" style="font-size: 20px; padding: 18px 40px;">🎮 게임 시작!</button>
+            <div style="margin-top: 1rem;"><a href="wrong-notes.html" style="color:#00d4ff; font-size:13px; text-decoration:none; border-bottom:1px dashed #00d4ff;">📓 오답노트 보기</a></div>
         </div>
 
         <div id="quiz-section" style="display:none;">
@@ -790,6 +791,23 @@
             perfectTimeout = setTimeout(playPerfect, 10200);
         }
 
+        function saveWrongAnswer(q, selected) {
+            try {
+                const notes = JSON.parse(localStorage.getItem('scienceWrongNotes') || '[]');
+                notes.push({
+                    page: document.title,
+                    url: location.pathname.split('/').pop(),
+                    question: q.q,
+                    options: q.options,
+                    correctIdx: q.correct,
+                    selectedIdx: selected,
+                    explanation: q.explanation,
+                    date: new Date().toISOString()
+                });
+                localStorage.setItem('scienceWrongNotes', JSON.stringify(notes));
+            } catch (e) { console.log('오답노트 저장 실패:', e); }
+        }
+
         function submitAnswer() {
             if (selectedOption === null) {
                 alert('선택지를 선택해주세요');
@@ -827,6 +845,7 @@
                 document.getElementById('modal-title').textContent = '✗ 오답입니다';
                 document.getElementById('modal-title').className = 'modal-title incorrect';
                 playWrong();
+                saveWrongAnswer(q, selectedOption);
             }
 
             options.forEach((opt, idx) => {
