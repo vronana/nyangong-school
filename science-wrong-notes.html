@@ -224,6 +224,21 @@
             background: #3a2a54;
             color: var(--text);
         }
+        .home-float {
+            position: fixed;
+            top: 14px;
+            left: 14px;
+            z-index: 150;
+            background: rgba(45, 31, 61, 0.9);
+            color: #00d4ff;
+            border: 1px solid #4a3a6a;
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+        }
         .version-tag {
             position: fixed;
             right: 10px;
@@ -271,7 +286,8 @@
     </style>
 </head>
 <body>
-    <div class="version-tag">v2026.09.27-3</div>
+    <div class="version-tag">v2026.09.27-5</div>
+    <a href="science-hub.html" class="home-float">🏠 홈</a>
 
     <div class="modal-overlay" id="answer-modal">
         <div class="modal-box">
@@ -405,11 +421,7 @@
                 `;
             });
 
-            contentEl.innerHTML = statsHtml + filterHtml + cardsHtml + `
-                <div class="bottom-actions">
-                    <a href="science-hub.html" class="btn-home">🏠 홈으로</a>
-                </div>
-            `;
+            contentEl.innerHTML = statsHtml + filterHtml + cardsHtml;
         }
 
         function setFilter(f) {
