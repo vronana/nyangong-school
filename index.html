@@ -166,14 +166,67 @@
         @media (max-width: 380px) {
             .card-grid { grid-template-columns: 1fr; }
         }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.show { display: flex; }
+        .modal-box {
+            background: #2d1f3d;
+            border-radius: 20px;
+            padding: 2rem 1.5rem;
+            max-width: 380px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+        }
+        .modal-title { font-size: 20px; font-weight: 700; margin-bottom: 0.6rem; }
+        .modal-btn {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            background: var(--primary);
+            color: #1a1230;
+            cursor: pointer;
+        }
+
+        .greeting {
+            text-align: center;
+            font-size: 14px;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 0.6rem;
+        }
     </style>
 </head>
 <body>
+    <div class="modal-overlay" id="name-modal">
+        <div class="modal-box">
+            <div style="font-size:50px; margin-bottom:0.8rem;">😸</div>
+            <div class="modal-title" style="color:#00d4ff;">이름(별명)을 알려줘!</div>
+            <div style="font-size:13px; color:#b0b0ff; margin-bottom:1rem;">랭킹에 이 이름으로 표시돼요 🏆</div>
+            <input type="text" id="name-input" placeholder="예: 나나" maxlength="10"
+                onkeypress="if(event.key==='Enter') confirmName()"
+                style="width:100%; padding:12px; border-radius:10px; border:1px solid #4a3a6a; background:#1f1730; color:#f0f0f0; font-size:15px; margin-bottom:1rem; text-align:center; box-sizing:border-box;">
+            <button class="modal-btn" onclick="confirmName()">확인</button>
+        </div>
+    </div>
+
     <div class="wrap">
         <div class="hero">
             <div class="cat">😸</div>
             <h1>과학 퀴즈 허브</h1>
             <p>중학교 과학 중간고사 준비 · 원하는 단원을 골라 풀어봐!</p>
+            <div class="greeting" id="hub-greeting"></div>
         </div>
 
         <a href="wrong-notes.html" class="notes-link">
@@ -351,6 +404,32 @@
     </div>
 
     <script>
+        function getSavedName() {
+            try { return localStorage.getItem('sciencePlayerName_v2') || ''; }
+            catch (e) { return ''; }
+        }
+        function updateGreeting() {
+            const name = getSavedName();
+            const el = document.getElementById('hub-greeting');
+            if (el) el.textContent = name ? `${name}님 반가워요! 😸` : '';
+        }
+        function initNameGate() {
+            const existing = localStorage.getItem('sciencePlayerName_v2');
+            if (!existing) {
+                document.getElementById('name-modal').classList.add('show');
+            }
+        }
+        function confirmName() {
+            const input = document.getElementById('name-input');
+            const val = input.value.trim();
+            if (!val) { alert('이름을 입력해줘!'); return; }
+            localStorage.setItem('sciencePlayerName_v2', val);
+            document.getElementById('name-modal').classList.remove('show');
+            updateGreeting();
+        }
+        initNameGate();
+        updateGreeting();
+
         const stage1Files = ['reproduction.html', 'genetics.html', 'human-genetics.html', 'energy.html', 'electricity.html'];
         const stage2Files = ['reproduction-adv.html', 'genetics-adv.html', 'human-genetics-adv.html', 'energy-adv.html', 'electricity-adv.html'];
 

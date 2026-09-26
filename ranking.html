@@ -142,6 +142,7 @@
     <div class="wrap">
         <div class="header">🏆 랭킹 🏆</div>
         <div class="sub">친구들이랑 점수로 겨뤄봐!</div>
+        <div class="sub" id="page-greeting" style="color:var(--primary); font-weight:600;"></div>
 
         <div class="tabs">
             <div class="tab active" data-mode="total" onclick="setMode('total')">전체 누적 점수</div>
@@ -163,6 +164,15 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <script src="firebase-init.js"></script>
     <script>
+        function updateGreeting() {
+            try {
+                const name = localStorage.getItem('sciencePlayerName_v2') || '';
+                const el = document.getElementById('page-greeting');
+                if (el) el.textContent = name ? `${name}님 반가워요! 😸` : '';
+            } catch (e) {}
+        }
+        updateGreeting();
+
         let mode = 'total';
         let allScores = [];
 

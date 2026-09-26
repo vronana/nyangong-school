@@ -206,11 +206,21 @@
     <div class="wrap">
         <div class="header">📓 오답노트</div>
         <div class="sub">틀린 문제들을 모아서 복습해요, 😸</div>
+        <div class="sub" id="page-greeting" style="color:var(--primary); font-weight:600;"></div>
 
         <div id="content"></div>
     </div>
 
     <script>
+        function updateGreeting() {
+            try {
+                const name = localStorage.getItem('sciencePlayerName_v2') || '';
+                const el = document.getElementById('page-greeting');
+                if (el) el.textContent = name ? `${name}님 반가워요! 😸` : '';
+            } catch (e) {}
+        }
+        updateGreeting();
+
         function getNotes() {
             try {
                 return JSON.parse(localStorage.getItem('scienceWrongNotes_v2') || '[]');
