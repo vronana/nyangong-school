@@ -246,6 +246,86 @@
             display: none;
         }
 
+        /* 만점 축하 오버레이 */
+        #perfect-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 300;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        #perfect-overlay.show { display: flex; }
+
+        .perfect-box {
+            text-align: center;
+            animation: zoomIn 0.5s ease;
+        }
+        @keyframes zoomIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .perfect-title {
+            font-size: 36px;
+            font-weight: 900;
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255,215,0,0.8);
+            margin-bottom: 0.5rem;
+            animation: glow 1s ease infinite alternate;
+        }
+        @keyframes glow {
+            0% { text-shadow: 0 0 10px rgba(255,215,0,0.5); }
+            100% { text-shadow: 0 0 30px rgba(255,215,0,1), 0 0 60px rgba(255,215,0,0.5); }
+        }
+
+        .perfect-sub {
+            font-size: 18px;
+            color: #fff;
+            margin-bottom: 1.5rem;
+        }
+
+        .perfect-cat {
+            font-size: 80px;
+            animation: superBounce 0.4s ease infinite alternate;
+            display: block;
+            margin-bottom: 1rem;
+        }
+        @keyframes superBounce {
+            0% { transform: translateY(0) scale(1) rotate(-5deg); }
+            100% { transform: translateY(-20px) scale(1.1) rotate(5deg); }
+        }
+
+        .perfect-btn {
+            margin-top: 1.5rem;
+            padding: 14px 40px;
+            font-size: 18px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            color: #1a1a1a;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(255,215,0,0.5);
+        }
+
+        /* 폭죽 파티클 */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+            animation: fall linear forwards;
+            z-index: 299;
+            pointer-events: none;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
         .final-score {
             font-size: 48px;
             font-weight: bold;
@@ -434,6 +514,17 @@
             <div class="fish-total-display" id="fishTotal"></div>
             <div class="final-message" id="final-message"></div>
             <button onclick="resetGame()">다시 시작하기</button>
+        </div>
+    </div>
+
+    <!-- 만점 축하 오버레이 -->
+    <div id="perfect-overlay">
+        <div class="perfect-box">
+            <span class="perfect-cat">🏆😸🐟</span>
+            <div class="perfect-title">🎉 만점 달성! 🎉</div>
+            <div class="perfect-sub">축하합니다! 완벽해요! 🌟</div>
+            <div style="font-size: 14px; color: #b0b0ff; line-height: 1.8;">과학 천재 등극! 고양이도 너무 기뻐요!</div>
+            <button class="perfect-btn" onclick="closePerfect()">🎮 다시 도전하기</button>
         </div>
     </div>
 
@@ -639,10 +730,17 @@
                 fishTotalDiv.appendChild(fish);
             }
 
-            let message = '';
+            // 만점이면 특별 축하!
             if (correctCount === questions.length) {
-                message = '완벽합니다! 🌟 과학의 신이 되었어요!\n중간고사 대비 완벽합니다!';
-            } else if (correctCount >= questions.length * 0.8) {
+                setTimeout(() => {
+                    launchConfetti();
+                    document.getElementById('perfect-overlay').classList.add('show');
+                }, 600);
+                return;
+            }
+
+            let message = '';
+            if (correctCount >= questions.length * 0.8) {
                 message = '훌륭합니다! 📚 과학을 정말 잘 이해하고 있네요.\n중간고사에서 좋은 성적을 기대해요!';
             } else if (correctCount >= questions.length * 0.6) {
                 message = '좋습니다! 💪 좀 더 복습하면 더 잘할 수 있어요.\n중요한 개념들을 다시 한번 정리해봐요!';
@@ -650,6 +748,29 @@
                 message = '화이팅! ✨ 다시 한 번 도전해보세요.\n어려운 부분들을 다시 공부해봅시다!';
             }
             document.getElementById('final-message').textContent = message;
+        }
+
+        function launchConfetti() {
+            const colors = ['#ffd700','#ff4466','#00d4ff','#00ff88','#ff8c00','#ff69b4','#7fff00'];
+            for (let i = 0; i < 80; i++) {
+                setTimeout(() => {
+                    const el = document.createElement('div');
+                    el.className = 'confetti';
+                    el.style.left = Math.random() * 100 + 'vw';
+                    el.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    el.style.width = (Math.random() * 8 + 6) + 'px';
+                    el.style.height = (Math.random() * 8 + 6) + 'px';
+                    el.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+                    el.style.animationDelay = '0s';
+                    document.body.appendChild(el);
+                    setTimeout(() => el.remove(), 4000);
+                }, i * 40);
+            }
+        }
+
+        function closePerfect() {
+            document.getElementById('perfect-overlay').classList.remove('show');
+            resetGame();
         }
 
         function resetGame() {
