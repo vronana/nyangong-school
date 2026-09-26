@@ -1,0 +1,28 @@
+{
+  "science": {
+    "_meta": { "label": "중학교 과학 중간고사 준비!", "hubTitle": "과학 퀴즈 허브" },
+    "reproduction": { "title": "생식과 발생 기초", "icon": "🧬", "tier": "basic", "stage": 1, "count": "10문제" },
+    "genetics": { "title": "유전 원리 기초", "icon": "🧬", "tier": "basic", "stage": 1, "count": "10문제" },
+    "human-genetics": { "title": "사람의 유전", "icon": "🧬", "tier": "basic", "stage": 1, "count": "10문제" },
+    "energy": { "title": "에너지 전환과 보존", "icon": "⚡", "tier": "basic", "stage": 1, "count": "10문제" },
+    "electricity": { "title": "전기 에너지 발생과 이용", "icon": "💡", "tier": "basic", "stage": 1, "count": "10문제" },
+
+    "reproduction-adv": { "title": "생식과 발생 응용", "icon": "🧬", "tier": "combined", "stage": 2, "count": "10문제" },
+    "genetics-adv": { "title": "유전 원리 응용", "icon": "🧬", "tier": "combined", "stage": 2, "count": "10문제" },
+    "human-genetics-adv": { "title": "사람의 유전 응용", "icon": "🧬", "tier": "combined", "stage": 2, "count": "10문제" },
+    "energy-adv": { "title": "에너지 전환과 보존 응용", "icon": "⚡", "tier": "combined", "stage": 2, "count": "10문제" },
+    "electricity-adv": { "title": "전기 에너지 응용", "icon": "💡", "tier": "combined", "stage": 2, "count": "10문제" },
+
+    "reproduction-master": { "title": "생식과 발생 심화", "icon": "🧬", "tier": "advanced", "stage": 3, "count": "10문제 · 계산 포함" },
+    "genetics-master": { "title": "유전 원리 심화", "icon": "🧬", "tier": "advanced", "stage": 3, "count": "10문제 · 계산 포함" },
+    "human-genetics-master": { "title": "사람의 유전 심화", "icon": "🧬", "tier": "advanced", "stage": 3, "count": "10문제" },
+    "energy-master": { "title": "에너지 전환과 보존 심화", "icon": "⚡", "tier": "advanced", "stage": 3, "count": "10문제 · 계산 포함" },
+    "electricity-master": { "title": "전기 에너지 심화", "icon": "💡", "tier": "advanced", "stage": 3, "count": "10문제 · 계산 포함" },
+
+    "reproduction-genetics": { "title": "생식과 유전 종합", "icon": "🧬", "tier": "bonus", "stage": 0, "count": "10문제" },
+    "energy-electricity": { "title": "에너지·전기 종합", "icon": "⚡", "tier": "bonus", "stage": 0, "count": "10문제" },
+    "stage2-review": { "title": "단원 통합 모음", "icon": "🌟", "tier": "bonus", "stage": 0, "count": "10문제 · 새 유형" },
+    "advanced-all": { "title": "전 단원 통합 심화", "icon": "🔥", "tier": "bonus", "stage": 0, "count": "10문제 · 계산 포함" },
+    "main-quiz": { "title": "전체 종합 퀴즈", "icon": "🎮", "tier": "bonus", "stage": 0, "count": "랜덤 출제" }
+  }
+}
