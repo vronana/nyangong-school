@@ -323,7 +323,7 @@
     </div>
 
     <!-- 배경음악 -->
-    <audio id="bgmAudio" loop>
+    <audio id="bgmAudio" loop autoplay muted>
         <source src="PixelPulse.mp3" type="audio/mpeg">
     </audio>
 
@@ -335,8 +335,11 @@
         function startBGM() {
             if (musicStarted) return;
             musicStarted = true;
-            bgmAudio.play().catch(e => console.log('음악 재생 실패:', e));
+            bgmAudio.muted = false; // 음소거 해제
         }
+
+        // 페이지 어디든 클릭하면 음악 시작
+        document.addEventListener('click', startBGM, { once: true });
 
         const questions = [
             // 생식과 유전 (5개)
