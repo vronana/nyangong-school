@@ -641,15 +641,153 @@
             selectedOption = idx;
         }
 
-        function speak(text) {
-            if ('speechSynthesis' in window) {
-                speechSynthesis.cancel();
-                const utter = new SpeechSynthesisUtterance(text);
-                utter.lang = 'ko-KR';
-                utter.rate = 1.0;
-                utter.pitch = 1.1;
-                speechSynthesis.speak(utter);
-            }
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function tone(freq, start, dur, vol = 0.28, type = 'triangle') {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime + start);
+            gain.gain.setValueAtTime(0, audioCtx.currentTime + start);
+            gain.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + start + 0.01);
+            gain.gain.setValueAtTime(vol, audioCtx.currentTime + start + dur - 0.05);
+            gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + start + dur);
+            osc.start(audioCtx.currentTime + start);
+            osc.stop(audioCtx.currentTime + start + dur + 0.01);
+        }
+
+        function playCorrect() {
+            audioCtx.resume();
+            tone(523, 0,    0.12, 0.25, 'triangle');
+            tone(659, 0.1,  0.12, 0.25, 'triangle');
+            tone(784, 0.2,  0.25, 0.3,  'triangle');
+            tone(1047,0.32, 0.3,  0.15, 'sine');
+            tone(523, 0,    0.12, 0.1,  'sine');
+            tone(659, 0.1,  0.12, 0.1,  'sine');
+            tone(784, 0.2,  0.25, 0.12, 'sine');
+        }
+
+        function playWrong() {
+            audioCtx.resume();
+            tone(466, 0,    0.08, 0.25, 'sawtooth');
+            tone(440, 0,    0.08, 0.2,  'sawtooth');
+            tone(350, 0.07, 0.08, 0.25, 'sawtooth');
+            tone(330, 0.07, 0.08, 0.2,  'sawtooth');
+            tone(280, 0.14, 0.08, 0.25, 'sawtooth');
+            tone(262, 0.14, 0.08, 0.2,  'sawtooth');
+            tone(200, 0.22, 0.4,  0.3,  'sawtooth');
+            tone(188, 0.22, 0.4,  0.25, 'sawtooth');
+            tone(900, 0,    0.05, 0.08, 'square');
+            tone(850, 0.05, 0.05, 0.07, 'square');
+            tone(800, 0.1,  0.05, 0.06, 'square');
+        }
+
+        let perfectTimeout = null;
+        function stopPerfect() {
+            if (perfectTimeout) { clearTimeout(perfectTimeout); perfectTimeout = null; }
+        }
+
+        function playPerfect() {
+            audioCtx.resume();
+            stopPerfect();
+            const t = (f,s,d,v=0.28,type='triangle') => tone(f,s,d,v,type);
+
+            // PART 1: 장엄한 오프닝 (0~2.5s)
+            t(80,  0.0,  0.18, 0.35, 'sine');
+            t(80,  0.5,  0.18, 0.35, 'sine');
+            t(80,  1.0,  0.18, 0.35, 'sine');
+            t(80,  1.5,  0.18, 0.35, 'sine');
+            t(80,  2.0,  0.18, 0.35, 'sine');
+            t(392, 0.0,  0.18, 0.32);
+            t(392, 0.2,  0.18, 0.32);
+            t(392, 0.4,  0.28, 0.36);
+            t(523, 0.7,  0.28, 0.36);
+            t(659, 1.0,  0.28, 0.36);
+            t(784, 1.3,  0.48, 0.4);
+            t(523, 0.7,  0.28, 0.14,'sine');
+            t(659, 1.0,  0.28, 0.14,'sine');
+            t(523, 1.3,  0.48, 0.16,'sine');
+            t(988, 1.3,  0.48, 0.12,'sine');
+            t(1568,1.35, 0.08, 0.1, 'sine');
+            t(2093,1.45, 0.08, 0.1, 'sine');
+            t(1568,1.55, 0.08, 0.09,'sine');
+
+            // PART 2: 승리의 행진 (2.5~6s)
+            t(784, 2.5,  0.18, 0.3);
+            t(784, 2.7,  0.18, 0.3);
+            t(880, 2.9,  0.18, 0.32);
+            t(784, 3.1,  0.18, 0.32);
+            t(1047,3.3,  0.38, 0.38);
+            t(988, 3.72, 0.18, 0.3);
+            t(880, 3.92, 0.18, 0.3);
+            t(784, 4.12, 0.18, 0.3);
+            t(659, 4.32, 0.18, 0.28);
+            t(784, 4.52, 0.55, 0.35);
+            t(523, 2.5,  0.18, 0.12,'sine');
+            t(523, 2.7,  0.18, 0.12,'sine');
+            t(523, 2.9,  0.18, 0.12,'sine');
+            t(523, 3.3,  0.38, 0.14,'sine');
+            t(659, 3.72, 0.18, 0.12,'sine');
+            t(523, 4.12, 0.18, 0.12,'sine');
+            t(523, 4.52, 0.55, 0.14,'sine');
+            t(131, 2.5,  0.14, 0.18,'sine');
+            t(131, 2.9,  0.14, 0.18,'sine');
+            t(196, 3.3,  0.14, 0.18,'sine');
+            t(131, 3.72, 0.14, 0.18,'sine');
+            t(131, 4.12, 0.14, 0.18,'sine');
+            t(196, 4.52, 0.14, 0.18,'sine');
+            t(2093,3.35, 0.06, 0.09,'sine');
+            t(2093,4.55, 0.06, 0.09,'sine');
+            t(1047,5.1,  0.18, 0.32);
+            t(988, 5.3,  0.18, 0.3);
+            t(880, 5.5,  0.18, 0.3);
+            t(784, 5.7,  0.18, 0.3);
+            t(659, 5.9,  0.12, 0.28);
+            t(784, 6.05, 0.12, 0.28);
+            t(523, 5.1,  0.18, 0.12,'sine');
+            t(659, 5.5,  0.18, 0.12,'sine');
+            t(523, 5.7,  0.18, 0.12,'sine');
+
+            // PART 3: 웅장한 클라이맥스 (6.2~10s)
+            t(523, 6.2,  0.08, 0.28);
+            t(587, 6.3,  0.08, 0.28);
+            t(659, 6.4,  0.08, 0.3);
+            t(784, 6.5,  0.08, 0.3);
+            t(880, 6.6,  0.08, 0.32);
+            t(988, 6.7,  0.08, 0.32);
+            t(1047,6.8,  0.08, 0.35);
+            t(1175,6.9,  0.08, 0.35);
+            t(1319,7.0,  0.08, 0.38);
+            t(1568,7.1,  0.08, 0.4);
+            t(1568,7.2,  1.2,  0.42);
+            t(1047,7.2,  1.2,  0.22,'sine');
+            t(784, 7.2,  1.2,  0.18,'sine');
+            t(523, 7.2,  1.2,  0.15,'sine');
+            t(131, 7.2,  1.2,  0.22,'sine');
+            t(196, 7.2,  1.2,  0.15,'triangle');
+            t(2637,7.25, 0.06, 0.12,'sine');
+            t(3136,7.33, 0.06, 0.11,'sine');
+            t(2637,7.41, 0.06, 0.11,'sine');
+            t(3136,7.49, 0.06, 0.1, 'sine');
+            t(2637,7.57, 0.06, 0.1, 'sine');
+            t(3136,7.65, 0.06, 0.09,'sine');
+            t(2637,7.73, 0.06, 0.09,'sine');
+            t(3136,7.81, 0.06, 0.08,'sine');
+            t(2637,7.89, 0.06, 0.08,'sine');
+            t(1319,8.45, 0.22, 0.35);
+            t(1047,8.7,  0.22, 0.35);
+            t(784, 8.95, 0.22, 0.35);
+            t(523, 9.2,  0.6,  0.4);
+            t(784, 9.2,  0.6,  0.2, 'sine');
+            t(1047,9.2,  0.6,  0.16,'sine');
+            t(131, 9.2,  0.6,  0.25,'sine');
+            t(2093,9.25, 0.06, 0.1, 'sine');
+            t(2637,9.35, 0.06, 0.1, 'sine');
+            t(3136,9.45, 0.06, 0.1, 'sine');
+
+            perfectTimeout = setTimeout(playPerfect, 10200);
         }
 
         function submitAnswer() {
@@ -679,7 +817,7 @@
                 document.getElementById('modal-icon').textContent = '😸';
                 document.getElementById('modal-title').textContent = '✓ 정답입니다!';
                 document.getElementById('modal-title').className = 'modal-title correct';
-                speak('정답입니다!');
+                playCorrect();
             } else {
                 catEl.textContent = '😿';
                 catEl.classList.add('cat-sad');
@@ -688,7 +826,7 @@
                 document.getElementById('modal-icon').textContent = '😿';
                 document.getElementById('modal-title').textContent = '✗ 오답입니다';
                 document.getElementById('modal-title').className = 'modal-title incorrect';
-                speak('틀렸습니다!');
+                playWrong();
             }
 
             options.forEach((opt, idx) => {
@@ -742,7 +880,7 @@
 
             // 만점이면 특별 축하!
             if (correctCount === questions.length) {
-                speak('만점입니다! 축하합니다! 정말 대단해요!');
+                playPerfect();
                 setTimeout(() => {
                     launchConfetti();
                     document.getElementById('perfect-overlay').classList.add('show');
@@ -780,6 +918,7 @@
         }
 
         function closePerfect() {
+            stopPerfect();
             document.getElementById('perfect-overlay').classList.remove('show');
             resetGame();
         }
