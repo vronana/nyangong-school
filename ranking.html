@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>랭킹</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #00d4ff;
+            --success: #00ff88;
+            --danger: #ff4466;
+            --gold: #ffd700;
+            --text: #f0f0f0;
+        }
+
+        body {
+            background: linear-gradient(135deg, #2d1f4e 0%, #1f1447 100%);
+            min-height: 100vh;
+            font-family: 'Noto Sans KR', sans-serif;
+            padding: 1.5rem 1rem 3rem;
+            color: var(--text);
+        }
+
+        .wrap {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 0.4rem;
+            font-size: 26px;
+            color: var(--primary);
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .sub {
+            text-align: center;
+            color: #b0b0ff;
+            font-size: 14px;
+            margin-bottom: 1.5rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 1.2rem;
+            background: #2d1f3d;
+            border-radius: 14px;
+            padding: 4px;
+        }
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            color: #b0b0ff;
+        }
+        .tab.active {
+            background: var(--primary);
+            color: #1a1230;
+        }
+
+        .quiz-select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 12px;
+            background: #2d1f3d;
+            border: 1px solid #4a3a6a;
+            color: var(--text);
+            font-size: 13px;
+            margin-bottom: 1.2rem;
+            display: none;
+        }
+        .quiz-select.show { display: block; }
+
+        .loading, .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #b0b0ff;
+        }
+        .empty-state .icon { font-size: 50px; margin-bottom: 1rem; }
+
+        .rank-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #2d1f3d;
+            border-radius: 14px;
+            padding: 0.9rem 1rem;
+            margin-bottom: 8px;
+            box-shadow: 0 3px 14px rgba(0, 0, 0, 0.25);
+        }
+        .rank-row.top1 { border: 1px solid rgba(255, 215, 0, 0.5); background: linear-gradient(135deg, #2d1f3d, #3a3320); }
+        .rank-row.top2 { border: 1px solid rgba(192, 192, 192, 0.4); }
+        .rank-row.top3 { border: 1px solid rgba(205, 127, 50, 0.4); }
+
+        .rank-num {
+            font-size: 18px;
+            font-weight: 700;
+            width: 32px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .rank-info { flex: 1; min-width: 0; }
+        .rank-name {
+            font-size: 14px;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .rank-detail {
+            font-size: 11px;
+            color: #8a8aa8;
+            margin-top: 2px;
+        }
+        .rank-score {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--success);
+            flex-shrink: 0;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 12px;
+            color: #6a6a8a;
+            margin-top: 2rem;
+            line-height: 1.7;
+        }
+        .footer-note a { color: var(--primary); text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="header">🏆 랭킹 🏆</div>
+        <div class="sub">친구들이랑 점수로 겨뤄봐!</div>
+
+        <div class="tabs">
+            <div class="tab active" data-mode="total" onclick="setMode('total')">전체 누적 점수</div>
+            <div class="tab" data-mode="quiz" onclick="setMode('quiz')">퀴즈별 최고점</div>
+        </div>
+
+        <select class="quiz-select" id="quiz-select" onchange="renderQuizRanking()"></select>
+
+        <div id="content">
+            <div class="loading">불러오는 중... ⏳</div>
+        </div>
+
+        <div class="footer-note">
+            <a href="index.html">🏠 홈으로</a>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-init.js"></script>
+    <script>
+        let mode = 'total';
+        let allScores = [];
+
+        const quizTitles = {
+            'reproduction.html': '생식과 발생 기초',
+            'genetics.html': '유전 원리 기초',
+            'human-genetics.html': '사람의 유전',
+            'energy.html': '에너지 전환과 보존',
+            'electricity.html': '전기 에너지 발생과 이용',
+            'reproduction-adv.html': '생식과 발생 응용',
+            'genetics-adv.html': '유전 원리 응용',
+            'human-genetics-adv.html': '사람의 유전 응용',
+            'energy-adv.html': '에너지 전환과 보존 응용',
+            'electricity-adv.html': '전기 에너지 응용',
+            'reproduction-master.html': '생식과 발생 심화',
+            'genetics-master.html': '유전 원리 심화',
+            'human-genetics-master.html': '사람의 유전 심화',
+            'energy-master.html': '에너지 전환과 보존 심화',
+            'electricity-master.html': '전기 에너지 심화'
+        };
+
+        function setMode(m) {
+            mode = m;
+            document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.mode === m));
+            document.getElementById('quiz-select').classList.toggle('show', m === 'quiz');
+            render();
+        }
+
+        function medalFor(rank) {
+            if (rank === 0) return '🥇';
+            if (rank === 1) return '🥈';
+            if (rank === 2) return '🥉';
+            return (rank + 1) + '.';
+        }
+
+        function rowClass(rank) {
+            if (rank === 0) return 'rank-row top1';
+            if (rank === 1) return 'rank-row top2';
+            if (rank === 2) return 'rank-row top3';
+            return 'rank-row';
+        }
+
+        function renderTotalRanking() {
+            const content = document.getElementById('content');
+            if (allScores.length === 0) {
+                content.innerHTML = `<div class="empty-state"><div class="icon">🐟</div>아직 아무도 퀴즈를 안 풀었어요!<br>가장 먼저 풀고 1등 해보세요.</div>`;
+                return;
+            }
+
+            // 사람별로 합산 (정답 수 합, 문제 수 합, 응시 횟수)
+            const byPlayer = {};
+            allScores.forEach(s => {
+                if (!byPlayer[s.name]) byPlayer[s.name] = { name: s.name, correct: 0, total: 0, count: 0 };
+                byPlayer[s.name].correct += s.correct;
+                byPlayer[s.name].total += s.total;
+                byPlayer[s.name].count += 1;
+            });
+
+            const ranked = Object.values(byPlayer).sort((a, b) => b.correct - a.correct);
+
+            let html = '';
+            ranked.forEach((p, i) => {
+                const pct = p.total > 0 ? Math.round((p.correct / p.total) * 100) : 0;
+                html += `
+                    <div class="${rowClass(i)}">
+                        <div class="rank-num">${medalFor(i)}</div>
+                        <div class="rank-info">
+                            <div class="rank-name">${escapeHtml(p.name)}</div>
+                            <div class="rank-detail">${p.count}개 퀴즈 응시 · 정답률 ${pct}%</div>
+                        </div>
+                        <div class="rank-score">${p.correct}점</div>
+                    </div>
+                `;
+            });
+            content.innerHTML = html;
+        }
+
+        function renderQuizRanking() {
+            const content = document.getElementById('content');
+            const select = document.getElementById('quiz-select');
+            const selected = select.value;
+
+            const filtered = allScores.filter(s => s.quizFile === selected);
+            if (filtered.length === 0) {
+                content.innerHTML = `<div class="empty-state"><div class="icon">🐟</div>이 퀴즈는 아직 아무도 안 풀었어요!</div>`;
+                return;
+            }
+
+            // 사람별 최고점만
+            const bestByPlayer = {};
+            filtered.forEach(s => {
+                if (!bestByPlayer[s.name] || s.correct > bestByPlayer[s.name].correct) {
+                    bestByPlayer[s.name] = s;
+                }
+            });
+            const ranked = Object.values(bestByPlayer).sort((a, b) => b.correct - a.correct);
+
+            let html = '';
+            ranked.forEach((s, i) => {
+                html += `
+                    <div class="${rowClass(i)}">
+                        <div class="rank-num">${medalFor(i)}</div>
+                        <div class="rank-info">
+                            <div class="rank-name">${escapeHtml(s.name)}</div>
+                        </div>
+                        <div class="rank-score">${s.correct} / ${s.total}</div>
+                    </div>
+                `;
+            });
+            content.innerHTML = html;
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function populateQuizSelect() {
+            const select = document.getElementById('quiz-select');
+            const usedFiles = [...new Set(allScores.map(s => s.quizFile))];
+            select.innerHTML = usedFiles.map(f => `<option value="${f}">${quizTitles[f] || f}</option>`).join('');
+        }
+
+        function render() {
+            if (mode === 'total') {
+                renderTotalRanking();
+            } else {
+                populateQuizSelect();
+                renderQuizRanking();
+            }
+        }
+
+        db.collection('scores').orderBy('timestamp', 'desc').limit(1000).get()
+            .then(snapshot => {
+                allScores = snapshot.docs.map(doc => doc.data());
+                render();
+            })
+            .catch(e => {
+                document.getElementById('content').innerHTML =
+                    `<div class="empty-state"><div class="icon">⚠️</div>랭킹을 불러오지 못했어요.<br><span style="font-size:11px">${e.message}</span></div>`;
+            });
+    </script>
+</body>
+</html>
