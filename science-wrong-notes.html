@@ -158,9 +158,32 @@
         }
 
         .note-options {
+            position: relative;
             display: flex;
             flex-direction: column;
             gap: 6px;
+        }
+        .lock-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: rgba(10, 8, 20, 0.55);
+            backdrop-filter: blur(1.5px);
+            border-radius: 12px;
+            cursor: pointer;
+            z-index: 2;
+        }
+        .lock-overlay .lock-icon {
+            font-size: 26px;
+            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.6));
+        }
+        .lock-overlay .lock-timer-text {
+            font-size: 12px;
+            font-weight: 700;
+            color: #d0d0f0;
         }
         .note-option-btn {
             width: 100%;
@@ -188,7 +211,7 @@
             color: #a3ffd6;
         }
         .note-option-btn:disabled { cursor: not-allowed; opacity: 0.55; }
-        .note-option-btn.is-locked { opacity: 0.55; }
+        .note-option-btn.is-locked { opacity: 0.3; filter: blur(1.5px); }
         @keyframes shakeIt {
             0%, 100% { transform: translateX(0); }
             25% { transform: translateX(-4px); }
@@ -295,7 +318,7 @@
     </style>
 </head>
 <body>
-    <div class="version-tag">v2026.09.27-11</div>
+    <div class="version-tag">v2026.09.27-12</div>
     <a href="science-hub.html" class="home-float">🏠 홈</a>
 
     <div class="modal-overlay" id="answer-modal">
@@ -417,6 +440,13 @@
                     ? `땡! 정답은 <b>${note.options[note.correctIdx]}</b> 이다냥 😿<br>💡 ${note.explanation}<br><span id="lock-timer-${note.idx}" style="display:inline-block;margin-top:4px;color:#8985a8;"></span>`
                     : '';
                 const lockBadgeHtml = locked ? `<span class="lock-badge" id="lock-badge-${note.idx}">🔒 잠김</span>` : '';
+                const remainNow = locked ? Math.max(0, Math.ceil((note.lockedUntil - Date.now()) / 1000)) : 0;
+                const lockOverlayHtml = locked
+                    ? `<div class="lock-overlay" onclick="lockedClick(${note.idx})">
+                            <span class="lock-icon">🔒</span>
+                            <span class="lock-timer-text" id="lock-overlay-timer-${note.idx}">${remainNow}초</span>
+                       </div>`
+                    : '';
                 cardsHtml += `
                     <div class="note-card${locked ? ' locked' : ''}" id="note-card-${note.idx}">
                         <div class="note-meta">
@@ -425,7 +455,7 @@
                             <span class="note-date">${dateStr}</span>
                         </div>
                         <div class="note-q">Q. ${note.question}</div>
-                        <div class="note-options">${optionsHtml}</div>
+                        <div class="note-options">${optionsHtml}${lockOverlayHtml}</div>
                         <div class="note-feedback${locked ? ' wrong' : ''}" id="note-feedback-${note.idx}">${feedbackHtml}</div>
                     </div>
                 `;
@@ -491,6 +521,15 @@
                     const dateEl = metaEl.querySelector('.note-date');
                     if (dateEl) metaEl.insertBefore(badge, dateEl);
                     else metaEl.appendChild(badge);
+                }
+
+                const optionsEl = card.querySelector('.note-options');
+                if (optionsEl && !optionsEl.querySelector('.lock-overlay')) {
+                    const overlay = document.createElement('div');
+                    overlay.className = 'lock-overlay';
+                    overlay.setAttribute('onclick', `lockedClick(${idx})`);
+                    overlay.innerHTML = `<span class="lock-icon">🔒</span><span class="lock-timer-text" id="lock-overlay-timer-${idx}">60초</span>`;
+                    optionsEl.appendChild(overlay);
                 }
 
                 const lockedUntil = Date.now() + 60 * 1000;
@@ -559,6 +598,8 @@
                 } else {
                     const el = document.getElementById(`lock-timer-${idx}`);
                     if (el) el.textContent = formatRemain(remain);
+                    const overlayEl = document.getElementById(`lock-overlay-timer-${idx}`);
+                    if (overlayEl) overlayEl.textContent = `${Math.ceil(remain / 1000)}초`;
                 }
             });
             if (anyExpired) render();
