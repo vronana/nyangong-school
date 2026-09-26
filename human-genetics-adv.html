@@ -590,6 +590,8 @@
             const existing = localStorage.getItem('sciencePlayerName_v2');
             if (!existing) {
                 document.getElementById('name-modal').classList.add('show');
+            } else {
+                registerPlayer(existing);
             }
         }
 
@@ -598,6 +600,7 @@
             const val = input.value.trim();
             if (!val) { alert('이름을 입력해줘!'); return; }
             localStorage.setItem('sciencePlayerName_v2', val);
+            registerPlayer(val);
             document.getElementById('name-modal').classList.remove('show');
             updateGreeting();
         }

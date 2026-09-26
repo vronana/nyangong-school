@@ -27,6 +27,18 @@ function getPlayerName() {
     }
 }
 
+function registerPlayer(name) {
+    try {
+        if (!name) return;
+        db.collection('players').doc(name).set({
+            name: name,
+            lastSeen: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true }).catch(e => console.log('플레이어 등록 실패:', e));
+    } catch (e) {
+        console.log('플레이어 등록 실패:', e);
+    }
+}
+
 function submitScore(quizFile, quizTitle, correct, total) {
     try {
         const name = getPlayerName();

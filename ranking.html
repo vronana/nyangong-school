@@ -175,6 +175,7 @@
 
         let mode = 'total';
         let allScores = [];
+        let allPlayers = [];
 
         const quizTitles = {
             'reproduction.html': '생식과 발생 기초',
@@ -217,13 +218,16 @@
 
         function renderTotalRanking() {
             const content = document.getElementById('content');
-            if (allScores.length === 0) {
-                content.innerHTML = `<div class="empty-state"><div class="icon">🐟</div>아직 아무도 퀴즈를 안 풀었어요!<br>가장 먼저 풀고 1등 해보세요.</div>`;
+            if (allScores.length === 0 && allPlayers.length === 0) {
+                content.innerHTML = `<div class="empty-state"><div class="icon">🐟</div>아직 아무도 없어요!<br>가장 먼저 이름 등록하고 1등 해보세요.</div>`;
                 return;
             }
 
-            // 사람별로 합산 (정답 수 합, 문제 수 합, 응시 횟수)
+            // 이름 등록한 사람 전원을 0점으로 먼저 깔아두고, 점수 기록으로 합산
             const byPlayer = {};
+            allPlayers.forEach(name => {
+                byPlayer[name] = { name: name, correct: 0, total: 0, count: 0 };
+            });
             allScores.forEach(s => {
                 if (!byPlayer[s.name]) byPlayer[s.name] = { name: s.name, correct: 0, total: 0, count: 0 };
                 byPlayer[s.name].correct += s.correct;
@@ -236,12 +240,13 @@
             let html = '';
             ranked.forEach((p, i) => {
                 const pct = p.total > 0 ? Math.round((p.correct / p.total) * 100) : 0;
+                const detail = p.count > 0 ? `${p.count}개 퀴즈 응시 · 정답률 ${pct}%` : '아직 퀴즈 안 풂';
                 html += `
                     <div class="${rowClass(i)}">
                         <div class="rank-num">${medalFor(i)}</div>
                         <div class="rank-info">
                             <div class="rank-name">${escapeHtml(p.name)}</div>
-                            <div class="rank-detail">${p.count}개 퀴즈 응시 · 정답률 ${pct}%</div>
+                            <div class="rank-detail">${detail}</div>
                         </div>
                         <div class="rank-score">${p.correct}점</div>
                     </div>
@@ -306,15 +311,17 @@
             }
         }
 
-        db.collection('scores').orderBy('timestamp', 'desc').limit(1000).get()
-            .then(snapshot => {
-                allScores = snapshot.docs.map(doc => doc.data());
-                render();
-            })
-            .catch(e => {
-                document.getElementById('content').innerHTML =
-                    `<div class="empty-state"><div class="icon">⚠️</div>랭킹을 불러오지 못했어요.<br><span style="font-size:11px">${e.message}</span></div>`;
-            });
+        Promise.all([
+            db.collection('scores').orderBy('timestamp', 'desc').limit(1000).get(),
+            db.collection('players').limit(1000).get()
+        ]).then(([scoreSnap, playerSnap]) => {
+            allScores = scoreSnap.docs.map(doc => doc.data());
+            allPlayers = playerSnap.docs.map(doc => doc.data().name);
+            render();
+        }).catch(e => {
+            document.getElementById('content').innerHTML =
+                `<div class="empty-state"><div class="icon">⚠️</div>랭킹을 불러오지 못했어요.<br><span style="font-size:11px">${e.message}</span></div>`;
+        });
     </script>
 </body>
 </html>
