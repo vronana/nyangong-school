@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>과학 퀴즈 게임</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600&display=swap">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #7c3aed;
+            --primary-light: #a78bfa;
+            --primary-dark: #6d28d9;
+            --success: #10b981;
+            --danger: #ef4444;
+            --bg-light: #f9fafb;
+            --bg-white: #ffffff;
+            --text-dark: #1f2937;
+            --text-gray: #6b7280;
+            --border: #e5e7eb;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                --primary: #a78bfa;
+                --primary-light: #ddd6fe;
+                --primary-dark: #7c3aed;
+                --success: #34d399;
+                --danger: #f87171;
+                --bg-light: #1f2937;
+                --bg-white: #111827;
+                --text-dark: #f3f4f6;
+                --text-gray: #d1d5db;
+                --border: #374151;
+                --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+                --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+                --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+            }
+        }
+
+        :root[data-theme="dark"] {
+            --primary: #a78bfa;
+            --primary-light: #ddd6fe;
+            --primary-dark: #7c3aed;
+            --success: #34d399;
+            --danger: #f87171;
+            --bg-light: #1f2937;
+            --bg-white: #111827;
+            --text-dark: #f3f4f6;
+            --text-gray: #d1d5db;
+            --border: #374151;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+            color-scheme: dark;
+        }
+
+        html, body { height: 100%; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: linear-gradient(135deg, var(--bg-light) 0%, var(--bg-white) 100%);
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 640px;
+            width: 100%;
+            background: var(--bg-white);
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 2rem 1.5rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+
+        .content { padding: 2rem 1.5rem; }
+
+        .score-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .score-card {
+            background: var(--bg-light);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .score-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .score-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-gray);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .score-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .question-section {
+            background: var(--bg-light);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 13px;
+            color: var(--text-gray);
+            font-weight: 500;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+            transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .question-text {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            color: var(--text-dark);
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--bg-white);
+        }
+
+        .option:hover:not(.disabled) {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.05) 0%, rgba(167, 139, 250, 0.05) 100%);
+        }
+
+        .option input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .option-text {
+            flex: 1;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .option.correct {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
+            border-color: var(--success);
+        }
+
+        .option.correct .option-text {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .option.incorrect {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%);
+            border-color: var(--danger);
+        }
+
+        .option.incorrect .option-text {
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        .option.disabled {
+            pointer-events: none;
+        }
+
+        .feedback {
+            padding: 14px;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            font-size: 14px;
+            line-height: 1.6;
+            font-weight: 500;
+            border-left: 4px solid;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .feedback.correct {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
+            color: var(--success);
+            border-color: var(--success);
+        }
+
+        .feedback.incorrect {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%);
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-primary:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: var(--bg-light);
+            color: var(--text-dark);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .game-over-section {
+            text-align: center;
+            padding: 2rem 1.5rem;
+        }
+
+        .game-over-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .final-score {
+            font-size: 56px;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 1.5rem 0;
+            font-variant-numeric: tabular-nums;
+            animation: scoreReveal 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes scoreReveal {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .final-message {
+            font-size: 15px;
+            color: var(--text-gray);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+            white-space: pre-line;
+        }
+
+        [hidden] { display: none !important; }
+
+        @media (max-width: 480px) {
+            .container { border-radius: 16px; }
+            .header { padding: 1.5rem 1rem; }
+            .header h1 { font-size: 28px; }
+            .content { padding: 1.5rem 1rem; }
+            .question-section { padding: 1.25rem; }
+            button { font-size: 13px; padding: 11px 14px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>과학 퀴즈</h1>
+            <p>중학교 3학년 중간고사 준비</p>
+        </div>
+
+        <div class="content">
+            <div class="score-board">
+                <div class="score-card">
+                    <div class="score-label">✓ 정답</div>
+                    <div class="score-value" id="correct">0</div>
+                </div>
+                <div class="score-card">
+                    <div class="score-label">✗ 오답</div>
+                    <div class="score-value" id="incorrect">0</div>
+                </div>
+                <div class="score-card">
+                    <div class="score-label">📊 정답률</div>
+                    <div class="score-value" id="percentage">0%</div>
+                </div>
+            </div>
+
+            <div id="quiz-section">
+                <div class="question-section">
+                    <div class="progress-info">
+                        <span id="current-q">1</span><span> / </span><span id="total-q">10</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress" style="width: 10%;"></div>
+                    </div>
+                    <div class="question-text" id="question"></div>
+                    <div class="options" id="options"></div>
+                    <div id="feedback"></div>
+                    <div class="button-group">
+                        <button class="btn-primary" id="submit-btn" onclick="submitAnswer()">정답 제출</button>
+                        <button class="btn-secondary" id="next-btn" onclick="nextQuestion()" hidden>다음 →</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="game-over-section" hidden>
+                <div class="game-over-section">
+                    <h2>🎉 완료!</h2>
+                    <div class="final-score" id="final-score">0/10</div>
+                    <div class="final-message" id="final-message"></div>
+                    <button class="btn-primary" onclick="resetGame()" style="width: 100%; max-width: 100%;">다시 시작</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                q: "식물의 광합성에서 생기는 산소는 어디에서 나오나요?",
+                options: ["토양에서", "물에서", "공기에서", "비료에서"],
+                correct: 1,
+                explanation: "광합성 중 명반응에서 물(H₂O)이 분해되면서 산소가 생성됩니다."
+            },
+            {
+                q: "다음 중 화학 변화는 어느 것인가요?",
+                options: ["얼음이 녹는 것", "쇠가 녹슬어지는 것", "물이 끓는 것", "종이를 구기는 것"],
+                correct: 1,
+                explanation: "쇠가 녹슬어지는 것은 산소와 화합하면서 새로운 물질이 만들어지는 화학 변화입니다."
+            },
+            {
+                q: "인체에서 산소 운반을 담당하는 물질은?",
+                options: ["헤모글로빈", "효소", "호르몬", "항체"],
+                correct: 0,
+                explanation: "적혈구에 포함된 헤모글로빈이 폐에서 산소를 받아 온몸으로 운반합니다."
+            },
+            {
+                q: "지구가 자전하는 주기는?",
+                options: ["24시간", "365일", "7일", "30일"],
+                correct: 0,
+                explanation: "지구는 자축을 중심으로 약 24시간에 한 번씩 서쪽에서 동쪽으로 회전합니다."
+            },
+            {
+                q: "다음 중 재생 가능한 에너지는?",
+                options: ["석탄", "석유", "태양에너지", "천연가스"],
+                correct: 2,
+                explanation: "태양에너지는 태양이 계속 빛을 내는 한 무한정 사용할 수 있는 재생 가능한 에너지입니다."
+            },
+            {
+                q: "인간의 신경계를 구성하는 기본 단위는?",
+                options: ["세포", "뉴런", "조직", "기관"],
+                correct: 1,
+                explanation: "뉴런(신경세포)은 신경계의 기본 단위로, 정보를 수집하고 전달합니다."
+            },
+            {
+                q: "다음 중 가장 작은 단위의 물질은?",
+                options: ["분자", "원자", "입자", "전자"],
+                correct: 1,
+                explanation: "원자는 물질을 구성하는 가장 기본적인 단위입니다."
+            },
+            {
+                q: "지구 대기의 대부분을 차지하는 가스는?",
+                options: ["산소", "이산화탄소", "질소", "수증기"],
+                correct: 2,
+                explanation: "질소(N₂)가 약 78%로 대기의 대부분을 차지합니다."
+            },
+            {
+                q: "천연 자석의 성질을 띠는 광물은?",
+                options: ["철광석", "자철광", "동광", "석탄"],
+                correct: 1,
+                explanation: "자철광(Fe₃O₄)은 자연에서 자석 성질을 보이는 광물입니다."
+            },
+            {
+                q: "식물이 생장하기 위해 가장 필요한 요소는?",
+                options: ["빛과 물", "빛과 이산화탄소", "물과 무기염류", "빛, 물, 이산화탄소"],
+                correct: 3,
+                explanation: "식물이 성장하려면 빛 에너지와 물, 이산화탄소가 모두 필요합니다."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let correctCount = 0;
+        let incorrectCount = 0;
+        let selectedOption = null;
+
+        function loadQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById('question').textContent = q.q;
+            document.getElementById('current-q').textContent = currentQuestion + 1;
+
+            const optionsDiv = document.getElementById('options');
+            optionsDiv.innerHTML = '';
+            q.options.forEach((opt, idx) => {
+                const label = document.createElement('label');
+                label.className = 'option';
+                label.innerHTML = `
+                    <input type="radio" name="answer" value="${idx}" onchange="selectOption(${idx})">
+                    <span class="option-text">${opt}</span>
+                `;
+                optionsDiv.appendChild(label);
+            });
+
+            document.getElementById('feedback').innerHTML = '';
+            document.getElementById('submit-btn').hidden = false;
+            document.getElementById('next-btn').hidden = true;
+            selectedOption = null;
+            updateProgress();
+        }
+
+        function selectOption(idx) {
+            selectedOption = idx;
+        }
+
+        function submitAnswer() {
+            if (selectedOption === null) {
+                alert('선택지를 선택해주세요');
+                return;
+            }
+
+            const q = questions[currentQuestion];
+            const isCorrect = selectedOption === q.correct;
+
+            if (isCorrect) {
+                correctCount++;
+            } else {
+                incorrectCount++;
+            }
+
+            updateScore();
+
+            const options = document.querySelectorAll('.option');
+            options.forEach((opt, idx) => {
+                opt.classList.add('disabled');
+                if (idx === q.correct) {
+                    opt.classList.add('correct');
+                } else if (idx === selectedOption && !isCorrect) {
+                    opt.classList.add('incorrect');
+                }
+            });
+
+            const feedback = document.getElementById('feedback');
+            feedback.className = 'feedback ' + (isCorrect ? 'correct' : 'incorrect');
+            feedback.innerHTML = (isCorrect ? '✓ 정답입니다!' : '✗ 다시 생각해보세요') + '\n' + q.explanation;
+
+            document.getElementById('submit-btn').hidden = true;
+            document.getElementById('next-btn').hidden = false;
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                endGame();
+            }
+        }
+
+        function updateScore() {
+            const total = correctCount + incorrectCount;
+            const percentage = total > 0 ? Math.round((correctCount / total) * 100) : 0;
+            document.getElementById('correct').textContent = correctCount;
+            document.getElementById('incorrect').textContent = incorrectCount;
+            document.getElementById('percentage').textContent = percentage + '%';
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+        }
+
+        function endGame() {
+            document.getElementById('quiz-section').hidden = true;
+            document.getElementById('game-over-section').hidden = false;
+
+            const total = correctCount + incorrectCount;
+            document.getElementById('final-score').textContent = correctCount + '/' + total;
+
+            let emoji = '😊';
+            let message = '';
+            if (correctCount === total) {
+                emoji = '🌟';
+                message = '완벽합니다!\n과학의 신이 되었어요!\n중간고사 대비 완벽합니다!';
+            } else if (correctCount >= total * 0.8) {
+                emoji = '👏';
+                message = '훌륭합니다!\n과학을 정말 잘 이해하고 있네요!\n중간고사에서 좋은 성적을 기대해요!';
+            } else if (correctCount >= total * 0.6) {
+                emoji = '💪';
+                message = '좋습니다!\n좀 더 복습하면 더 잘할 수 있어요!\n중요한 개념들을 다시 한번 정리해봐요!';
+            } else {
+                emoji = '✨';
+                message = '화이팅!\n다시 한 번 도전해보세요!\n어려운 부분들을 다시 공부해봅시다!';
+            }
+            document.getElementById('game-over-section').querySelector('h2').textContent = emoji + ' 게임 완료!';
+            document.getElementById('final-message').textContent = message;
+        }
+
+        function resetGame() {
+            currentQuestion = 0;
+            correctCount = 0;
+            incorrectCount = 0;
+            selectedOption = null;
+            document.getElementById('quiz-section').hidden = false;
+            document.getElementById('game-over-section').hidden = true;
+            document.getElementById('correct').textContent = '0';
+            document.getElementById('incorrect').textContent = '0';
+            document.getElementById('percentage').textContent = '0%';
+            loadQuestion();
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
