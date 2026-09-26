@@ -56,26 +56,36 @@
             font-size: 14px;
         }
 
-        .share-fab {
-            position: fixed;
-            top: 14px;
-            right: 14px;
-            z-index: 150;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            border: 1px solid var(--border);
-            background: var(--surface);
-            color: var(--primary);
-            font-size: 18px;
+        .share-row {
             display: flex;
             align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
-            cursor: pointer;
-            transition: transform 0.15s;
+            justify-content: space-between;
+            gap: 10px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 12px 14px;
+            margin-bottom: 1.6rem;
         }
-        .share-fab:active { transform: scale(0.92); }
+        .share-row .share-text {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+        .share-row .share-btn {
+            flex-shrink: 0;
+            background: var(--primary);
+            color: #14122a;
+            border: none;
+            border-radius: 10px;
+            padding: 9px 16px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            font-family: inherit;
+        }
+        .share-row .share-btn:active { transform: scale(0.95); }
 
         .notes-link {
             display: flex;
@@ -262,8 +272,7 @@
     </style>
 </head>
 <body>
-    <div class="version-tag">v2026.09.27-4</div>
-    <button type="button" class="share-fab" onclick="shareSite()" aria-label="친구에게 공유하기">📤</button>
+    <div class="version-tag">v2026.09.27-6</div>
     <div class="modal-overlay" id="name-modal">
         <div class="modal-box">
             <div style="font-size:50px; margin-bottom:0.8rem;">😸</div>
@@ -292,6 +301,11 @@
             <div class="cat">😸</div>
             <h1>냥공스쿨</h1>
             <div class="greeting" id="hub-greeting"></div>
+        </div>
+
+        <div class="share-row">
+            <span class="share-text">친구에게 공유해보냥 😸</span>
+            <button type="button" class="share-btn" onclick="shareSite()">📤 공유하기</button>
         </div>
 
         <div class="section-title">📚 과목을 골라보냥</div>
