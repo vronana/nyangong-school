@@ -74,18 +74,27 @@
         }
         .share-row .share-btn {
             flex-shrink: 0;
-            background: var(--primary);
-            color: #14122a;
-            border: none;
-            border-radius: 10px;
-            padding: 9px 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary-soft);
+            border-radius: 20px;
+            padding: 8px 14px;
             font-size: 13px;
             font-weight: 700;
             cursor: pointer;
             white-space: nowrap;
             font-family: inherit;
+            transition: transform 0.15s, background 0.15s;
         }
         .share-row .share-btn:active { transform: scale(0.95); }
+        .share-row .share-btn:hover { background: var(--primary-soft); }
+        .share-row .share-btn.copied {
+            color: var(--success);
+            border-color: rgba(74, 222, 128, 0.4);
+        }
 
         .notes-link {
             display: flex;
@@ -272,7 +281,7 @@
     </style>
 </head>
 <body>
-    <div class="version-tag">v2026.09.27-6</div>
+    <div class="version-tag">v2026.09.27-7</div>
     <div class="modal-overlay" id="name-modal">
         <div class="modal-box">
             <div style="font-size:50px; margin-bottom:0.8rem;">😸</div>
@@ -305,7 +314,7 @@
 
         <div class="share-row">
             <span class="share-text">친구에게 공유해보냥 😸</span>
-            <button type="button" class="share-btn" onclick="shareSite()">📤 공유하기</button>
+            <button type="button" class="share-btn" id="share-btn" onclick="shareSite(this)">🔗 링크 복사</button>
         </div>
 
         <div class="section-title">📚 과목을 골라보냥</div>
@@ -436,21 +445,35 @@
             toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
         }
 
-        function shareSite() {
+        function shareSite(btn) {
             const shareUrl = 'https://vronana.github.io/nyangong-school/';
-            const shareData = {
-                title: '냥공스쿨',
-                text: '중간고사 준비, 냥공스쿨이랑 같이 하자! 🐱📚',
-                url: shareUrl
-            };
-            if (navigator.share) {
-                navigator.share(shareData).catch(() => {});
-                return;
+            const originalLabel = '🔗 링크 복사';
+
+            function markCopied() {
+                if (!btn) return;
+                btn.textContent = '✅ 복사완료!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = originalLabel;
+                    btn.classList.remove('copied');
+                }, 1600);
             }
+
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(shareUrl)
-                    .then(() => showToast('링크를 복사했다냥! 친구한테 붙여넣기 해서 보내보냥 📋'))
-                    .catch(() => showToast(shareUrl));
+                    .then(() => {
+                        markCopied();
+                        showToast('링크를 복사했다냥! 친구한테 붙여넣기 해서 보내보냥 📋');
+                    })
+                    .catch(() => {
+                        if (navigator.share) {
+                            navigator.share({ title: '냥공스쿨', text: '중간고사 준비, 냥공스쿨이랑 같이 하자! 🐱📚', url: shareUrl }).catch(() => {});
+                        } else {
+                            showToast(shareUrl);
+                        }
+                    });
+            } else if (navigator.share) {
+                navigator.share({ title: '냥공스쿨', text: '중간고사 준비, 냥공스쿨이랑 같이 하자! 🐱📚', url: shareUrl }).catch(() => {});
             } else {
                 showToast(shareUrl);
             }
