@@ -318,7 +318,7 @@
     </style>
 </head>
 <body>
-    <div class="version-tag">v2026.09.27-16</div>
+    <div class="version-tag">v2026.09.27-17</div>
     <a href="science-hub.html" class="home-float">🏠 홈</a>
 
     <div class="modal-overlay" id="answer-modal">
@@ -346,7 +346,7 @@
             try {
                 const name = localStorage.getItem('sciencePlayerName_v2') || '';
                 const el = document.getElementById('page-greeting');
-                if (el) el.textContent = name ? `${name}님 반갑다냥! 😸` : '';
+                if (el) el.textContent = name ? `${name}님 반갑다${ny()}! 😸` : '';
             } catch (e) {}
         }
         updateGreeting();
@@ -360,6 +360,9 @@
         function saveNotes(notes) {
             localStorage.setItem('scienceWrongNotes_v2', JSON.stringify(notes));
         }
+
+        // 말투를 매번 "~냥"으로만 고정하지 않고 가끔 "~옹"도 섞어서 사용
+        function ny() { return Math.random() < 0.5 ? '냥' : '옹'; }
 
         // 0~n-1 인덱스를 무작위로 섞은 배열을 반환 (피셔-예이츠)
         function shuffledIndices(n) {
@@ -452,7 +455,7 @@
                     optionsHtml += `<button type="button" class="note-option-btn${isAnswer ? ' correct-pick' : ''}${locked ? ' is-locked' : ''}" onclick="${clickHandler}">${opt}</button>`;
                 });
                 const feedbackHtml = locked
-                    ? `땡! 정답은 <b>${note.options[note.correctIdx]}</b> 이다냥 😿<br>💡 ${note.explanation}<br><span id="lock-timer-${note.idx}" style="display:inline-block;margin-top:4px;color:#8985a8;"></span>`
+                    ? `땡! 정답은 <b>${note.options[note.correctIdx]}</b> 이다${ny()} 😿<br>💡 ${note.explanation}<br><span id="lock-timer-${note.idx}" style="display:inline-block;margin-top:4px;color:#8985a8;"></span>`
                     : '';
                 const lockBadgeHtml = locked ? `<span class="lock-badge" id="lock-badge-${note.idx}">🔒 잠김</span>` : '';
                 const remainNow = locked ? Math.max(0, Math.ceil((note.lockedUntil - Date.now()) / 1000)) : 0;
@@ -500,7 +503,7 @@
                 card.querySelectorAll('.note-option-btn').forEach(b => b.disabled = true);
                 btnEl.classList.add('correct-pick');
                 feedbackEl.className = 'note-feedback correct';
-                feedbackEl.textContent = `🎉 정답이다냥! 💡 ${note.explanation}`;
+                feedbackEl.textContent = `🎉 정답이다${ny()}! 💡 ${note.explanation}`;
                 if (typeof recordReviewClear === 'function') recordReviewClear();
 
                 showAnswerModal('🎉', '맞았습니다!', `💡 ${note.explanation}<br><br>오답노트에서 삭제할게요`, () => {
@@ -555,9 +558,9 @@
                 }
 
                 feedbackEl.className = 'note-feedback wrong';
-                feedbackEl.innerHTML = `땡! 정답은 <b>${note.options[note.correctIdx]}</b> 이다냥 😿<br>💡 ${note.explanation}<br><span id="lock-timer-${idx}" style="display:inline-block;margin-top:4px;color:#8985a8;"></span>`;
+                feedbackEl.innerHTML = `땡! 정답은 <b>${note.options[note.correctIdx]}</b> 이다${ny()} 😿<br>💡 ${note.explanation}<br><span id="lock-timer-${idx}" style="display:inline-block;margin-top:4px;color:#8985a8;"></span>`;
 
-                showAnswerModal('😿', '틀렸습니다', `정답은 <b>${note.options[note.correctIdx]}</b> 이다냥<br>💡 ${note.explanation}<br><br>⏱ 1분 동안 이 문제는 잠긴다냥`, null);
+                showAnswerModal('😿', '틀렸습니다', `정답은 <b>${note.options[note.correctIdx]}</b> 이다${ny()}<br>💡 ${note.explanation}<br><br>⏱ 1분 동안 이 문제는 잠긴다${ny()}`, null);
 
                 startLockTicker();
                 tickLockTimers();
@@ -606,7 +609,7 @@
                 render();
                 return;
             }
-            showAnswerModal('🔒', '아직 잠겨있어요', `${formatRemain(remain)}<br>조금 있다가 다시 풀어봐냥`, null);
+            showAnswerModal('🔒', '아직 잠겨있어요', `${formatRemain(remain)}<br>조금 있다가 다시 풀어봐${ny()}`, null);
         }
 
         function tickLockTimers() {

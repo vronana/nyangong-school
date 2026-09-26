@@ -307,6 +307,9 @@
         }
 
         .perfect-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             margin-top: 1.5rem;
             padding: 14px 40px;
             font-size: 18px;
@@ -316,6 +319,7 @@
             border: none;
             border-radius: 30px;
             cursor: pointer;
+            text-decoration: none;
             box-shadow: 0 4px 20px rgba(255,215,0,0.5);
         }
 
@@ -491,7 +495,7 @@
 </head>
 <body>
     <a href="hub.html" class="home-float" id="home-float-link">🏠 홈</a>
-    <div class="version-tag">v2026.09.27-16</div>
+    <div class="version-tag">v2026.09.27-17</div>
     <div class="game-container">
         <div class="header" id="quiz-header">불러오는 중...</div>
 
@@ -574,10 +578,10 @@
     <div id="perfect-overlay">
         <div class="perfect-box">
             <span class="perfect-cat">🏆😸🐟</span>
-            <div class="perfect-title">🎉 만점 달성이다냥! 🎉</div>
-            <div class="perfect-sub">축하한다냥! 완벽해요! 🌟</div>
-            <div style="font-size: 14px; color: #a5a2c4; line-height: 1.8;">냥공천재 등극! 고양이도 너무 기쁘다냥!</div>
-            <button class="perfect-btn" onclick="closePerfect()">🎮 다시 도전하기</button>
+            <div class="perfect-title" id="perfect-title">🎉 만점 달성이다냥! 🎉</div>
+            <div class="perfect-sub" id="perfect-sub">축하한다냥! 완벽해요! 🌟</div>
+            <div style="font-size: 14px; color: #a5a2c4; line-height: 1.8;" id="perfect-note">냥공천재 등극! 고양이도 너무 기쁘다냥!</div>
+            <a href="hub.html" id="perfect-home-link" class="perfect-btn">🏠 과목 홈으로</a>
         </div>
     </div>
 
@@ -602,7 +606,7 @@
         // 과목별 허브/오답노트 페이지로 연결 (과목이 늘어나도 이 파일은 수정할 필요 없음)
         const subjectHubUrl = `${subject}-hub.html`;
         const subjectWrongNotesUrl = `${subject}-wrong-notes.html`;
-        ['home-float-link', 'game-over-home-link'].forEach(id => {
+        ['home-float-link', 'game-over-home-link', 'perfect-home-link'].forEach(id => {
             const el = document.getElementById(id);
             if (el) el.href = subjectHubUrl;
         });
@@ -823,6 +827,9 @@
             perfectTimeout = setTimeout(playPerfect, 10200);
         }
 
+        // 말투를 매번 "~냥"으로만 고정하지 않고 가끔 "~옹"도 섞어서 사용
+        function ny() { return Math.random() < 0.5 ? '냥' : '옹'; }
+
         // 0~n-1 인덱스를 무작위로 섞은 배열을 반환 (피셔-예이츠)
         function shuffledIndices(n) {
             const arr = Array.from({ length: n }, (_, i) => i);
@@ -913,7 +920,7 @@
                 fishDisplay.appendChild(fish);
 
                 document.getElementById('modal-icon').textContent = '😸';
-                document.getElementById('modal-title').textContent = (getSavedName() ? getSavedName() + '님, ' : '') + '✓ 정답이다냥!';
+                document.getElementById('modal-title').textContent = (getSavedName() ? getSavedName() + '님, ' : '') + '✓ 정답이다' + ny() + '!';
                 document.getElementById('modal-title').className = 'modal-title correct';
                 playCorrect();
             } else {
@@ -922,7 +929,7 @@
                 catEl.classList.remove('cat-happy');
 
                 document.getElementById('modal-icon').textContent = '😿';
-                document.getElementById('modal-title').textContent = (getSavedName() ? getSavedName() + '님, ' : '') + '✗ 오답이다냥';
+                document.getElementById('modal-title').textContent = (getSavedName() ? getSavedName() + '님, ' : '') + '✗ 오답이다' + ny();
                 document.getElementById('modal-title').className = 'modal-title incorrect';
                 playWrong();
                 saveWrongAnswer(q, selectedOption);
@@ -982,6 +989,9 @@
             }
 
             if (correctCount === questions.length) {
+                document.getElementById('perfect-title').textContent = `🎉 만점 달성이다${ny()}! 🎉`;
+                document.getElementById('perfect-sub').textContent = `축하한다${ny()}! 완벽해요! 🌟`;
+                document.getElementById('perfect-note').textContent = `냥공천재 등극! 고양이도 너무 기쁘다${ny()}!`;
                 playPerfect();
                 setTimeout(() => {
                     launchConfetti();
@@ -992,11 +1002,11 @@
 
             let message = '';
             if (correctCount >= questions.length * 0.8) {
-                message = '훌륭하다냥! 📚 정말 잘 이해하고 있네요.\n중간고사에서 좋은 성적을 기대한다냥!';
+                message = `훌륭하다${ny()}! 📚 정말 잘 이해하고 있네요.\n중간고사에서 좋은 성적을 기대한다${ny()}!`;
             } else if (correctCount >= questions.length * 0.6) {
-                message = '좋다냥! 💪 좀 더 복습하면 더 잘할 수 있어요.\n중요한 개념들을 다시 한번 정리해보냥!';
+                message = `좋다${ny()}! 💪 좀 더 복습하면 더 잘할 수 있어요.\n중요한 개념들을 다시 한번 정리해보${ny()}!`;
             } else {
-                message = '화이팅이다냥! ✨ 다시 한 번 도전해보세요.\n어려운 부분들을 다시 공부해보냥!';
+                message = `화이팅이다${ny()}! ✨ 다시 한 번 도전해보세요.\n어려운 부분들을 다시 공부해보${ny()}!`;
             }
             document.getElementById('final-message').textContent = message;
         }
@@ -1019,11 +1029,6 @@
             }
         }
 
-        function closePerfect() {
-            stopPerfect();
-            document.getElementById('perfect-overlay').classList.remove('show');
-            resetGame();
-        }
 
         function resetGame() {
             currentQuestion = 0;

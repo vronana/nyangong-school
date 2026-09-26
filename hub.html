@@ -281,7 +281,7 @@
     </style>
 </head>
 <body>
-    <div class="version-tag">v2026.09.27-16</div>
+    <div class="version-tag">v2026.09.27-17</div>
     <div class="modal-overlay" id="name-modal">
         <div class="modal-box">
             <div style="font-size:50px; margin-bottom:0.8rem;">😸</div>
@@ -369,12 +369,15 @@
             try { return localStorage.getItem('sciencePlayerName_v2') || ''; }
             catch (e) { return ''; }
         }
+        // 말투를 매번 "~냥"으로만 고정하지 않고 가끔 "~옹"도 섞어서 사용
+        function ny() { return Math.random() < 0.5 ? '냥' : '옹'; }
+
         const greetingLines = [
-            name => `어서 와 ${name}, 중3 중간고사 고민되냥? 이거 풀어봐라! 😼`,
-            name => `${name} 왔구나! 중간고사 전에 한 문제라도 더 풀어보자냥 💪`,
-            name => `오늘도 냥공하러 온 ${name}, 기특하다냥! 얼른 시작해보냥 📚`,
-            name => `${name}야 반갑다냥! 시험 코앞인데 여기서 감 잡고 가라냥 🔥`,
-            name => `${name}, 잘 왔다냥! 오늘은 몇 문제 풀고 갈 거냥? 😸`
+            name => `어서 와 ${name}, 중3 중간고사 고민되${ny()}? 이거 풀어봐라! 😼`,
+            name => `${name} 왔구나! 중간고사 전에 한 문제라도 더 풀어보자${ny()} 💪`,
+            name => `오늘도 냥공하러 온 ${name}, 기특하다${ny()}! 얼른 시작해보${ny()} 📚`,
+            name => `${name}야 반갑다${ny()}! 시험 코앞인데 여기서 감 잡고 가라${ny()} 🔥`,
+            name => `${name}, 잘 왔다${ny()}! 오늘은 몇 문제 풀고 갈 거${ny()}? 😸`
         ];
         function updateGreeting() {
             const name = getSavedName();
