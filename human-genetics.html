@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사람의 유전</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #00d4ff;
+            --primary-light: #4dd4ff;
+            --accent: #00d4ff;
+            --success: #00ff88;
+            --danger: #ff4466;
+            --bg: #2d1f3d;
+            --text: #f0f0f0;
+        }
+
+        body {
+            background: linear-gradient(135deg, #2d1f4e 0%, #1f1447 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Noto Sans KR', sans-serif;
+            padding: 1rem;
+            color: var(--text);
+        }
+
+        .game-container {
+            max-width: 500px;
+            width: 100%;
+            background: #2d1f3d;
+            border: none;
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 30px rgba(0, 212, 255, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 28px;
+            color: #00d4ff;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .cat-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.2rem;
+            padding: 0.8rem;
+            background: transparent;
+        }
+
+        .cat-pixel {
+            font-size: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cat-happy { animation: bounce 0.6s ease; }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .cat-sad { animation: droop 0.6s ease; }
+        @keyframes droop {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(5px) rotateZ(-2deg); }
+            100% { transform: translateY(0); }
+        }
+
+        .fish-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .fish-display {
+            display: flex;
+            justify-content: center;
+            gap: 3px;
+            flex-wrap: wrap;
+            min-height: 40px;
+            align-content: flex-start;
+        }
+
+        .fish {
+            font-size: 28px;
+            animation: popIn 0.4s ease;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0) rotate(0deg); opacity: 0; }
+            50% { transform: scale(1.2) rotate(10deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        .question-box {
+            background: transparent;
+            border: none;
+            border-radius: 15px;
+            padding: 1.2rem;
+            padding-left: 0;
+            padding-right: 0;
+            margin-bottom: 1rem;
+        }
+
+        .progress {
+            font-size: 12px;
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .question-text {
+            font-size: 20px;
+            margin-bottom: 1.2rem;
+            line-height: 1.8;
+            color: #f0f0f0;
+            font-weight: 600;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 1.2rem;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(0, 212, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 16px;
+            color: #f0f0f0;
+        }
+
+        .option:hover {
+            background: rgba(0, 212, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 212, 255, 0.15);
+        }
+
+        .option input[type="radio"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .option.correct {
+            background: rgba(0, 255, 136, 0.2);
+        }
+
+        .option.incorrect {
+            background: rgba(255, 68, 102, 0.2);
+        }
+
+        .option.disabled {
+            pointer-events: none;
+        }
+
+        .feedback {
+            padding: 12px 14px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 14px;
+            line-height: 1.6;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+            animation: slideIn 0.4s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .feedback.correct {
+            background: rgba(0, 255, 136, 0.15);
+            color: #00ff88;
+            border-left: 4px solid var(--success);
+        }
+
+        .feedback.incorrect {
+            background: rgba(255, 68, 102, 0.15);
+            color: #ff8899;
+            border-left: 4px solid var(--danger);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        button {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            background: linear-gradient(135deg, #00d4ff 0%, #00b8d4 100%);
+            color: white;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.4);
+        }
+
+        button:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.5);
+        }
+
+        button:active:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 10px rgba(0, 212, 255, 0.4);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .game-over {
+            text-align: center;
+            display: none;
+        }
+
+        /* 만점 축하 오버레이 */
+        #perfect-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 300;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        #perfect-overlay.show { display: flex; }
+
+        .perfect-box {
+            text-align: center;
+            animation: zoomIn 0.5s ease;
+        }
+        @keyframes zoomIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .perfect-title {
+            font-size: 36px;
+            font-weight: 900;
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255,215,0,0.8);
+            margin-bottom: 0.5rem;
+            animation: glow 1s ease infinite alternate;
+        }
+        @keyframes glow {
+            0% { text-shadow: 0 0 10px rgba(255,215,0,0.5); }
+            100% { text-shadow: 0 0 30px rgba(255,215,0,1), 0 0 60px rgba(255,215,0,0.5); }
+        }
+
+        .perfect-sub {
+            font-size: 18px;
+            color: #fff;
+            margin-bottom: 1.5rem;
+        }
+
+        .perfect-cat {
+            font-size: 80px;
+            animation: superBounce 0.4s ease infinite alternate;
+            display: block;
+            margin-bottom: 1rem;
+        }
+        @keyframes superBounce {
+            0% { transform: translateY(0) scale(1) rotate(-5deg); }
+            100% { transform: translateY(-20px) scale(1.1) rotate(5deg); }
+        }
+
+        .perfect-btn {
+            margin-top: 1.5rem;
+            padding: 14px 40px;
+            font-size: 18px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            color: #1a1a1a;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(255,215,0,0.5);
+        }
+
+        /* 폭죽 파티클 */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+            animation: fall linear forwards;
+            z-index: 299;
+            pointer-events: none;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        .final-score {
+            font-size: 48px;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 2rem 0 1.5rem 0;
+        }
+
+        .final-message {
+            font-size: 16px;
+            color: #f0f0f0;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .fish-total {
+            font-size: 24px;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        /* 고양이 축하 애니메이션 */
+        .cat-celebrate {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0px;
+            margin: 1rem 0;
+            font-size: 64px;
+        }
+
+        .celebrate-cat {
+            display: inline-block;
+            animation: catBounce 0.5s ease infinite alternate;
+        }
+
+        .celebrate-fish {
+            display: inline-block;
+            animation: fishWiggle 0.4s ease infinite alternate;
+            transform-origin: center bottom;
+        }
+
+        @keyframes catBounce {
+            0% { transform: translateY(0) rotate(-5deg); }
+            100% { transform: translateY(-12px) rotate(5deg); }
+        }
+
+        @keyframes fishWiggle {
+            0% { transform: rotate(-15deg) translateY(0px); }
+            100% { transform: rotate(15deg) translateY(-8px); }
+        }
+
+        .fish-total-display {
+            display: flex;
+            justify-content: center;
+            gap: 3px;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        #quiz-section { display: none; }
+        #game-over-section { display: none; }
+
+        /* 모달 */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.show {
+            display: flex;
+        }
+        .modal-box {
+            background: #2d1f3d;
+            border-radius: 20px;
+            padding: 2rem 1.5rem;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+            animation: popUp 0.3s ease;
+        }
+        @keyframes popUp {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .modal-icon { font-size: 60px; margin-bottom: 1rem; }
+        .modal-title { font-size: 22px; font-weight: 700; margin-bottom: 1rem; }
+        .modal-title.correct { color: #00ff88; }
+        .modal-title.incorrect { color: #ff4466; }
+        .modal-explanation {
+            font-size: 15px;
+            color: #d0d0f0;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+        .modal-btn {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .fixed-btn-bar {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 500px;
+            padding: 12px 1.5rem;
+            background: #2d1f3d;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
+            display: none;
+            z-index: 100;
+        }
+
+        @media (max-width: 480px) {
+            .game-container { padding: 1rem; }
+            .header { font-size: 24px; }
+            .question-text { font-size: 18px; }
+            .option { font-size: 15px; padding: 12px; }
+            button { font-size: 15px; padding: 14px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="header">🧬 사람의 유전 🧬</div>
+
+        <!-- 시작 화면 -->
+        <div id="start-section" style="text-align: center; padding: 2rem 0;">
+            <div style="font-size: 80px; margin-bottom: 1rem;">😸</div>
+            <div style="font-size: 16px; color: #b0b0ff; margin-bottom: 2rem; line-height: 1.8;">중학교 과학 중간고사 준비!<br>🧬 사람의 유전 문제</div>
+            <button onclick="startGame()" style="font-size: 20px; padding: 18px 40px;">🎮 게임 시작!</button>
+        </div>
+
+        <div id="quiz-section" style="display:none;">
+            <div class="cat-section">
+                <div class="cat-pixel" id="cat">😸</div>
+                <div class="fish-section">
+                    <div class="fish-display" id="fishDisplay"></div>
+                </div>
+            </div>
+
+            <div class="question-box">
+                <div class="progress">
+                    <span id="current-q">1</span> / <span id="total-q">10</span>
+                </div>
+                <div class="question-text" id="question"></div>
+                <div class="options" id="options"></div>
+                <div style="height: 70px;"></div>
+            </div>
+        </div>
+
+        <!-- 정답/오답 모달 -->
+        <div class="modal-overlay" id="feedback-modal">
+            <div class="modal-box">
+                <div class="modal-icon" id="modal-icon"></div>
+                <div class="modal-title" id="modal-title"></div>
+                <div class="modal-explanation" id="modal-explanation"></div>
+                <button class="modal-btn" onclick="closeModal()">다음 문제 →</button>
+            </div>
+        </div>
+
+        <div class="fixed-btn-bar" id="fixed-btn-bar">
+            <div class="button-group">
+                <button id="submit-btn" onclick="submitAnswer()">정답 제출</button>
+            </div>
+        </div>
+
+        <div id="game-over-section" class="game-over">
+            <div class="header" style="margin-bottom: 1rem;">🎉 게임 종료! 🎉</div>
+
+            <!-- 고양이 물고기 애니메이션 -->
+            <div class="cat-celebrate" id="cat-celebrate">
+                <span class="celebrate-cat">😸</span>
+                <span class="celebrate-fish">🐟</span>
+            </div>
+
+            <div class="final-score" id="final-score">0 / 10</div>
+            <div class="fish-total">모은 물고기</div>
+            <div class="fish-total-display" id="fishTotal"></div>
+            <div class="final-message" id="final-message"></div>
+            <button onclick="resetGame()">다시 시작하기</button>
+        </div>
+    </div>
+
+    <!-- 만점 축하 오버레이 -->
+    <div id="perfect-overlay">
+        <div class="perfect-box">
+            <span class="perfect-cat">🏆😸🐟</span>
+            <div class="perfect-title">🎉 만점 달성! 🎉</div>
+            <div class="perfect-sub">축하합니다! 완벽해요! 🌟</div>
+            <div style="font-size: 14px; color: #b0b0ff; line-height: 1.8;">과학 천재 등극! 고양이도 너무 기뻐요!</div>
+            <button class="perfect-btn" onclick="closePerfect()">🎮 다시 도전하기</button>
+        </div>
+    </div>
+
+    <!-- 배경음악 -->
+    <audio id="bgmAudio" loop>
+        <source src="PixelPulse.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const bgmAudio = document.getElementById('bgmAudio');
+        bgmAudio.volume = 0.3;
+
+        function startGame() {
+            document.getElementById('start-section').style.display = 'none';
+            document.getElementById('quiz-section').style.display = 'block';
+            document.getElementById('fixed-btn-bar').style.display = 'block';
+            bgmAudio.play().catch(e => console.log('음악 재생 실패:', e));
+            loadQuestion();
+        }
+
+        const questions = [
+            {
+                q: "사람의 유전 연구가 어려운 이유가 아닌 것은?",
+                options: ["대립 형질이 복잡하다", "한 세대가 길다", "자손의 수가 적다", "환경의 영향을 전혀 받지 않는다"],
+                correct: 3,
+                explanation: "사람은 환경의 영향을 많이 받습니다. 나머지 세 가지가 사람의 유전 연구가 어려운 이유입니다."
+            },
+            {
+                q: "미맹(PTC를 느끼지 못하는 형질)은 우성인가 열성인가?",
+                options: ["우성", "열성", "중간 형질", "알 수 없다"],
+                correct: 1,
+                explanation: "미맹은 열성 형질입니다. 부모가 모두 정상이어도 자녀에게 미맹이 나타날 수 있습니다."
+            },
+            {
+                q: "부모가 모두 미맹이 아닌데 자녀 중 미맹이 나왔다면 부모의 유전자형은? (T: 정상, t: 미맹)",
+                options: ["TT × TT", "TT × Tt", "Tt × Tt", "tt × tt"],
+                correct: 2,
+                explanation: "부모가 정상(T_)이지만 열성 유전자(t)를 하나씩 가진 잡종(Tt×Tt)일 때 미맹 자녀(tt)가 나올 수 있습니다."
+            },
+            {
+                q: "ABO식 혈액형을 결정하는 대립유전자의 종류는?",
+                options: ["1가지", "2가지", "3가지", "4가지"],
+                correct: 2,
+                explanation: "ABO식 혈액형은 A, B, O 세 가지 대립유전자에 의해 결정됩니다."
+            },
+            {
+                q: "유전자형이 AO인 사람의 혈액형은?",
+                options: ["O형", "A형", "B형", "AB형"],
+                correct: 1,
+                explanation: "대립유전자 A는 O에 대해 우성이므로 AO의 표현형은 A형입니다."
+            },
+            {
+                q: "AB형이 될 수 있는 유전자형은?",
+                options: ["AA", "AO", "AB", "OO"],
+                correct: 2,
+                explanation: "AB형의 유전자형은 AB뿐입니다. A와 B 사이에는 우열 관계가 없어 둘 다 표현됩니다."
+            },
+            {
+                q: "색맹 유전자는 어느 염색체에 있나요?",
+                options: ["상염색체", "X 염색체", "Y 염색체", "미토콘드리아"],
+                correct: 1,
+                explanation: "색맹 유전자는 성염색체인 X 염색체에 있습니다."
+            },
+            {
+                q: "색맹이 여자보다 남자에게 더 많이 나타나는 이유는?",
+                options: ["남자가 더 약해서", "남자는 X 염색체가 1개라 색맹 유전자가 하나만 있어도 색맹이 됨", "여자는 색맹 유전자가 없어서", "Y 염색체에 정상 유전자가 있어서"],
+                correct: 1,
+                explanation: "남자(XY)는 X 염색체가 1개이므로 색맹 유전자가 하나만 있어도 색맹이 되지만, 여자(XX)는 두 개 모두 색맹 유전자여야 색맹이 됩니다."
+            },
+            {
+                q: "어머니가 색맹(X'X')일 때 아들은?",
+                options: ["모두 정상", "모두 색맹", "절반이 색맹", "알 수 없다"],
+                correct: 1,
+                explanation: "어머니가 색맹이면 아들은 반드시 어머니의 X' 염색체를 받으므로 모두 색맹(X'Y)이 됩니다."
+            },
+            {
+                q: "보인자란?",
+                options: ["우성 형질을 가진 사람", "열성 유전자를 가지고 있지만 표현형이 정상인 여자", "색맹인 여자", "혈액형이 O형인 사람"],
+                correct: 1,
+                explanation: "보인자는 열성 유전자(X')를 하나 가지고 있지만 정상 유전자(X)도 있어 표현형이 정상인 여자(XX')입니다."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let correctCount = 0;
+        let fishCount = 0;
+        let answered = false;
+        let selectedOption = null;
+
+        function loadQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById('question').textContent = q.q;
+            document.getElementById('current-q').textContent = currentQuestion + 1;
+            document.getElementById('total-q').textContent = questions.length;
+
+            const optionsDiv = document.getElementById('options');
+            optionsDiv.innerHTML = '';
+            q.options.forEach((opt, idx) => {
+                const label = document.createElement('label');
+                label.className = 'option';
+                label.innerHTML = `
+                    <input type="radio" name="answer" value="${idx}" onchange="selectOption(${idx})">
+                    <span>${opt}</span>
+                `;
+                optionsDiv.appendChild(label);
+            });
+
+            document.getElementById('submit-btn').style.display = 'block';
+            answered = false;
+            selectedOption = null;
+        }
+
+        function selectOption(idx) {
+            selectedOption = idx;
+        }
+
+        function submitAnswer() {
+            if (selectedOption === null) {
+                alert('선택지를 선택해주세요');
+                return;
+            }
+
+            const q = questions[currentQuestion];
+            const isCorrect = selectedOption === q.correct;
+            const catEl = document.getElementById('cat');
+            const options = document.querySelectorAll('.option');
+
+            if (isCorrect) {
+                correctCount++;
+                fishCount++;
+                catEl.textContent = '😸';
+                catEl.classList.add('cat-happy');
+                catEl.classList.remove('cat-sad');
+
+                const fishDisplay = document.getElementById('fishDisplay');
+                const fish = document.createElement('span');
+                fish.className = 'fish';
+                fish.textContent = '🐟';
+                fishDisplay.appendChild(fish);
+
+                document.getElementById('modal-icon').textContent = '😸';
+                document.getElementById('modal-title').textContent = '✓ 정답입니다!';
+                document.getElementById('modal-title').className = 'modal-title correct';
+            } else {
+                catEl.textContent = '😿';
+                catEl.classList.add('cat-sad');
+                catEl.classList.remove('cat-happy');
+
+                document.getElementById('modal-icon').textContent = '😿';
+                document.getElementById('modal-title').textContent = '✗ 오답입니다';
+                document.getElementById('modal-title').className = 'modal-title incorrect';
+            }
+
+            options.forEach((opt, idx) => {
+                opt.classList.add('disabled');
+                if (idx === q.correct) opt.classList.add('correct');
+                else if (idx === selectedOption && !isCorrect) opt.classList.add('incorrect');
+            });
+
+            document.getElementById('modal-explanation').textContent = q.explanation;
+            document.getElementById('feedback-modal').classList.add('show');
+            document.getElementById('submit-btn').style.display = 'none';
+            answered = true;
+        }
+
+        function closeModal() {
+            document.getElementById('feedback-modal').classList.remove('show');
+            document.getElementById('submit-btn').style.display = 'block';
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                endGame();
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            document.getElementById('quiz-section').style.display = 'none';
+            document.getElementById('fixed-btn-bar').style.display = 'none';
+            document.getElementById('game-over-section').style.display = 'block';
+
+            document.getElementById('final-score').textContent = correctCount + ' / ' + questions.length;
+
+            // 물고기 표시
+            const fishTotalDiv = document.getElementById('fishTotal');
+            fishTotalDiv.innerHTML = '';
+            for (let i = 0; i < fishCount; i++) {
+                const fish = document.createElement('span');
+                fish.className = 'fish';
+                fish.textContent = '🐟';
+                fishTotalDiv.appendChild(fish);
+            }
+
+            // 만점이면 특별 축하!
+            if (correctCount === questions.length) {
+                setTimeout(() => {
+                    launchConfetti();
+                    document.getElementById('perfect-overlay').classList.add('show');
+                }, 600);
+                return;
+            }
+
+            let message = '';
+            if (correctCount >= questions.length * 0.8) {
+                message = '훌륭합니다! 📚 과학을 정말 잘 이해하고 있네요.\n중간고사에서 좋은 성적을 기대해요!';
+            } else if (correctCount >= questions.length * 0.6) {
+                message = '좋습니다! 💪 좀 더 복습하면 더 잘할 수 있어요.\n중요한 개념들을 다시 한번 정리해봐요!';
+            } else {
+                message = '화이팅! ✨ 다시 한 번 도전해보세요.\n어려운 부분들을 다시 공부해봅시다!';
+            }
+            document.getElementById('final-message').textContent = message;
+        }
+
+        function launchConfetti() {
+            const colors = ['#ffd700','#ff4466','#00d4ff','#00ff88','#ff8c00','#ff69b4','#7fff00'];
+            for (let i = 0; i < 80; i++) {
+                setTimeout(() => {
+                    const el = document.createElement('div');
+                    el.className = 'confetti';
+                    el.style.left = Math.random() * 100 + 'vw';
+                    el.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    el.style.width = (Math.random() * 8 + 6) + 'px';
+                    el.style.height = (Math.random() * 8 + 6) + 'px';
+                    el.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+                    el.style.animationDelay = '0s';
+                    document.body.appendChild(el);
+                    setTimeout(() => el.remove(), 4000);
+                }, i * 40);
+            }
+        }
+
+        function closePerfect() {
+            document.getElementById('perfect-overlay').classList.remove('show');
+            resetGame();
+        }
+
+        function resetGame() {
+            currentQuestion = 0;
+            correctCount = 0;
+            fishCount = 0;
+            answered = false;
+            selectedOption = null;
+            document.getElementById('start-section').style.display = 'block';
+            document.getElementById('quiz-section').style.display = 'none';
+            document.getElementById('game-over-section').style.display = 'none';
+            document.getElementById('fishDisplay').innerHTML = '';
+        }
+    </script>
+</body>
+</html>
