@@ -277,6 +277,50 @@
         #quiz-section { display: none; }
         #game-over-section { display: none; }
 
+        /* 모달 */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.show {
+            display: flex;
+        }
+        .modal-box {
+            background: #2d1f3d;
+            border-radius: 20px;
+            padding: 2rem 1.5rem;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+            animation: popUp 0.3s ease;
+        }
+        @keyframes popUp {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .modal-icon { font-size: 60px; margin-bottom: 1rem; }
+        .modal-title { font-size: 22px; font-weight: 700; margin-bottom: 1rem; }
+        .modal-title.correct { color: #00ff88; }
+        .modal-title.incorrect { color: #ff4466; }
+        .modal-explanation {
+            font-size: 15px;
+            color: #d0d0f0;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+        .modal-btn {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
         .fixed-btn-bar {
             position: fixed;
             bottom: 0;
@@ -325,15 +369,23 @@
                 </div>
                 <div class="question-text" id="question"></div>
                 <div class="options" id="options"></div>
-                <div class="feedback" id="feedback"></div>
                 <div style="height: 70px;"></div>
+            </div>
+        </div>
+
+        <!-- 정답/오답 모달 -->
+        <div class="modal-overlay" id="feedback-modal">
+            <div class="modal-box">
+                <div class="modal-icon" id="modal-icon"></div>
+                <div class="modal-title" id="modal-title"></div>
+                <div class="modal-explanation" id="modal-explanation"></div>
+                <button class="modal-btn" onclick="closeModal()">다음 문제 →</button>
             </div>
         </div>
 
         <div class="fixed-btn-bar" id="fixed-btn-bar">
             <div class="button-group">
                 <button id="submit-btn" onclick="submitAnswer()">정답 제출</button>
-                <button id="next-btn" onclick="nextQuestion()" style="display:none;">다음 문제 →</button>
             </div>
         </div>
 
@@ -454,10 +506,7 @@
                 optionsDiv.appendChild(label);
             });
 
-            document.getElementById('feedback').innerHTML = '';
-            document.getElementById('feedback').classList.remove('show', 'correct', 'incorrect');
             document.getElementById('submit-btn').style.display = 'block';
-            document.getElementById('next-btn').style.display = 'none';
             answered = false;
             selectedOption = null;
         }
@@ -474,7 +523,6 @@
 
             const q = questions[currentQuestion];
             const isCorrect = selectedOption === q.correct;
-
             const catEl = document.getElementById('cat');
             const options = document.querySelectorAll('.option');
 
@@ -485,38 +533,46 @@
                 catEl.classList.add('cat-happy');
                 catEl.classList.remove('cat-sad');
 
-                // 물고기 추가
                 const fishDisplay = document.getElementById('fishDisplay');
                 const fish = document.createElement('span');
                 fish.className = 'fish';
                 fish.textContent = '🐟';
                 fishDisplay.appendChild(fish);
 
-                const feedback = document.getElementById('feedback');
-                feedback.className = 'feedback correct show';
-                feedback.innerHTML = '✓ 정답입니다!<br>' + q.explanation;
+                document.getElementById('modal-icon').textContent = '😸';
+                document.getElementById('modal-title').textContent = '✓ 정답입니다!';
+                document.getElementById('modal-title').className = 'modal-title correct';
             } else {
                 catEl.textContent = '😿';
                 catEl.classList.add('cat-sad');
                 catEl.classList.remove('cat-happy');
 
-                const feedback = document.getElementById('feedback');
-                feedback.className = 'feedback incorrect show';
-                feedback.innerHTML = '✗ 오답입니다.<br>' + q.explanation;
+                document.getElementById('modal-icon').textContent = '😿';
+                document.getElementById('modal-title').textContent = '✗ 오답입니다';
+                document.getElementById('modal-title').className = 'modal-title incorrect';
             }
 
             options.forEach((opt, idx) => {
                 opt.classList.add('disabled');
-                if (idx === q.correct) {
-                    opt.classList.add('correct');
-                } else if (idx === selectedOption && !isCorrect) {
-                    opt.classList.add('incorrect');
-                }
+                if (idx === q.correct) opt.classList.add('correct');
+                else if (idx === selectedOption && !isCorrect) opt.classList.add('incorrect');
             });
 
+            document.getElementById('modal-explanation').textContent = q.explanation;
+            document.getElementById('feedback-modal').classList.add('show');
             document.getElementById('submit-btn').style.display = 'none';
-            document.getElementById('next-btn').style.display = 'block';
             answered = true;
+        }
+
+        function closeModal() {
+            document.getElementById('feedback-modal').classList.remove('show');
+            document.getElementById('submit-btn').style.display = 'block';
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                endGame();
+            }
         }
 
         function nextQuestion() {
