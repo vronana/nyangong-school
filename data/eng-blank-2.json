@@ -1,61 +1,111 @@
 [
   {
     "q": "Twelve of the animals are still ___.",
-    "options": ["on the loose", "in the loose", "at loose", "on loose"],
-    "correct": 0,
+    "options": [
+      "at loose",
+      "in the loose",
+      "on loose",
+      "on the loose"
+    ],
+    "correct": 3,
     "explanation": "'풀려나 잡히지 않은'이라는 뜻의 관용 표현은 on the loose이다. 원문: \"Twelve of the animals are still on the loose.\""
   },
   {
     "q": "Citizens should stay indoors ___.",
-    "options": ["until further notice", "until farther notice", "by further notice", "since further notice"],
-    "correct": 0,
+    "options": [
+      "since further notice",
+      "by further notice",
+      "until farther notice",
+      "until further notice"
+    ],
+    "correct": 3,
     "explanation": "'추후 안내가 있을 때까지'라는 뜻의 전치사구는 until further notice이며, farther는 물리적 거리에 쓰이므로 further와 혼동하면 안 된다. 원문: \"Citizens should stay indoors until further notice.\""
   },
   {
     "q": "Not a single act or incident ___ has taken place.",
-    "options": ["described above", "describing above", "that describe above", "is described above"],
-    "correct": 0,
+    "options": [
+      "is described above",
+      "describing above",
+      "described above",
+      "that describe above"
+    ],
+    "correct": 2,
     "explanation": "act or incident가 '위에 서술된' 수동의 의미이므로 과거분사 described가 명사를 뒤에서 수식한다. 원문: \"Not a single act or incident described above has taken place.\""
   },
   {
     "q": "At that time, those ___ read the article carefully laughed out loud.",
-    "options": ["who", "which", "whom", "whose"],
-    "correct": 0,
+    "options": [
+      "whom",
+      "whose",
+      "which",
+      "who"
+    ],
+    "correct": 3,
     "explanation": "선행사 those(사람들)를 수식하며 관계사절에서 주어 역할을 하므로 주격 관계대명사 who가 알맞다. 원문: \"At that time, those who read the article carefully laughed out loud.\""
   },
   {
     "q": "Those who didn't read it ___ got really worried.",
-    "options": ["to the end", "to the ending", "until the end", "in the end"],
+    "options": [
+      "to the end",
+      "to the ending",
+      "in the end",
+      "until the end"
+    ],
     "correct": 0,
     "explanation": "'끝까지'라는 뜻의 전치사구는 to the end이며, in the end('결국')와 의미가 다르므로 혼동하지 않아야 한다. 원문: \"Those who didn't read it to the end got really worried.\""
   },
   {
     "q": "___, many people panicked.",
-    "options": ["Not knowing the news was false", "Not known the news was false", "Not to know the news was false", "Don't know the news was false"],
-    "correct": 0,
+    "options": [
+      "Don't know the news was false",
+      "Not knowing the news was false",
+      "Not to know the news was false",
+      "Not known the news was false"
+    ],
+    "correct": 1,
     "explanation": "이유를 나타내는 분사구문(= Because many people didn't know the news was false)으로 부정형은 분사 앞에 not을 붙인 Not knowing이 된다. 원문: \"Not knowing the news was false, many people panicked.\""
   },
   {
     "q": "Some tried to escape the city while others went into the parks with guns ___ the animals.",
-    "options": ["to hunt", "hunting", "hunt", "for hunting"],
-    "correct": 0,
+    "options": [
+      "hunting",
+      "for hunting",
+      "hunt",
+      "to hunt"
+    ],
+    "correct": 3,
     "explanation": "'~하기 위해서'라는 목적을 나타내는 to부정사의 부사적 용법이다. 원문: \"Some tried to escape the city while others went into the parks with guns to hunt the animals.\""
   },
   {
     "q": "So why did The Herald ___ such news?",
-    "options": ["make up", "made up", "making up", "makes up"],
-    "correct": 0,
+    "options": [
+      "made up",
+      "makes up",
+      "make up",
+      "making up"
+    ],
+    "correct": 2,
     "explanation": "조동사 did가 쓰인 의문문에서는 본동사가 항상 동사원형이 되어야 하므로 make up이 온다. 원문: \"So why did The Herald make up such news?\""
   },
   {
     "q": "Later, they confessed that they ___ so that they could draw the readers' attention to the unsafe conditions at the zoo.",
-    "options": ["made it up", "made up it", "made up them", "made them up"],
-    "correct": 0,
+    "options": [
+      "made them up",
+      "made up them",
+      "made up it",
+      "made it up"
+    ],
+    "correct": 3,
     "explanation": "이어동사(make up)의 목적어가 대명사(it)일 경우 반드시 '동사+대명사+부사' 순서로 써야 하므로 made it up이 맞다. 원문: \"Later, they confessed that they made it up so that they could draw the readers' attention to the unsafe conditions at the zoo.\""
   },
   {
     "q": "Mejk Swenekafew, a Slav worker at the Columbia Coal Mine, ___ by John Pecitello near the mining camp Thursday evening.",
-    "options": ["was shot and seriously wounded", "shot and seriously wounded", "was shooting and seriously wounding", "had shot and seriously wounded"],
+    "options": [
+      "was shot and seriously wounded",
+      "shot and seriously wounded",
+      "was shooting and seriously wounding",
+      "had shot and seriously wounded"
+    ],
     "correct": 0,
     "explanation": "주어 Mejk Swenekafew가 총에 맞고 부상을 입은 대상이므로 수동태(be+p.p.)가 쓰이며, be shot과 be wounded가 병렬 구조를 이룬다. 원문: \"Mejk Swenekafew, a Slav worker at the Columbia Coal Mine, was shot and seriously wounded by John Pecitello near the mining camp Thursday evening.\""
   }

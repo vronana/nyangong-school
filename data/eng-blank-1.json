@@ -1,62 +1,112 @@
 [
   {
     "q": "Every day we ___ interesting news.",
-    "options": ["watch, hear, or read", "watching, hearing, or reading", "watched, heard, or read", "watch, heard, or read"],
-    "correct": 0,
+    "options": [
+      "watched, heard, or read",
+      "watching, hearing, or reading",
+      "watch, heard, or read",
+      "watch, hear, or read"
+    ],
+    "correct": 3,
     "explanation": "동사 watch, hear, read가 or로 연결된 병렬 구조이므로 모두 동일한 원형(현재형) 형태여야 한다. 원문: \"Every day we watch, hear, or read interesting news.\""
   },
   {
     "q": "However, ___ whether an article is really true?",
-    "options": ["have you ever seriously considered", "did you ever seriously consider", "you have ever seriously considered", "had you ever seriously considered"],
-    "correct": 0,
+    "options": [
+      "had you ever seriously considered",
+      "you have ever seriously considered",
+      "have you ever seriously considered",
+      "did you ever seriously consider"
+    ],
+    "correct": 2,
     "explanation": "'경험'을 나타내는 현재완료(have+p.p.) 의문문으로, 의문문이므로 have가 주어 앞으로 도치된다. 원문: \"However, have you ever seriously considered whether an article is really true?\""
   },
   {
     "q": "Everyone likes an interesting news story but what if it is ___?",
-    "options": ["completely made up", "made up completely", "completely making up", "was made up completely"],
-    "correct": 0,
+    "options": [
+      "made up completely",
+      "was made up completely",
+      "completely making up",
+      "completely made up"
+    ],
+    "correct": 3,
     "explanation": "'be동사+부사+과거분사(make up의 수동형)' 순서로, 부사 completely는 과거분사 made up 앞에 위치한다. 원문: \"Everyone likes an interesting news story but what if it is completely made up?\""
   },
   {
     "q": "Fake news can be very harmful in that it can make people ___.",
-    "options": ["less informed or even misled", "less informed or even mislead", "less informed or even misleading", "less inform or even misled"],
-    "correct": 0,
+    "options": [
+      "less informed or even mislead",
+      "less informed or even misleading",
+      "less informed or even misled",
+      "less inform or even misled"
+    ],
+    "correct": 2,
     "explanation": "make+목적어+목적격보어 구조에서 people이 '정보를 제공받고 잘못 이끌리는' 수동의 의미이므로 과거분사 informed, misled가 병렬로 쓰인다. 원문: \"Fake news can be very harmful in that it can make people less informed or even misled.\""
   },
   {
     "q": "Nevertheless, there ___ various fake news reports throughout history.",
-    "options": ["have been", "had been", "has been", "were"],
-    "correct": 0,
+    "options": [
+      "had been",
+      "has been",
+      "were",
+      "have been"
+    ],
+    "correct": 3,
     "explanation": "'계속'을 나타내는 현재완료이며 주어 reports가 복수이므로 have been이 적절하다. 원문: \"Nevertheless, there have been various fake news reports throughout history.\""
   },
   {
     "q": "Why ___ such false information?",
-    "options": ["have some people written", "did some people write", "has some people written", "some people have written"],
-    "correct": 0,
+    "options": [
+      "did some people write",
+      "some people have written",
+      "has some people written",
+      "have some people written"
+    ],
+    "correct": 3,
     "explanation": "'계속'을 나타내는 현재완료 의문문으로 Why 뒤에 have가 주어(some people) 앞에 위치하고 written(write의 과거분사)이 이어진다. 원문: \"Why have some people written such false information?\""
   },
   {
     "q": "Let's look into some articles ___ about the hidden motives behind them.",
-    "options": ["thinking", "think", "thought", "to think"],
-    "correct": 0,
+    "options": [
+      "thought",
+      "think",
+      "thinking",
+      "to think"
+    ],
+    "correct": 2,
     "explanation": "주절과 동시에 일어나는 동작을 나타내는 분사구문(= as we think about the hidden motives behind them)이므로 현재분사 thinking이 쓰인다. 원문: \"Let's look into some articles thinking about the hidden motives behind them.\""
   },
   {
     "q": "Last night, an angry group of rhinoceroses ___ the walls of the cage at the zoo and escaped.",
-    "options": ["broke down", "break down", "has broken down", "breaking down"],
-    "correct": 0,
+    "options": [
+      "break down",
+      "breaking down",
+      "broke down",
+      "has broken down"
+    ],
+    "correct": 2,
     "explanation": "last night이라는 명백한 과거 시점이 있으므로 break down의 불규칙 과거형 broke down이 쓰이고, 뒤의 escaped와 병렬을 이룬다. 원문: \"Last night, an angry group of rhinoceroses broke down the walls of the cage at the zoo and escaped.\""
   },
   {
     "q": "They also broke down the walls of the other ___.",
-    "options": ["wild animals' cages", "wild animal's cages", "wild animals's cage", "wild animal cages'"],
+    "options": [
+      "wild animals' cages",
+      "wild animals's cage",
+      "wild animal's cages",
+      "wild animal cages'"
+    ],
     "correct": 0,
     "explanation": "복수명사 animals의 소유격은 -s' 형태(animals')로 표시한다. 원문: \"They also broke down the walls of the other wild animals' cages.\""
   },
   {
     "q": "These animals ___ the streets and injured hundreds of people.",
-    "options": ["ran down", "run down", "running down", "runned down"],
-    "correct": 0,
+    "options": [
+      "running down",
+      "runned down",
+      "ran down",
+      "run down"
+    ],
+    "correct": 2,
     "explanation": "run의 불규칙 과거형은 ran이며, 뒤의 injured와 병렬 구조를 이루는 과거시제이다. 원문: \"These animals ran down the streets and injured hundreds of people.\""
   }
 ]

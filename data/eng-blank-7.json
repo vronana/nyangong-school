@@ -1,50 +1,90 @@
 [
   {
     "q": "Also, I slept comfortably each night because I ___ tired after a hard day's work, and it did not matter if I was sleeping on a bed or on the hard floor.",
-    "options": ["would be", "should be", "will be", "was being"],
-    "correct": 0,
+    "options": [
+      "should be",
+      "will be",
+      "was being",
+      "would be"
+    ],
+    "correct": 3,
     "explanation": "would는 과거의 반복적 행동이나 습관을 나타내는 조동사(~하곤 했다)로 쓰였다. 원문: \"Also, I slept comfortably each night because I would be tired after a hard day's work, and it did not matter if I was sleeping on a bed or on the hard floor.\""
   },
   {
     "q": "I ate only when I was hungry, so even a simple meal ___.\"",
-    "options": ["tasted great", "tasted greatly", "was tasted great", "tastes great"],
-    "correct": 0,
+    "options": [
+      "tastes great",
+      "was tasted great",
+      "tasted great",
+      "tasted greatly"
+    ],
+    "correct": 2,
     "explanation": "'taste+형용사'는 '~한 맛이 나다'라는 뜻의 2형식 구조이므로 부사가 아닌 형용사 great이 쓰이며, 과거시제 tasted가 맞다. 원문: \"I ate only when I was hungry, so even a simple meal tasted great.\""
   },
   {
     "q": "\"Spend money like a rich man?\" ___ Puneet.",
-    "options": ["continued", "continues", "continuing", "had continued"],
-    "correct": 0,
+    "options": [
+      "continues",
+      "had continued",
+      "continued",
+      "continuing"
+    ],
+    "correct": 2,
     "explanation": "앞뒤 문맥이 모두 과거시제로 서술되는 이야기이므로 continue의 과거형 continued가 쓰인다. 원문: \"'Spend money like a rich man?' continued Puneet.\""
   },
   {
     "q": "\"A rich man knows how to make money ___.",
-    "options": ["grow", "grows", "growing", "to grow"],
+    "options": [
+      "grow",
+      "grows",
+      "to grow",
+      "growing"
+    ],
     "correct": 0,
     "explanation": "'make+목적어+동사원형'은 '~가 …하게 만들다'라는 뜻으로 목적격보어에 동사원형이 오며, how to+동사원형은 '~하는 방법'을 뜻한다. 원문: \"'A rich man knows how to make money grow.\""
   },
   {
     "q": "So, I tried to spend money on something ___ bring me back more money rather than on luxurious things.",
-    "options": ["that would", "what would", "who would", "it would"],
-    "correct": 0,
+    "options": [
+      "it would",
+      "that would",
+      "who would",
+      "what would"
+    ],
+    "correct": 1,
     "explanation": "선행사 something(사물)을 받으며 관계사절에서 주어 역할을 하는 주격 관계대명사 that이 쓰였다. 원문: \"So, I tried to spend money on something that would bring me back more money rather than on luxurious things.\""
   },
   {
     "q": "For me, it was this wisdom that our father ___.\"",
-    "options": ["tried to explain", "tried explaining", "try to explain", "tries to explain"],
-    "correct": 0,
+    "options": [
+      "try to explain",
+      "tried explaining",
+      "tried to explain",
+      "tries to explain"
+    ],
+    "correct": 2,
     "explanation": "'try+to부정사'는 '~하려고 노력하다'라는 뜻이며, try+동명사(try explaining)는 '시험 삼아 ~해보다'라는 다른 의미이므로 구별해야 한다. 원문: \"For me, it was this wisdom that our father tried to explain.\""
   },
   {
     "q": "Now Puru realized how foolish he ___.",
-    "options": ["had been", "has been", "was", "would be"],
-    "correct": 0,
+    "options": [
+      "has been",
+      "was",
+      "had been",
+      "would be"
+    ],
+    "correct": 2,
     "explanation": "'had+과거분사' 형태의 과거완료시제로, 깨달은 시점(과거)보다 더 이전의 일을 나타낸다. 원문: \"Now Puru realized how foolish he had been.\""
   },
   {
     "q": "___, Puru started a new life.",
-    "options": ["With this wisdom in mind", "With this wisdom on mind", "By this wisdom in mind", "With this wisdom in minds"],
-    "correct": 0,
+    "options": [
+      "With this wisdom in minds",
+      "With this wisdom on mind",
+      "By this wisdom in mind",
+      "With this wisdom in mind"
+    ],
+    "correct": 3,
     "explanation": "'with ~ in mind'는 '~을 마음에 새기고, ~을 고려하여'라는 뜻의 관용 표현이다. 원문: \"With this wisdom in mind, Puru started a new life.\""
   }
 ]

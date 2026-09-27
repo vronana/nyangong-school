@@ -1,61 +1,111 @@
 [
   {
     "q": "The two men had an argument ___ a meeting.",
-    "options": ["during", "for", "while", "at"],
+    "options": [
+      "during",
+      "while",
+      "at",
+      "for"
+    ],
     "correct": 0,
     "explanation": "'~동안에'라는 뜻으로 뒤에 명사(a meeting)가 오는 전치사는 during이며, while은 뒤에 절이 와야 한다. 원문: \"The two men had an argument during a meeting.\""
   },
   {
     "q": "The argument ___ a fight, and Pecitello shot Swenekafew twice, in the chest and leg.",
-    "options": ["led to", "lead to", "leaded to", "was led to"],
+    "options": [
+      "led to",
+      "was led to",
+      "leaded to",
+      "lead to"
+    ],
     "correct": 0,
     "explanation": "'~로 이어지다'라는 뜻의 lead to의 불규칙 과거형은 led to이다. 원문: \"The argument led to a fight, and Pecitello shot Swenekafew twice, in the chest and leg.\""
   },
   {
     "q": "He is now at the hospital ___.",
-    "options": ["in critical condition", "on critical condition", "with critical condition", "at critical condition"],
-    "correct": 0,
+    "options": [
+      "on critical condition",
+      "at critical condition",
+      "with critical condition",
+      "in critical condition"
+    ],
+    "correct": 3,
     "explanation": "'위독한 상태로'라는 뜻의 관용 표현은 전치사 in을 써서 in critical condition으로 나타낸다. 원문: \"He is now at the hospital in critical condition.\""
   },
   {
     "q": "Pecitello ___ after the shooting.",
-    "options": ["ran away", "run away", "runs away", "was ran away"],
-    "correct": 0,
+    "options": [
+      "runs away",
+      "was ran away",
+      "ran away",
+      "run away"
+    ],
+    "correct": 2,
     "explanation": "'도망가다'라는 뜻의 run away는 과거시제로 불규칙 변화한 ran away가 된다. 원문: \"Pecitello ran away after the shooting.\""
   },
   {
     "q": "The police are searching for him now and are warning citizens ___ he is extremely dangerous.",
-    "options": ["that", "what", "which", "about"],
-    "correct": 0,
+    "options": [
+      "which",
+      "that",
+      "what",
+      "about"
+    ],
+    "correct": 1,
     "explanation": "warn의 목적절을 이끄는 접속사로 완전한 절 앞에는 that이 쓰인다. 원문: \"The police are searching for him now and are warning citizens that he is extremely dangerous.\""
   },
   {
     "q": "Is there ___ about the article?",
-    "options": ["anything strange", "strange anything", "anything is strange", "something strange"],
-    "correct": 0,
+    "options": [
+      "strange anything",
+      "something strange",
+      "anything strange",
+      "anything is strange"
+    ],
+    "correct": 2,
     "explanation": "-thing으로 끝나는 대명사는 형용사가 뒤에서 수식하며, 의문문이므로 some 계열이 아닌 anything이 쓰인다. 원문: \"Is there anything strange about the article?\""
   },
   {
     "q": "___ the Slav's name backwards; it spells \"we-fake-news.\"",
-    "options": ["Read", "Reads", "Reading", "To read"],
-    "correct": 0,
+    "options": [
+      "To read",
+      "Reading",
+      "Reads",
+      "Read"
+    ],
+    "correct": 3,
     "explanation": "명령문은 동사원형으로 시작하므로 Read가 쓰인다. 원문: \"Read the Slav's name backwards; it spells 'we-fake-news.'\""
   },
   {
     "q": "Who ___ this and why?",
-    "options": ["wrote", "writed", "has wrote", "written"],
-    "correct": 0,
+    "options": [
+      "writed",
+      "written",
+      "wrote",
+      "has wrote"
+    ],
+    "correct": 2,
     "explanation": "write의 불규칙 과거형은 wrote이며, 이 의문문은 단순 과거시제이다. 원문: \"Who wrote this and why?\""
   },
   {
     "q": "The Daily Telegram published this fake article so that they could prove if The Daily News, their competitor, ___ their articles.",
-    "options": ["was stealing", "is stealing", "had stolen", "steals"],
-    "correct": 0,
+    "options": [
+      "steals",
+      "is stealing",
+      "was stealing",
+      "had stolen"
+    ],
+    "correct": 2,
     "explanation": "주절의 시제가 과거(published)이므로 종속절도 과거진행형 was stealing으로 시제를 일치시킨다. 원문: \"The Daily Telegram published this fake article so that they could prove if The Daily News, their competitor, was stealing their articles.\""
   },
   {
     "q": "The Daily News published the same article about \"Swenekafew\" the next day and thus ___ stealing.",
-    "options": ["got caught", "got catching", "was caught to steal", "caught"],
+    "options": [
+      "got caught",
+      "got catching",
+      "was caught to steal",
+      "caught"
+    ],
     "correct": 0,
     "explanation": "'잡히다, 포착되다'라는 뜻은 get caught이며, 뒤에 동명사 stealing이 이어져 '~하다가 걸리다'라는 의미를 나타낸다. 원문: \"The Daily News published the same article about 'Swenekafew' the next day and thus got caught stealing.\""
   }

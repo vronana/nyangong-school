@@ -1,62 +1,112 @@
 [
   {
     "q": "\"Build a house in ___. Sleep comfortably. Enjoy your food. Lastly, spend money like a rich man….\"",
-    "options": ["every city", "every cities", "all city", "every citys"],
-    "correct": 0,
+    "options": [
+      "every citys",
+      "every cities",
+      "every city",
+      "all city"
+    ],
+    "correct": 2,
     "explanation": "every는 반드시 단수명사와 함께 쓰이므로 every city가 알맞다. 원문: \"'Build a house in every city. Sleep comfortably. Enjoy your food. Lastly, spend money like a rich man….'\""
   },
   {
     "q": "Before he could explain ___, he passed away.",
-    "options": ["himself", "him", "he", "his"],
-    "correct": 0,
+    "options": [
+      "he",
+      "him",
+      "himself",
+      "his"
+    ],
+    "correct": 2,
     "explanation": "explain oneself(심중을 털어놓다)에서 목적어로 쓰인 재귀대명사는 생략할 수 없으므로 himself가 쓰인다. 원문: \"Before he could explain himself, he passed away.\""
   },
   {
     "q": "After his death, the two sons ___ of the father's wealth and settled in different cities.",
-    "options": ["took their share", "took his share", "took its share", "took theirs share"],
-    "correct": 0,
+    "options": [
+      "took theirs share",
+      "took his share",
+      "took its share",
+      "took their share"
+    ],
+    "correct": 3,
     "explanation": "주어 the two sons(복수)와 소유격이 일치해야 하므로 their share가 쓰인다. 원문: \"After his death, the two sons took their share of the father's wealth and settled in different cities.\""
   },
   {
     "q": "Five years passed. Puru, who ___ his father's words carefully, had no money left.",
-    "options": ["had been following", "has been following", "was following", "had followed"],
-    "correct": 0,
+    "options": [
+      "had followed",
+      "had been following",
+      "was following",
+      "has been following"
+    ],
+    "correct": 1,
     "explanation": "과거의 특정 시점(아버지가 돌아가신 후)부터 그 이전 시점까지 계속 진행되고 있었던 일을 나타내는 과거완료진행(had been+-ing)이다. 원문: \"Five years passed. Puru, who had been following his father's words carefully, had no money left.\""
   },
   {
     "q": "But his brother was ___ than ever.",
-    "options": ["richer", "more richer", "rich", "the richest"],
-    "correct": 0,
+    "options": [
+      "more richer",
+      "richer",
+      "the richest",
+      "rich"
+    ],
+    "correct": 1,
     "explanation": "'비교급+than ever'는 '그 어느 때보다 더 ~한'이라는 뜻으로, rich의 비교급 richer가 쓰인다. 원문: \"But his brother was richer than ever.\""
   },
   {
     "q": "Puru was puzzled about where he ___ wrong, so he visited Puneet to find out.",
-    "options": ["had gone", "has gone", "was going", "would go"],
-    "correct": 0,
+    "options": [
+      "was going",
+      "had gone",
+      "would go",
+      "has gone"
+    ],
+    "correct": 1,
     "explanation": "'had+과거분사' 형태의 과거완료시제로, 방문한 시점(과거)보다 이전에 일어난 일을 나타낸다. 원문: \"Puru was puzzled about where he had gone wrong, so he visited Puneet to find out.\""
   },
   {
     "q": "Puneet welcomed Puru ___.",
-    "options": ["with open arms", "with open arm", "by open arms", "in open arms"],
-    "correct": 0,
+    "options": [
+      "in open arms",
+      "with open arm",
+      "by open arms",
+      "with open arms"
+    ],
+    "correct": 3,
     "explanation": "'두 팔을 벌리고 (반갑게)'라는 뜻의 관용 표현은 with open arms이다. 원문: \"Puneet welcomed Puru with open arms.\""
   },
   {
     "q": "That night, when the brothers sat down to chat after dinner, Puru asked the question ___ on his mind for days.",
-    "options": ["that had been", "which has been", "who had been", "that has been"],
-    "correct": 0,
+    "options": [
+      "which has been",
+      "who had been",
+      "that had been",
+      "that has been"
+    ],
+    "correct": 2,
     "explanation": "선행사 the question을 받는 주격 관계대명사 that과, 질문한 시점보다 더 이전부터 있었던 일을 나타내는 과거완료(had been)가 함께 쓰였다. 원문: \"That night, when the brothers sat down to chat after dinner, Puru asked the question that had been on his mind for days.\""
   },
   {
     "q": "\"___ our father's advice that I followed, but I am not happy.",
-    "options": ["It was", "It is", "This was", "There was"],
-    "correct": 0,
+    "options": [
+      "There was",
+      "It was",
+      "It is",
+      "This was"
+    ],
+    "correct": 1,
     "explanation": "'It was ~ that ...' 강조 구문으로 our father's advice를 강조하고 있다. 원문: \"'It was our father's advice that I followed, but I am not happy.\""
   },
   {
     "q": "I ___ a house in every city.",
-    "options": ["built", "build", "builded", "have built"],
-    "correct": 0,
+    "options": [
+      "build",
+      "builded",
+      "have built",
+      "built"
+    ],
+    "correct": 3,
     "explanation": "이야기 전체가 과거시제로 서술되므로 build의 불규칙 과거형 built가 쓰인다. 원문: \"I built a house in every city.\""
   }
 ]
