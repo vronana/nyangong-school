@@ -163,10 +163,23 @@
             border-color: rgba(255, 68, 102, 0.4);
             background: linear-gradient(135deg, #262340 0%, #3a1f2d 100%);
         }
-        .quiz-card.tier-bonus {
-            border-color: rgba(255, 215, 0, 0.3);
-            opacity: 0.85;
+        .quiz-card.tier-boss {
+            border: 1px solid rgba(255, 68, 102, 0.5);
+            background: linear-gradient(135deg, #2a1530 0%, #3a1418 100%);
+            box-shadow: 0 0 16px rgba(255, 68, 102, 0.18);
+            position: relative;
         }
+        .quiz-card.tier-boss::before {
+            content: '👑 끝판왕';
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            font-size: 10px;
+            font-weight: 700;
+            color: #f0c14b;
+            letter-spacing: 0.5px;
+        }
+        .quiz-card.tier-boss.locked::before { display: none; }
 
         .quiz-card.locked {
             opacity: 0.4;
@@ -261,7 +274,7 @@
     </style>
 </head>
 <body>
-    <div class="version-tag">v2026.09.27-17</div>
+    <div class="version-tag">v2026.09.27-18</div>
     <a href="hub.html" class="home-float">🏠 홈</a>
     <div class="modal-overlay" id="name-modal">
         <div class="modal-box">
@@ -421,42 +434,43 @@
             </a>
         </div>
 
-        <div class="section-title">🎁 보너스 · 종합·랜덤 퀴즈</div>
-        <div class="card-grid">
-            <a href="quiz-engine.html?id=reproduction-genetics" class="quiz-card tier-bonus" data-file="reproduction-genetics.html">
+        <div class="section-title">👑 끝판왕 · 전 단원 통합 최종 관문 <span class="stage-progress" id="boss-progress"></span></div>
+        <div class="locked-banner" id="boss-banner" hidden></div>
+        <div class="card-grid" id="boss-grid">
+            <a href="quiz-engine.html?id=reproduction-genetics" class="quiz-card tier-boss" data-file="reproduction-genetics.html">
                 <div>
                     <div class="icon">🧬</div>
                     <div class="name">생식과 유전 종합</div>
                 </div>
-                <div class="count">10문제</div>
+                <div class="count">10문제 · 최상급 난이도</div>
             </a>
-            <a href="quiz-engine.html?id=energy-electricity" class="quiz-card tier-bonus" data-file="energy-electricity.html">
+            <a href="quiz-engine.html?id=energy-electricity" class="quiz-card tier-boss" data-file="energy-electricity.html">
                 <div>
                     <div class="icon">⚡</div>
                     <div class="name">에너지·전기 종합</div>
                 </div>
-                <div class="count">10문제</div>
+                <div class="count">10문제 · 최상급 난이도</div>
             </a>
-            <a href="quiz-engine.html?id=stage2-review" class="quiz-card tier-bonus" data-file="stage2-review.html">
+            <a href="quiz-engine.html?id=stage2-review" class="quiz-card tier-boss" data-file="stage2-review.html">
                 <div>
                     <div class="icon">🌟</div>
                     <div class="name">단원 통합 모음</div>
                 </div>
-                <div class="count">10문제 · 새 유형</div>
+                <div class="count">10문제 · 최상급 난이도</div>
             </a>
-            <a href="quiz-engine.html?id=advanced-all" class="quiz-card tier-bonus" data-file="advanced-all.html">
+            <a href="quiz-engine.html?id=advanced-all" class="quiz-card tier-boss" data-file="advanced-all.html">
                 <div>
                     <div class="icon">🔥</div>
                     <div class="name">전 단원 통합 심화</div>
                 </div>
-                <div class="count">10문제 · 계산 포함</div>
+                <div class="count">10문제 · 계산 포함 · 최상급 난이도</div>
             </a>
-            <a href="quiz-engine.html?id=main-quiz" class="quiz-card tier-bonus">
+            <a href="quiz-engine.html?id=main-quiz" class="quiz-card tier-boss" data-file="main-quiz.html">
                 <div>
                     <div class="icon">🎮</div>
                     <div class="name">전체 종합 퀴즈</div>
                 </div>
-                <div class="count">랜덤 출제</div>
+                <div class="count">10문제 · 최상급 난이도</div>
             </a>
         </div>
 
@@ -533,6 +547,7 @@
 
         const stage1Files = ['reproduction.html', 'genetics.html', 'human-genetics.html', 'energy.html', 'electricity.html'];
         const stage2Files = ['reproduction-adv.html', 'genetics-adv.html', 'human-genetics-adv.html', 'energy-adv.html', 'electricity-adv.html'];
+        const stage3Files = ['reproduction-master.html', 'genetics-master.html', 'human-genetics-master.html', 'energy-master.html', 'electricity-master.html'];
 
         function getProgress() {
             try {
@@ -583,16 +598,20 @@
             const progress = getProgress();
             const stage1Done = countDone(stage1Files, progress);
             const stage2Done = countDone(stage2Files, progress);
+            const stage3Done = countDone(stage3Files, progress);
 
             const stage1Locked = false; // 1단계는 항상 열려있음
             const stage2Locked = stage1Done < stage1Files.length;
             const stage3Locked = stage2Done < stage2Files.length;
+            const bossLocked = stage3Done < stage3Files.length;
 
             applyLock('stage1-grid', null, stage1Locked, document.getElementById('stage1-progress'), stage1Done, stage1Files.length, '');
             applyLock('stage2-grid', 'stage2-banner', stage2Locked, document.getElementById('stage2-progress'), stage2Done, stage2Files.length,
                 `🔒 1단계 5문제를 모두 풀어야 열려요 (${stage1Done}/${stage1Files.length})`);
             applyLock('stage3-grid', 'stage3-banner', stage3Locked, document.getElementById('stage3-progress'), stage2Done, stage2Files.length,
                 `🔒 2단계 5문제를 모두 풀어야 열려요 (${stage2Done}/${stage2Files.length})`);
+            applyLock('boss-grid', 'boss-banner', bossLocked, document.getElementById('boss-progress'), stage3Done, stage3Files.length,
+                `🔒 3단계 심화 5문제를 모두 클리어해야 끝판왕이 열려요 (${stage3Done}/${stage3Files.length}) 👑`);
         }
 
         // 이미 푼 퀴즈는 "완료" 같은 텍스트 대신, 카드에 최고 점수를 배지로 붙여줌 (예: 7/10)
