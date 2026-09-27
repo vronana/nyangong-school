@@ -1,0 +1,62 @@
+[
+  {
+    "q": "The people at The Daily News had to admit their act and ___ by the public.",
+    "options": ["were harshly criticized", "harshly criticized", "had harshly criticized", "were harshly criticizing"],
+    "correct": 0,
+    "explanation": "주어 the people이 대중에 의해 비난을 받는 대상이므로 수동태(be+p.p.) were harshly criticized가 쓰인다. 원문: \"The people at The Daily News had to admit their act and were harshly criticized by the public.\""
+  },
+  {
+    "q": "The two articles were special cases, but there are many \"fake\" news articles ___ every day.",
+    "options": ["published", "publishing", "to publish", "publish"],
+    "correct": 0,
+    "explanation": "articles가 '매일 발행되는' 수동의 의미이므로 과거분사 published가 명사를 뒤에서 수식한다. 원문: \"The two articles were special cases, but there are many 'fake' news articles published every day.\""
+  },
+  {
+    "q": "As readers, we need to read critically and judge ___ the news is real or fake.",
+    "options": ["whether", "that", "what", "because"],
+    "correct": 0,
+    "explanation": "'~인지 아닌지'라는 뜻으로 judge의 목적절을 이끄는 접속사는 whether(=if)이다. 원문: \"As readers, we need to read critically and judge whether the news is real or fake.\""
+  },
+  {
+    "q": "CONSIDER the Source: Is it from a ___ source? Can we trust the writer?",
+    "options": ["reliable", "reliably", "reliability", "relying"],
+    "correct": 0,
+    "explanation": "명사 source를 수식해야 하므로 형용사 reliable(믿을 만한)이 쓰인다. 원문: \"CONSIDER the Source: Is it from a reliable source? Can we trust the writer?\""
+  },
+  {
+    "q": "CHECK the Date: Is it a new or an old story? Is it ___ current events?",
+    "options": ["related to", "related with", "related for", "relative to"],
+    "correct": 0,
+    "explanation": "'~와 관련 있다'라는 뜻의 관용 표현은 be related to이다. 원문: \"CHECK the Date: Is it a new or an old story? Is it related to current events?\""
+  },
+  {
+    "q": "READ ___ the Headlines: Does the headline match the content?",
+    "options": ["BEYOND", "OVER", "ABOVE", "THROUGH"],
+    "correct": 0,
+    "explanation": "'~을 넘어서, ~이상으로'라는 뜻의 전치사는 beyond이다. 원문: \"READ BEYOND the Headlines: Does the headline match the content?\""
+  },
+  {
+    "q": "FIND ___ Sources: Do other related stories provide similar content?",
+    "options": ["Supporting", "Supported", "Support", "To Support"],
+    "correct": 0,
+    "explanation": "Sources가 '뒷받침하는(능동)' 의미이므로 현재분사 Supporting이 명사를 앞에서 수식한다. 원문: \"FIND Supporting Sources: Do other related stories provide similar content?\""
+  },
+  {
+    "q": "A rich and wise father ___ two sons, Puru and Puneet.",
+    "options": ["had", "has", "have", "was having"],
+    "correct": 0,
+    "explanation": "이야기 전체가 과거시제로 서술되므로 have의 과거형 had가 쓰인다. 원문: \"A rich and wise father had two sons, Puru and Puneet.\""
+  },
+  {
+    "q": "Before he passed away, he called his two sons ___ some last words of advice.",
+    "options": ["to give them", "giving them", "for giving them", "and gives them"],
+    "correct": 0,
+    "explanation": "'~하기 위해서'라는 목적을 나타내는 to부정사의 부사적 용법이며, give+간접목적어(them)+직접목적어(some ~ advice)의 4형식 구조이다. 원문: \"Before he passed away, he called his two sons to give them some last words of advice.\""
+  },
+  {
+    "q": "\"Listen carefully, my dear sons. Live by these words throughout your life, ___ you will be happy,\" he said.",
+    "options": ["and", "or", "but", "so"],
+    "correct": 0,
+    "explanation": "'명령문, and ~'는 '~해라, 그러면 …할 것이다'라는 뜻이며, 반대로 or를 쓰면 '~해라, 그렇지 않으면'이라는 정반대 의미가 되므로 주의해야 한다. 원문: \"'Listen carefully, my dear sons. Live by these words throughout your life, and you will be happy,' he said.\""
+  }
+]

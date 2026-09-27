@@ -1,0 +1,62 @@
+[
+  {
+    "q": "But because I could not always stay there, I hired people and ___.",
+    "options": ["had the house looked after", "had the house look after", "had the house looking after", "had the house to look after"],
+    "correct": 0,
+    "explanation": "'have+목적어+과거분사'는 목적어(the house)가 ~되게 하다는 뜻으로, house가 관리받는(수동) 대상이므로 과거분사 looked after가 쓰인다. 원문: \"But because I could not always stay there, I hired people and had the house looked after.\""
+  },
+  {
+    "q": "Father said we should sleep comfortably and enjoy our food, so I ___ by experts and my meals prepared by a great chef.",
+    "options": ["had my bed designed", "had my bed design", "had my bed designing", "had designed my bed"],
+    "correct": 0,
+    "explanation": "'have+목적어+과거분사' 구조로 bed가 전문가에 의해 '설계되는' 수동의 의미이므로 designed가 쓰이며, 뒤의 had my meals prepared와 병렬을 이룬다. 원문: \"Father said we should sleep comfortably and enjoy our food, so I had my bed designed by experts and my meals prepared by a great chef.\""
+  },
+  {
+    "q": "He told us to spend like a rich man, so I bought ___ without worrying about money.",
+    "options": ["what I wanted", "that I wanted", "which I wanted", "the what I wanted"],
+    "correct": 0,
+    "explanation": "what은 선행사를 포함하는 관계대명사(= the thing(s) that/which)로, 앞에 따로 선행사를 쓰지 않는다. 원문: \"He told us to spend like a rich man, so I bought what I wanted without worrying about money.\""
+  },
+  {
+    "q": "But look at me now! I am ___.",
+    "options": ["empty-handed", "empty hands", "empty handed", "empty-hand"],
+    "correct": 0,
+    "explanation": "'빈손인'이라는 뜻의 형용사는 하이픈으로 연결된 복합형용사 empty-handed로 쓴다. 원문: \"But look at me now! I am empty-handed.\""
+  },
+  {
+    "q": "___ our father's wisdom?",
+    "options": ["Did you not follow", "Didn't you followed", "Not did you follow", "Did not you follow"],
+    "correct": 0,
+    "explanation": "'Didn't+주어+동사 ~?' 형태의 부정 의문문에서 부정의 의미를 강조하기 위해 not을 분리하면 'Did+주어+not+동사 ~?'가 되므로 Did you not follow가 맞다. 원문: \"Did you not follow our father's wisdom?\""
+  },
+  {
+    "q": "\"Tell me, brother, how did you ___ so rich?\"",
+    "options": ["get", "got", "getting", "to get"],
+    "correct": 0,
+    "explanation": "조동사 did가 쓰인 의문문이므로 본동사는 동사원형이 와야 하며, get+형용사는 '~해지다'(상황의 변화)라는 뜻이다. 원문: \"'Tell me, brother, how did you get so rich?'\""
+  },
+  {
+    "q": "Puneet smiled and said, \"My dear brother, I ___ our father's wisdom.",
+    "options": ["also followed", "followed also", "am also follow", "also follows"],
+    "correct": 0,
+    "explanation": "빈도부사에 준하는 also는 일반동사 앞에 위치하며, 이야기 전체가 과거시제이므로 followed가 쓰인다. 원문: \"Puneet smiled and said, 'My dear brother, I also followed our father's wisdom.\""
+  },
+  {
+    "q": "But I understood it a bit ___.",
+    "options": ["differently", "different", "difference", "more different"],
+    "correct": 0,
+    "explanation": "동사 understood를 수식해야 하므로 부사 differently(다르게)가 쓰인다. 원문: \"But I understood it a bit differently.\""
+  },
+  {
+    "q": "When he said 'build a house in every city,' I took it as ___ a place to stay all around the world.",
+    "options": ["having", "have", "to have", "had"],
+    "correct": 0,
+    "explanation": "전치사 as의 목적어로는 동명사가 쓰여야 하므로 having이 온다(to stay는 a place를 꾸미는 to부정사의 형용사적 용법). 원문: \"When he said 'build a house in every city,' I took it as having a place to stay all around the world.\""
+  },
+  {
+    "q": "So I ___ in every city and I stayed at their houses when I visited those cities.",
+    "options": ["made friends", "made friend", "did friends", "made a friends"],
+    "correct": 0,
+    "explanation": "'친구를 사귀다'라는 뜻의 관용 표현은 make friends로 friend를 복수형으로 쓴다. 원문: \"So I made friends in every city and I stayed at their houses when I visited those cities.\""
+  }
+]

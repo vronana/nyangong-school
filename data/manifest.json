@@ -44,5 +44,15 @@
     "society-review": { "title": "단원 통합 모음", "icon": "🌟", "tier": "bonus", "stage": 0, "count": "10문제 · 새 유형" },
     "society-advanced-all": { "title": "전 단원 통합 심화", "icon": "🔥", "tier": "bonus", "stage": 0, "count": "10문제 · 최상급 난이도" },
     "society-main-quiz": { "title": "전체 종합 퀴즈", "icon": "🎮", "tier": "bonus", "stage": 0, "count": "랜덤 출제" }
+  },
+  "english": {
+    "_meta": { "label": "중학교 영어 교과서 본문 빈칸 채우기다냥!", "hubTitle": "냥공스쿨" },
+    "eng-blank-1": { "title": "5과 1~10번 문장", "icon": "🔤", "tier": "basic", "stage": 1, "count": "10문제" },
+    "eng-blank-2": { "title": "5과 11~20번 문장", "icon": "🔤", "tier": "basic", "stage": 1, "count": "10문제" },
+    "eng-blank-3": { "title": "5과 21~30번 문장", "icon": "🔤", "tier": "basic", "stage": 1, "count": "10문제" },
+    "eng-blank-4": { "title": "5과 31~37 · 6과 1~3번 문장", "icon": "🔤", "tier": "basic", "stage": 1, "count": "10문제" },
+    "eng-blank-5": { "title": "6과 4~13번 문장", "icon": "🔤", "tier": "basic", "stage": 1, "count": "10문제" },
+    "eng-blank-6": { "title": "6과 14~23번 문장", "icon": "🔤", "tier": "basic", "stage": 1, "count": "10문제" },
+    "eng-blank-7": { "title": "6과 24~31번 문장", "icon": "🔤", "tier": "basic", "stage": 1, "count": "8문제" }
   }
 }

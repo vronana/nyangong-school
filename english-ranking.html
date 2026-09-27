@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>냥공스쿨 · 과학 랭킹</title>
+    <title>냥공스쿨 · 영어 랭킹</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -177,7 +177,7 @@
 </head>
 <body>
     <div class="version-tag">v2026.09.27-21</div>
-    <a href="science-hub.html" class="home-float">🏠 홈</a>
+    <a href="english-hub.html" class="home-float">🏠 홈</a>
     <div class="wrap">
         <div class="header">🏆 랭킹 🏆</div>
         <div class="sub">친구들이랑 점수로 겨뤄보냥!</div>
@@ -213,26 +213,13 @@
         let allPlayers = []; // { name, reviewCleared }
 
         const quizTitles = {
-            'reproduction.html': '생식과 발생 기초',
-            'genetics.html': '유전 원리 기초',
-            'human-genetics.html': '사람의 유전',
-            'energy.html': '에너지 전환과 보존',
-            'electricity.html': '전기 에너지 발생과 이용',
-            'reproduction-adv.html': '생식과 발생 응용',
-            'genetics-adv.html': '유전 원리 응용',
-            'human-genetics-adv.html': '사람의 유전 응용',
-            'energy-adv.html': '에너지 전환과 보존 응용',
-            'electricity-adv.html': '전기 에너지 응용',
-            'reproduction-master.html': '생식과 발생 심화',
-            'genetics-master.html': '유전 원리 심화',
-            'human-genetics-master.html': '사람의 유전 심화',
-            'energy-master.html': '에너지 전환과 보존 심화',
-            'electricity-master.html': '전기 에너지 심화',
-            'reproduction-genetics.html': '생식과 유전 종합',
-            'energy-electricity.html': '에너지·전기 종합',
-            'stage2-review.html': '단원 통합 모음',
-            'advanced-all.html': '전 단원 통합 심화',
-            'main-quiz.html': '전체 종합 퀴즈'
+            'eng-blank-1.html': '5과 1~10번 문장',
+            'eng-blank-2.html': '5과 11~20번 문장',
+            'eng-blank-3.html': '5과 21~30번 문장',
+            'eng-blank-4.html': '5과 31~37 · 6과 1~3번 문장',
+            'eng-blank-5.html': '6과 4~13번 문장',
+            'eng-blank-6.html': '6과 14~23번 문장',
+            'eng-blank-7.html': '6과 24~31번 문장'
         };
 
         function setMode(m) {

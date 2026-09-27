@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>냥공스쿨 · 사회</title>
+    <title>냥공스쿨 · 영어</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -70,23 +70,6 @@
             color: #a5a2c4;
             font-size: 14px;
         }
-        .master-tag {
-            display: none;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            margin: 0.6rem auto 0;
-            width: fit-content;
-            background: linear-gradient(135deg, rgba(240,193,75,0.22), rgba(255,140,0,0.14));
-            border: 1px solid rgba(240,193,75,0.5);
-            color: #f0c14b;
-            font-size: 13px;
-            font-weight: 700;
-            padding: 6px 16px;
-            border-radius: 20px;
-            letter-spacing: 0.3px;
-        }
-        .master-tag.show { display: inline-flex; }
 
         .notes-link {
             display: flex;
@@ -175,55 +158,6 @@
         }
 
         .quiz-card.tier-basic { border-color: rgba(0, 212, 255, 0.25); }
-        .quiz-card.tier-combined { border-color: rgba(0, 255, 136, 0.3); }
-        .quiz-card.tier-advanced {
-            border-color: rgba(255, 68, 102, 0.4);
-            background: linear-gradient(135deg, #262340 0%, #3a1f2d 100%);
-        }
-        .quiz-card.tier-boss {
-            border: 1px solid rgba(255, 68, 102, 0.5);
-            background: linear-gradient(135deg, #2a1530 0%, #3a1418 100%);
-            box-shadow: 0 0 16px rgba(255, 68, 102, 0.18);
-            position: relative;
-        }
-        .quiz-card.tier-boss::before {
-            content: '👑 끝판왕';
-            position: absolute;
-            top: 8px;
-            right: 10px;
-            font-size: 10px;
-            font-weight: 700;
-            color: #f0c14b;
-            letter-spacing: 0.5px;
-        }
-        .quiz-card.tier-boss.locked::before { display: none; }
-
-        .quiz-card.locked {
-            opacity: 0.4;
-            pointer-events: none;
-            filter: grayscale(0.6);
-        }
-        .quiz-card .lock-icon { font-size: 30px; margin-bottom: 0.5rem; }
-
-        .stage-progress {
-            font-size: 11px;
-            color: #6f6c8c;
-            font-weight: 400;
-            margin-left: 6px;
-        }
-
-        .locked-banner {
-            background: rgba(255, 68, 102, 0.08);
-            border: 1px dashed rgba(255, 68, 102, 0.35);
-            border-radius: 14px;
-            padding: 12px 14px;
-            margin-top: 10px;
-            font-size: 12px;
-            color: #ffb3c1;
-            text-align: center;
-            line-height: 1.6;
-        }
-        .locked-banner[hidden] { display: none; }
 
         .footer-note {
             text-align: center;
@@ -318,142 +252,76 @@
 
     <div class="wrap">
         <div class="hero">
-            <div class="cat">🏛️</div>
-            <h1>사회</h1>
-            <p>중학교 중간고사 준비 · 원하는 단원을 골라 풀어보냥!</p>
+            <div class="cat">🔤</div>
+            <h1>영어</h1>
+            <p>5과·6과 본문 빈칸 채우기 · 68문장 전체 수록</p>
             <div class="greeting" id="hub-greeting"></div>
-            <div class="master-tag" id="master-tag">👑 냥공 마스터</div>
         </div>
 
-        <a href="society-wrong-notes.html" class="notes-link">
+        <a href="english-wrong-notes.html" class="notes-link">
             📓 오답노트 보기
             <span class="badge">복습</span>
         </a>
-        <a href="society-ranking.html" class="notes-link">
+        <a href="english-ranking.html" class="notes-link">
             🏆 랭킹 보기
             <span class="badge" style="background:var(--gold, #f0c14b); color:#3a2a00;">경쟁</span>
         </a>
 
-        <div class="section-title">📖 1단계 · 단원별 기초 <span class="stage-progress" id="stage1-progress"></span></div>
+        <div class="section-title">📝 본문 빈칸 채우기 (68문장)</div>
         <div class="card-grid" id="stage1-grid">
-            <a href="quiz-engine.html?id=international&subject=society" class="quiz-card tier-basic" data-file="international.html">
+            <a href="quiz-engine.html?id=eng-blank-1&subject=english" class="quiz-card tier-basic" data-file="eng-blank-1.html">
                 <div>
-                    <div class="icon">🌍</div>
-                    <div class="name">국제 사회와 국제 정치 기초</div>
+                    <div class="icon">🔤</div>
+                    <div class="name">5과 1~10번 문장</div>
                 </div>
                 <div class="count">10문제</div>
             </a>
-            <a href="quiz-engine.html?id=city&subject=society" class="quiz-card tier-basic" data-file="city.html">
+            <a href="quiz-engine.html?id=eng-blank-2&subject=english" class="quiz-card tier-basic" data-file="eng-blank-2.html">
                 <div>
-                    <div class="icon">🏙️</div>
-                    <div class="name">사람이 만든 삶터, 도시 기초</div>
+                    <div class="icon">🔤</div>
+                    <div class="name">5과 11~20번 문장</div>
                 </div>
                 <div class="count">10문제</div>
             </a>
-            <a href="quiz-engine.html?id=territory&subject=society" class="quiz-card tier-basic" data-file="territory.html">
+            <a href="quiz-engine.html?id=eng-blank-3&subject=english" class="quiz-card tier-basic" data-file="eng-blank-3.html">
                 <div>
-                    <div class="icon">🗺️</div>
-                    <div class="name">세계 속의 우리나라 기초</div>
+                    <div class="icon">🔤</div>
+                    <div class="name">5과 21~30번 문장</div>
                 </div>
                 <div class="count">10문제</div>
             </a>
-        </div>
-
-        <div class="section-title">🔗 2단계 · 단원별 응용 (30문제) <span class="stage-progress" id="stage2-progress"></span></div>
-        <div class="locked-banner" id="stage2-banner" hidden></div>
-        <div class="card-grid" id="stage2-grid">
-            <a href="quiz-engine.html?id=international-adv&subject=society" class="quiz-card tier-combined" data-file="international-adv.html">
+            <a href="quiz-engine.html?id=eng-blank-4&subject=english" class="quiz-card tier-basic" data-file="eng-blank-4.html">
                 <div>
-                    <div class="icon">🌍</div>
-                    <div class="name">국제 사회와 국제 정치 응용</div>
+                    <div class="icon">🔤</div>
+                    <div class="name">5과 31~37 · 6과 1~3번 문장</div>
                 </div>
                 <div class="count">10문제</div>
             </a>
-            <a href="quiz-engine.html?id=city-adv&subject=society" class="quiz-card tier-combined" data-file="city-adv.html">
+            <a href="quiz-engine.html?id=eng-blank-5&subject=english" class="quiz-card tier-basic" data-file="eng-blank-5.html">
                 <div>
-                    <div class="icon">🏙️</div>
-                    <div class="name">사람이 만든 삶터, 도시 응용</div>
+                    <div class="icon">🔤</div>
+                    <div class="name">6과 4~13번 문장</div>
                 </div>
                 <div class="count">10문제</div>
             </a>
-            <a href="quiz-engine.html?id=territory-adv&subject=society" class="quiz-card tier-combined" data-file="territory-adv.html">
+            <a href="quiz-engine.html?id=eng-blank-6&subject=english" class="quiz-card tier-basic" data-file="eng-blank-6.html">
                 <div>
-                    <div class="icon">🗺️</div>
-                    <div class="name">세계 속의 우리나라 응용</div>
+                    <div class="icon">🔤</div>
+                    <div class="name">6과 14~23번 문장</div>
                 </div>
                 <div class="count">10문제</div>
             </a>
-        </div>
-        <div class="section-title">🔥 3단계 · 단원별 심화 (30문제) <span class="stage-progress" id="stage3-progress"></span></div>
-        <div class="locked-banner" id="stage3-banner" hidden></div>
-        <div class="card-grid" id="stage3-grid">
-            <a href="quiz-engine.html?id=international-master&subject=society" class="quiz-card tier-advanced" data-file="international-master.html">
+            <a href="quiz-engine.html?id=eng-blank-7&subject=english" class="quiz-card tier-basic" data-file="eng-blank-7.html">
                 <div>
-                    <div class="icon">🌍</div>
-                    <div class="name">국제 사회와 국제 정치 심화</div>
+                    <div class="icon">🔤</div>
+                    <div class="name">6과 24~31번 문장</div>
                 </div>
-                <div class="count">10문제</div>
-            </a>
-            <a href="quiz-engine.html?id=city-master&subject=society" class="quiz-card tier-advanced" data-file="city-master.html">
-                <div>
-                    <div class="icon">🏙️</div>
-                    <div class="name">사람이 만든 삶터, 도시 심화</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-            <a href="quiz-engine.html?id=territory-master&subject=society" class="quiz-card tier-advanced" data-file="territory-master.html">
-                <div>
-                    <div class="icon">🗺️</div>
-                    <div class="name">세계 속의 우리나라 심화</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-        </div>
-
-        <div class="section-title">👑 끝판왕 · 전 단원 통합 최종 관문 <span class="stage-progress" id="boss-progress"></span> <span class="stage-progress" id="boss-master-mark"></span></div>
-        <div class="locked-banner" id="boss-banner" hidden></div>
-        <div class="card-grid" id="boss-grid">
-            <a href="quiz-engine.html?id=international-city&subject=society" class="quiz-card tier-boss" data-file="international-city.html">
-                <div>
-                    <div class="icon">🌐</div>
-                    <div class="name">국제 사회·도시 종합</div>
-                </div>
-                <div class="count">10문제 · 최상급 난이도</div>
-            </a>
-            <a href="quiz-engine.html?id=city-territory&subject=society" class="quiz-card tier-boss" data-file="city-territory.html">
-                <div>
-                    <div class="icon">🧭</div>
-                    <div class="name">도시·영역 종합</div>
-                </div>
-                <div class="count">10문제 · 최상급 난이도</div>
-            </a>
-            <a href="quiz-engine.html?id=society-review&subject=society" class="quiz-card tier-boss" data-file="society-review.html">
-                <div>
-                    <div class="icon">🌟</div>
-                    <div class="name">단원 통합 모음</div>
-                </div>
-                <div class="count">10문제 · 새 유형</div>
-            </a>
-            <a href="quiz-engine.html?id=society-advanced-all&subject=society" class="quiz-card tier-boss" data-file="society-advanced-all.html">
-                <div>
-                    <div class="icon">🔥</div>
-                    <div class="name">전 단원 통합 심화</div>
-                </div>
-                <div class="count">10문제 · 최상급 난이도</div>
-            </a>
-            <a href="quiz-engine.html?id=society-main-quiz&subject=society" class="quiz-card tier-boss" data-file="society-main-quiz.html">
-                <div>
-                    <div class="icon">🎮</div>
-                    <div class="name">전체 종합 퀴즈</div>
-                </div>
-                <div class="count">랜덤 출제</div>
+                <div class="count">8문제</div>
             </a>
         </div>
 
         <div class="footer-note">
-            1·2·3단계 각 30문제 · 총 140문제<br>
-            틀린 문제는 자동으로 오답노트에 저장된다냥 🐟<br>
-            중간고사 화이팅이다냥!
+            본문 문장이 다 나올 때까지 빈칸 채우기 연습이다냥 🐟
         </div>
     </div>
 
@@ -521,88 +389,10 @@
         initNameGate();
         updateGreeting();
 
-        const stage1Files = ['international.html', 'city.html', 'territory.html'];
-        const stage2Files = ['international-adv.html', 'city-adv.html', 'territory-adv.html'];
-        const stage3Files = ['international-master.html', 'city-master.html', 'territory-master.html'];
-
         function getProgress() {
             try {
-                return JSON.parse(localStorage.getItem('societyQuizProgress_v2') || '{}');
+                return JSON.parse(localStorage.getItem('englishQuizProgress_v2') || '{}');
             } catch (e) { return {}; }
-        }
-
-        function countDone(fileList, progress) {
-            return fileList.filter(f => progress[f]).length;
-        }
-
-        function applyLock(gridId, bannerId, locked, progressEl, doneCount, totalCount, unlockMsg) {
-            const grid = document.getElementById(gridId);
-            const cards = grid.querySelectorAll('.quiz-card');
-            cards.forEach(card => {
-                if (locked) {
-                    card.classList.add('locked');
-                    if (!card.querySelector('.lock-icon')) {
-                        const iconEl = card.querySelector('.icon');
-                        if (iconEl) {
-                            const lockSpan = document.createElement('div');
-                            lockSpan.className = 'lock-icon';
-                            lockSpan.textContent = '🔒';
-                            iconEl.replaceWith(lockSpan);
-                        }
-                    }
-                } else {
-                    card.classList.remove('locked');
-                }
-            });
-
-            if (bannerId) {
-                const banner = document.getElementById(bannerId);
-                if (banner) {
-                    if (locked) {
-                        banner.textContent = unlockMsg;
-                        banner.hidden = false;
-                    } else {
-                        banner.hidden = true;
-                    }
-                }
-            }
-
-            if (progressEl) progressEl.textContent = `${doneCount}/${totalCount} 완료`;
-        }
-
-        function renderLocks() {
-            const progress = getProgress();
-            const stage1Done = countDone(stage1Files, progress);
-            const stage2Done = countDone(stage2Files, progress);
-            const stage3Done = countDone(stage3Files, progress);
-
-            const stage1Locked = false; // 1단계는 항상 열려있음
-            const stage2Locked = stage1Done < stage1Files.length;
-            const stage3Locked = stage2Done < stage2Files.length;
-            const bossLocked = stage3Done < stage3Files.length;
-
-            applyLock('stage1-grid', null, stage1Locked, document.getElementById('stage1-progress'), stage1Done, stage1Files.length, '');
-            applyLock('stage2-grid', 'stage2-banner', stage2Locked, document.getElementById('stage2-progress'), stage2Done, stage2Files.length,
-                `🔒 1단계 3문제를 모두 풀어야 열려요 (${stage1Done}/${stage1Files.length})`);
-            applyLock('stage3-grid', 'stage3-banner', stage3Locked, document.getElementById('stage3-progress'), stage2Done, stage2Files.length,
-                `🔒 2단계 3문제를 모두 풀어야 열려요 (${stage2Done}/${stage2Files.length})`);
-            applyLock('boss-grid', 'boss-banner', bossLocked, document.getElementById('boss-progress'), stage3Done, stage3Files.length,
-                `🔒 3단계 심화 3문제를 모두 클리어해야 끝판왕이 열려요 (${stage3Done}/${stage3Files.length}) 👑`);
-        }
-
-        const bossFiles = ['international-city.html', 'city-territory.html', 'society-review.html', 'society-advanced-all.html', 'society-main-quiz.html'];
-        const MASTER_TITLE_KEY = 'societyMasterTitle_v2';
-
-        function renderMasterTitle() {
-            const progress = getProgress();
-            const bossDone = countDone(bossFiles, progress);
-            const isMaster = bossDone === bossFiles.length || localStorage.getItem(MASTER_TITLE_KEY) === '1';
-
-            const heroTag = document.getElementById('master-tag');
-            if (heroTag) heroTag.classList.toggle('show', isMaster);
-
-            const bossMark = document.getElementById('boss-master-mark');
-            if (bossMark) bossMark.textContent = isMaster ? '👑 냥공 마스터 등극!' : '';
         }
 
         // 이미 푼 퀴즈는 "완료" 같은 텍스트 대신, 카드에 최고 점수를 배지로 붙여줌 (예: 7/10)
@@ -641,9 +431,7 @@
             });
         }
 
-        renderLocks();
         renderScoreBadges();
-        renderMasterTitle();
     </script>
 </body>
 </html>
