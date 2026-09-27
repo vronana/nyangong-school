@@ -70,6 +70,23 @@
             color: #a5a2c4;
             font-size: 14px;
         }
+        .master-tag {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin: 0.6rem auto 0;
+            width: fit-content;
+            background: linear-gradient(135deg, rgba(240,193,75,0.22), rgba(255,140,0,0.14));
+            border: 1px solid rgba(240,193,75,0.5);
+            color: #f0c14b;
+            font-size: 13px;
+            font-weight: 700;
+            padding: 6px 16px;
+            border-radius: 20px;
+            letter-spacing: 0.3px;
+        }
+        .master-tag.show { display: inline-flex; }
 
         .notes-link {
             display: flex;
@@ -274,7 +291,7 @@
     </style>
 </head>
 <body>
-    <div class="version-tag">v2026.09.27-18</div>
+    <div class="version-tag">v2026.09.27-19</div>
     <a href="hub.html" class="home-float">🏠 홈</a>
     <div class="modal-overlay" id="name-modal">
         <div class="modal-box">
@@ -305,6 +322,7 @@
             <h1>과학</h1>
             <p>중학교 중간고사 준비 · 원하는 단원을 골라 풀어보냥!</p>
             <div class="greeting" id="hub-greeting"></div>
+            <div class="master-tag" id="master-tag">👑 냥공 마스터</div>
         </div>
 
         <a href="science-wrong-notes.html" class="notes-link">
@@ -434,7 +452,7 @@
             </a>
         </div>
 
-        <div class="section-title">👑 끝판왕 · 전 단원 통합 최종 관문 <span class="stage-progress" id="boss-progress"></span></div>
+        <div class="section-title">👑 끝판왕 · 전 단원 통합 최종 관문 <span class="stage-progress" id="boss-progress"></span> <span class="stage-progress" id="boss-master-mark"></span></div>
         <div class="locked-banner" id="boss-banner" hidden></div>
         <div class="card-grid" id="boss-grid">
             <a href="quiz-engine.html?id=reproduction-genetics" class="quiz-card tier-boss" data-file="reproduction-genetics.html">
@@ -614,6 +632,21 @@
                 `🔒 3단계 심화 5문제를 모두 클리어해야 끝판왕이 열려요 (${stage3Done}/${stage3Files.length}) 👑`);
         }
 
+        const bossFiles = ['reproduction-genetics.html', 'energy-electricity.html', 'stage2-review.html', 'advanced-all.html', 'main-quiz.html'];
+        const MASTER_TITLE_KEY = 'scienceMasterTitle_v2';
+
+        function renderMasterTitle() {
+            const progress = getProgress();
+            const bossDone = countDone(bossFiles, progress);
+            const isMaster = bossDone === bossFiles.length || localStorage.getItem(MASTER_TITLE_KEY) === '1';
+
+            const heroTag = document.getElementById('master-tag');
+            if (heroTag) heroTag.classList.toggle('show', isMaster);
+
+            const bossMark = document.getElementById('boss-master-mark');
+            if (bossMark) bossMark.textContent = isMaster ? '👑 냥공 마스터 등극!' : '';
+        }
+
         // 이미 푼 퀴즈는 "완료" 같은 텍스트 대신, 카드에 최고 점수를 배지로 붙여줌 (예: 7/10)
         function renderScoreBadges() {
             const progress = getProgress();
@@ -652,6 +685,7 @@
 
         renderLocks();
         renderScoreBadges();
+        renderMasterTitle();
     </script>
 </body>
 </html>

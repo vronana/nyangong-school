@@ -323,6 +323,96 @@
             box-shadow: 0 4px 20px rgba(255,215,0,0.5);
         }
 
+        /* 냥공 마스터 등극 오버레이 (끝판왕 5개 전부 클리어 시, 만점 축하보다 한 단계 위 연출) */
+        #master-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 50% 30%, rgba(60,30,90,0.95), rgba(5,4,10,0.97));
+            z-index: 320;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        #master-overlay.show { display: flex; }
+        .master-box {
+            text-align: center;
+            animation: masterZoomIn 0.6s cubic-bezier(.2,1.4,.4,1);
+            padding: 1.5rem;
+        }
+        @keyframes masterZoomIn {
+            0% { transform: scale(0.4) rotate(-8deg); opacity: 0; }
+            60% { transform: scale(1.08) rotate(2deg); opacity: 1; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+        .master-crown {
+            font-size: 90px;
+            display: block;
+            margin-bottom: 0.6rem;
+            animation: crownFloat 1.6s ease-in-out infinite;
+            filter: drop-shadow(0 0 24px rgba(240,193,75,0.7));
+        }
+        @keyframes crownFloat {
+            0%, 100% { transform: translateY(0) rotate(-4deg); }
+            50% { transform: translateY(-14px) rotate(4deg); }
+        }
+        .master-title {
+            font-size: 30px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, #f0c14b, #fff6d8, #f0c14b);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: masterShimmer 2.2s linear infinite;
+            margin-bottom: 0.5rem;
+        }
+        @keyframes masterShimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+        .master-sub {
+            font-size: 17px;
+            color: #fff;
+            font-weight: 700;
+            margin-bottom: 0.9rem;
+        }
+        .master-badge-name {
+            display: inline-block;
+            background: rgba(240,193,75,0.15);
+            border: 1px solid rgba(240,193,75,0.5);
+            color: #f0c14b;
+            font-size: 13px;
+            font-weight: 700;
+            padding: 6px 16px;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+        }
+        .master-note {
+            font-size: 13px;
+            color: #cfc7ea;
+            line-height: 1.8;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        .master-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1.6rem;
+            padding: 14px 40px;
+            font-size: 17px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #f0c14b, #ff8c00);
+            color: #1a1a1a;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 4px 26px rgba(255,215,0,0.55);
+        }
+
         /* 폭죽 파티클 */
         .confetti {
             position: fixed;
@@ -495,7 +585,7 @@
 </head>
 <body>
     <a href="hub.html" class="home-float" id="home-float-link">🏠 홈</a>
-    <div class="version-tag">v2026.09.27-18</div>
+    <div class="version-tag">v2026.09.27-19</div>
     <div class="game-container">
         <div class="header" id="quiz-header">불러오는 중...</div>
 
@@ -585,6 +675,18 @@
         </div>
     </div>
 
+    <!-- 냥공 마스터 등극 오버레이 (끝판왕 5개 전부 클리어) -->
+    <div id="master-overlay">
+        <div class="master-box">
+            <span class="master-crown">👑</span>
+            <div class="master-title">냥공 마스터 등극!</div>
+            <div class="master-sub">끝판왕 5개를 전부 클리어했다냥! 🎉</div>
+            <div class="master-badge-name" id="master-badge-name">🐱 냥공 마스터</div>
+            <div class="master-note">이제 hub 화면과 랭킹에 왕관이 붙는다냥.<br>친구들한테 자랑해보냥!</div>
+            <a href="hub.html" id="master-home-link" class="master-btn">🏠 과목 홈으로</a>
+        </div>
+    </div>
+
     <!-- 배경음악 (직접 열었을 때만 사용) -->
     <audio id="bgmAudio" loop>
         <source src="PixelPulse.mp3" type="audio/mpeg">
@@ -606,7 +708,7 @@
         // 과목별 허브/오답노트 페이지로 연결 (과목이 늘어나도 이 파일은 수정할 필요 없음)
         const subjectHubUrl = `${subject}-hub.html`;
         const subjectWrongNotesUrl = `${subject}-wrong-notes.html`;
-        ['home-float-link', 'game-over-home-link', 'perfect-home-link'].forEach(id => {
+        ['home-float-link', 'game-over-home-link', 'perfect-home-link', 'master-home-link'].forEach(id => {
             const el = document.getElementById(id);
             if (el) el.href = subjectHubUrl;
         });
@@ -970,6 +1072,24 @@
             } catch (e) { console.log('진도 저장 실패:', e); }
         }
 
+        // 끝판왕(👑) 5개 퀴즈 — hub.html의 boss-grid와 동일한 목록
+        const bossFiles = ['reproduction-genetics.html', 'energy-electricity.html', 'stage2-review.html', 'advanced-all.html', 'main-quiz.html'];
+        const MASTER_TITLE_KEY = 'scienceMasterTitle_v2';
+
+        // 방금 완료한 퀴즈가 끝판왕이고, 이번에 끝판왕 5개를 모두 다 채웠다면(그리고 아직 칭호가 없었다면)
+        // "냥공 마스터" 칭호를 새로 부여함
+        function checkNewMasterTitle() {
+            try {
+                if (!bossFiles.includes(storageKey)) return false;
+                if (localStorage.getItem(MASTER_TITLE_KEY) === '1') return false;
+                const progress = JSON.parse(localStorage.getItem('scienceQuizProgress_v2') || '{}');
+                const allBossDone = bossFiles.every(f => progress[f] && progress[f].done);
+                if (!allBossDone) return false;
+                localStorage.setItem(MASTER_TITLE_KEY, '1');
+                return true;
+            } catch (e) { return false; }
+        }
+
         function endGame() {
             markQuizComplete(correctCount, questions.length);
             submitScore(storageKey, document.title, correctCount, questions.length);
@@ -986,6 +1106,19 @@
                 fish.className = 'fish';
                 fish.textContent = '🐟';
                 fishTotalDiv.appendChild(fish);
+            }
+
+            const becameMaster = checkNewMasterTitle();
+            if (becameMaster) {
+                recordMasterTitle();
+                const name = getSavedName();
+                document.getElementById('master-badge-name').textContent = name ? `🐱 ${name} · 냥공 마스터` : '🐱 냥공 마스터';
+                playPerfect();
+                setTimeout(() => {
+                    launchConfetti();
+                    document.getElementById('master-overlay').classList.add('show');
+                }, 600);
+                return;
             }
 
             if (correctCount === questions.length) {

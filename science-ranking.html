@@ -123,6 +123,9 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+        .rank-name .crown {
+            margin-right: 3px;
+        }
         .rank-detail {
             font-size: 11px;
             color: #8985a8;
@@ -173,7 +176,7 @@
     </style>
 </head>
 <body>
-    <div class="version-tag">v2026.09.27-18</div>
+    <div class="version-tag">v2026.09.27-19</div>
     <a href="science-hub.html" class="home-float">🏠 홈</a>
     <div class="wrap">
         <div class="header">🏆 랭킹 🏆</div>
@@ -263,7 +266,7 @@
             // 이름 등록한 사람 전원을 0점으로 먼저 깔아두고 시작
             const byPlayer = {};
             allPlayers.forEach(p => {
-                byPlayer[p.name] = { name: p.name, bestByQuiz: {}, reviewCleared: p.reviewCleared || 0 };
+                byPlayer[p.name] = { name: p.name, bestByQuiz: {}, reviewCleared: p.reviewCleared || 0, masterTitle: !!p.masterTitle };
             });
             // 같은 퀴즈를 여러 번 풀었으면 그중 제일 잘 본 기록만 반영 (중복 방지)
             allScores.forEach(s => {
@@ -285,7 +288,8 @@
                     quizCount: quizzes.length,
                     quizCorrect,
                     quizTotal,
-                    reviewCleared: p.reviewCleared
+                    reviewCleared: p.reviewCleared,
+                    masterTitle: p.masterTitle
                 };
             }).sort((a, b) => b.score - a.score);
 
@@ -303,7 +307,7 @@
                     <div class="${rowClass(i)}">
                         <div class="rank-num">${medalFor(i)}</div>
                         <div class="rank-info">
-                            <div class="rank-name">${escapeHtml(p.name)}</div>
+                            <div class="rank-name">${p.masterTitle ? '<span class="crown" title="냥공 마스터">👑</span>' : ''}${escapeHtml(p.name)}</div>
                             <div class="rank-detail">${detail}</div>
                         </div>
                         <div class="rank-score">${p.score}점</div>
@@ -332,14 +336,16 @@
                 }
             });
             const ranked = Object.values(bestByPlayer).sort((a, b) => b.correct - a.correct);
+            const masterNames = new Set(allPlayers.filter(p => p.masterTitle).map(p => p.name));
 
             let html = '';
             ranked.forEach((s, i) => {
+                const crown = masterNames.has(s.name) ? '<span class="crown" title="냥공 마스터">👑</span>' : '';
                 html += `
                     <div class="${rowClass(i)}">
                         <div class="rank-num">${medalFor(i)}</div>
                         <div class="rank-info">
-                            <div class="rank-name">${escapeHtml(s.name)}</div>
+                            <div class="rank-name">${crown}${escapeHtml(s.name)}</div>
                         </div>
                         <div class="rank-score">${s.correct} / ${s.total}</div>
                     </div>
@@ -376,7 +382,7 @@
             allScores = scoreSnap.docs.map(doc => doc.data());
             allPlayers = playerSnap.docs.map(doc => {
                 const d = doc.data();
-                return { name: d.name, reviewCleared: d.reviewCleared || 0 };
+                return { name: d.name, reviewCleared: d.reviewCleared || 0, masterTitle: !!d.masterTitle };
             });
             render();
         }).catch(e => {

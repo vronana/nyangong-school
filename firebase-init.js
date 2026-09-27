@@ -39,6 +39,21 @@ function registerPlayer(name) {
     }
 }
 
+function recordMasterTitle() {
+    try {
+        const name = getPlayerName();
+        if (!name) return;
+        db.collection('players').doc(name).set({
+            name: name,
+            masterTitle: true,
+            masterTitleAt: firebase.firestore.FieldValue.serverTimestamp(),
+            lastSeen: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true }).catch(e => console.log('마스터 칭호 기록 실패:', e));
+    } catch (e) {
+        console.log('마스터 칭호 기록 실패:', e);
+    }
+}
+
 function recordReviewClear() {
     try {
         const name = getPlayerName();
