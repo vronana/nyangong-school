@@ -24,5 +24,25 @@
     "stage2-review": { "title": "단원 통합 모음", "icon": "🌟", "tier": "bonus", "stage": 0, "count": "10문제 · 새 유형" },
     "advanced-all": { "title": "전 단원 통합 심화", "icon": "🔥", "tier": "bonus", "stage": 0, "count": "10문제 · 계산 포함" },
     "main-quiz": { "title": "전체 종합 퀴즈", "icon": "🎮", "tier": "bonus", "stage": 0, "count": "랜덤 출제" }
+  },
+  "society": {
+    "_meta": { "label": "중학교 사회 중간고사 준비다냥!", "hubTitle": "냥공스쿨" },
+    "international": { "title": "국제 사회와 국제 정치 기초", "icon": "🌍", "tier": "basic", "stage": 1, "count": "10문제" },
+    "city": { "title": "사람이 만든 삶터, 도시 기초", "icon": "🏙️", "tier": "basic", "stage": 1, "count": "10문제" },
+    "territory": { "title": "세계 속의 우리나라 기초", "icon": "🗺️", "tier": "basic", "stage": 1, "count": "10문제" },
+
+    "international-adv": { "title": "국제 사회와 국제 정치 응용", "icon": "🌍", "tier": "combined", "stage": 2, "count": "10문제" },
+    "city-adv": { "title": "사람이 만든 삶터, 도시 응용", "icon": "🏙️", "tier": "combined", "stage": 2, "count": "10문제" },
+    "territory-adv": { "title": "세계 속의 우리나라 응용", "icon": "🗺️", "tier": "combined", "stage": 2, "count": "10문제" },
+
+    "international-master": { "title": "국제 사회와 국제 정치 심화", "icon": "🌍", "tier": "advanced", "stage": 3, "count": "10문제" },
+    "city-master": { "title": "사람이 만든 삶터, 도시 심화", "icon": "🏙️", "tier": "advanced", "stage": 3, "count": "10문제" },
+    "territory-master": { "title": "세계 속의 우리나라 심화", "icon": "🗺️", "tier": "advanced", "stage": 3, "count": "10문제" },
+
+    "international-city": { "title": "국제 사회·도시 종합", "icon": "🌐", "tier": "bonus", "stage": 0, "count": "10문제" },
+    "city-territory": { "title": "도시·영역 종합", "icon": "🧭", "tier": "bonus", "stage": 0, "count": "10문제" },
+    "society-review": { "title": "단원 통합 모음", "icon": "🌟", "tier": "bonus", "stage": 0, "count": "10문제 · 새 유형" },
+    "society-advanced-all": { "title": "전 단원 통합 심화", "icon": "🔥", "tier": "bonus", "stage": 0, "count": "10문제 · 최상급 난이도" },
+    "society-main-quiz": { "title": "전체 종합 퀴즈", "icon": "🎮", "tier": "bonus", "stage": 0, "count": "랜덤 출제" }
   }
 }

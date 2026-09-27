@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>냥공스쿨 · 과학 오답노트</title>
+    <title>냥공스쿨 · 사회 오답노트</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -319,7 +319,7 @@
 </head>
 <body>
     <div class="version-tag">v2026.09.27-20</div>
-    <a href="science-hub.html" class="home-float">🏠 홈</a>
+    <a href="society-hub.html" class="home-float">🏠 홈</a>
 
     <div class="modal-overlay" id="answer-modal">
         <div class="modal-box">
@@ -353,12 +353,12 @@
 
         function getNotes() {
             try {
-                return JSON.parse(localStorage.getItem('scienceWrongNotes_v2') || '[]');
+                return JSON.parse(localStorage.getItem('societyWrongNotes_v2') || '[]');
             } catch (e) { return []; }
         }
 
         function saveNotes(notes) {
-            localStorage.setItem('scienceWrongNotes_v2', JSON.stringify(notes));
+            localStorage.setItem('societyWrongNotes_v2', JSON.stringify(notes));
         }
 
         // 말투를 매번 "~냥"으로만 고정하지 않고 가끔 "~옹"도 섞어서 사용
@@ -375,26 +375,20 @@
         }
 
         const pageNames = {
-            'human-genetics.html': '🧬 사람의 유전',
-            'genetics.html': '🧬 유전 원리 기초',
-            'reproduction.html': '🧬 생식과 발생 기초',
-            'energy.html': '⚡ 에너지 전환과 보존',
-            'electricity.html': '💡 전기 에너지',
-            'reproduction-genetics.html': '🧬 생식과 유전 종합',
-            'energy-electricity.html': '⚡ 에너지·전기 종합',
-            'advanced-all.html': '🔥 심화 총정리',
-            'stage2-review.html': '🌟 단원 통합 모음',
-            'reproduction-adv.html': '🧬 생식과 발생 응용',
-            'reproduction-master.html': '🧬 생식과 발생 심화',
-            'genetics-adv.html': '🧬 유전 원리 응용',
-            'genetics-master.html': '🧬 유전 원리 심화',
-            'human-genetics-adv.html': '🧬 사람의 유전 응용',
-            'human-genetics-master.html': '🧬 사람의 유전 심화',
-            'energy-adv.html': '⚡ 에너지 전환과 보존 응용',
-            'energy-master.html': '⚡ 에너지 전환과 보존 심화',
-            'electricity-adv.html': '💡 전기 에너지 응용',
-            'electricity-master.html': '💡 전기 에너지 심화',
-            'main-quiz.html': '🎮 전체 종합 퀴즈'
+            'international.html': '🌍 국제 사회와 국제 정치 기초',
+            'city.html': '🏙️ 사람이 만든 삶터, 도시 기초',
+            'territory.html': '🗺️ 세계 속의 우리나라 기초',
+            'international-adv.html': '🌍 국제 사회와 국제 정치 응용',
+            'city-adv.html': '🏙️ 사람이 만든 삶터, 도시 응용',
+            'territory-adv.html': '🗺️ 세계 속의 우리나라 응용',
+            'international-master.html': '🌍 국제 사회와 국제 정치 심화',
+            'city-master.html': '🏙️ 사람이 만든 삶터, 도시 심화',
+            'territory-master.html': '🗺️ 세계 속의 우리나라 심화',
+            'international-city.html': '🌐 국제 사회·도시 종합',
+            'city-territory.html': '🧭 도시·영역 종합',
+            'society-review.html': '🌟 단원 통합 모음',
+            'society-advanced-all.html': '🔥 전 단원 통합 심화',
+            'society-main-quiz.html': '🎮 전체 종합 퀴즈'
         };
 
         let currentFilter = 'all';
@@ -409,7 +403,7 @@
                         <div class="icon">🎉</div>
                         <div>아직 틀린 문제가 없다냥!</div>
                         <div style="font-size:13px; margin-top:6px; color:#8985a8;">퀴즈를 풀다가 틀리면 여기에 자동으로 저장되고,<br>여기서 다시 맞히면 사라진다냥.</div>
-                        <a href="science-hub.html">🎮 퀴즈 풀러 가기</a>
+                        <a href="society-hub.html">🎮 퀴즈 풀러 가기</a>
                     </div>
                 `;
                 return;
