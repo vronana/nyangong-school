@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>냥공스쿨 · 과학 오답노트</title>
+    <title>냥공스쿨 · 국어 오답노트</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -67,31 +67,6 @@
         .stat-num { font-size: 24px; font-weight: 700; color: var(--danger); }
         .stat-label { font-size: 12px; color: #a5a2c4; margin-top: 2px; }
 
-        .filter-bar {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .filter-btn {
-            background: #262340;
-            border: 1px solid rgba(255,255,255,0.11);
-            color: #d0d0f0;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .filter-btn.active {
-            background: var(--primary);
-            color: #0c0b14;
-            border-color: var(--primary);
-            font-weight: 700;
-        }
-
         .empty-state {
             text-align: center;
             padding: 3rem 1rem;
@@ -131,13 +106,6 @@
             gap: 6px;
             margin-bottom: 0.6rem;
         }
-        .note-source {
-            font-size: 11px;
-            color: var(--primary);
-            background: rgba(0, 212, 255, 0.12);
-            padding: 3px 10px;
-            border-radius: 12px;
-        }
         .note-date { font-size: 11px; color: #8985a8; margin-left: auto; }
         .lock-badge {
             font-size: 11px;
@@ -157,12 +125,34 @@
             line-height: 1.5;
         }
 
-        .note-options {
+        .note-answer-row {
             position: relative;
             display: flex;
-            flex-direction: column;
-            gap: 6px;
+            gap: 8px;
         }
+        .note-text-input {
+            flex: 1;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.11);
+            color: var(--text);
+            font-family: inherit;
+        }
+        .note-text-input:focus { outline: none; border-color: var(--primary); }
+        .note-submit-btn {
+            padding: 10px 16px;
+            border-radius: 10px;
+            border: none;
+            background: var(--primary);
+            color: #0c0b14;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        .note-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
         .lock-overlay {
             position: absolute;
             inset: 0;
@@ -185,38 +175,6 @@
             font-weight: 700;
             color: #d0d0f0;
         }
-        .note-option-btn {
-            width: 100%;
-            text-align: left;
-            padding: 10px 14px;
-            border-radius: 10px;
-            font-size: 13px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.11);
-            color: var(--text);
-            cursor: pointer;
-            font-family: inherit;
-            transition: all 0.15s;
-        }
-        .note-option-btn:hover { border-color: var(--primary); }
-        .note-option-btn.wrong-pick {
-            background: rgba(255, 68, 102, 0.2);
-            border-color: var(--danger);
-            color: #ffb3c1;
-            animation: shakeIt 0.3s;
-        }
-        .note-option-btn.correct-pick {
-            background: rgba(0, 255, 136, 0.2);
-            border-color: var(--success);
-            color: #a3ffd6;
-        }
-        .note-option-btn:disabled { cursor: not-allowed; opacity: 0.55; }
-        .note-option-btn.is-locked { opacity: 0.3; filter: blur(1.5px); }
-        @keyframes shakeIt {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-4px); }
-            75% { transform: translateX(4px); }
-        }
 
         .note-feedback {
             margin-top: 0.6rem;
@@ -226,15 +184,6 @@
         }
         .note-feedback.wrong { color: #ff8899; }
         .note-feedback.correct { color: var(--success); }
-
-        .note-explain {
-            margin-top: 0.6rem;
-            padding-top: 0.6rem;
-            border-top: 1px dashed rgba(255,255,255,0.11);
-            font-size: 13px;
-            color: #d0d0f0;
-            line-height: 1.7;
-        }
 
         .bottom-actions {
             display: flex;
@@ -319,7 +268,7 @@
 </head>
 <body>
     <div class="version-tag">v2026.10.01-22</div>
-    <a href="science-hub.html" class="home-float">🏠 홈</a>
+    <a href="korean-hub.html" class="home-float">🏠 홈</a>
 
     <div class="modal-overlay" id="answer-modal">
         <div class="modal-box">
@@ -332,7 +281,7 @@
 
     <div class="wrap">
         <div class="header">📓 오답노트</div>
-        <div class="sub">문제를 다시 풀어서 정답을 맞히면 자동으로 사라진다냥! 😸</div>
+        <div class="sub">정답을 다시 입력해서 맞히면 자동으로 사라진다냥! 😸</div>
         <div class="sub" id="page-greeting" style="color:var(--primary); font-weight:600;"></div>
 
         <div id="content"></div>
@@ -353,49 +302,21 @@
 
         function getNotes() {
             try {
-                return JSON.parse(localStorage.getItem('scienceWrongNotes_v2') || '[]');
+                return JSON.parse(localStorage.getItem('koreanWrongNotes_v2') || '[]');
             } catch (e) { return []; }
         }
 
         function saveNotes(notes) {
-            localStorage.setItem('scienceWrongNotes_v2', JSON.stringify(notes));
+            localStorage.setItem('koreanWrongNotes_v2', JSON.stringify(notes));
         }
 
         // 말투를 매번 "~냥"으로만 고정하지 않고 가끔 "~옹"도 섞어서 사용
         function ny() { return Math.random() < 0.5 ? '냥' : '옹'; }
 
-        // 0~n-1 인덱스를 무작위로 섞은 배열을 반환 (피셔-예이츠)
-        function shuffledIndices(n) {
-            const arr = Array.from({ length: n }, (_, i) => i);
-            for (let i = arr.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
-            }
-            return arr;
+        // 정답 비교: 띄어쓰기 차이만 허용
+        function normalizeAnswer(s) {
+            return String(s || '').replace(/\s+/g, '').trim();
         }
-
-        const pageNames = {
-            'human-genetics.html': '🧬 사람의 유전',
-            'genetics.html': '🧬 유전 원리 기초',
-            'reproduction.html': '🧬 생식과 발생 기초',
-            'energy.html': '⚡ 에너지 전환과 보존',
-            'electricity.html': '💡 전기 에너지',
-            'reproduction-genetics.html': '🧬 생식과 유전 종합',
-            'energy-electricity.html': '⚡ 에너지·전기 종합',
-            'advanced-all.html': '🔥 심화 총정리',
-            'stage2-review.html': '🌟 단원 통합 모음',
-            'reproduction-adv.html': '🧬 생식과 발생 응용',
-            'reproduction-master.html': '🧬 생식과 발생 심화',
-            'genetics-adv.html': '🧬 유전 원리 응용',
-            'genetics-master.html': '🧬 유전 원리 심화',
-            'human-genetics-adv.html': '🧬 사람의 유전 응용',
-            'human-genetics-master.html': '🧬 사람의 유전 심화',
-            'energy-adv.html': '⚡ 에너지 전환과 보존 응용',
-            'energy-master.html': '⚡ 에너지 전환과 보존 심화',
-            'electricity-adv.html': '💡 전기 에너지 응용',
-            'electricity-master.html': '💡 전기 에너지 심화',
-            'main-quiz.html': '🎮 전체 종합 퀴즈'
-        };
 
         let currentFilter = 'all';
 
@@ -409,53 +330,27 @@
                         <div class="icon">🎉</div>
                         <div>아직 틀린 문제가 없다냥!</div>
                         <div style="font-size:13px; margin-top:6px; color:#8985a8;">퀴즈를 풀다가 틀리면 여기에 자동으로 저장되고,<br>여기서 다시 맞히면 사라진다냥.</div>
-                        <a href="science-hub.html">🎮 퀴즈 풀러 가기</a>
+                        <a href="korean-hub.html">🎮 퀴즈 풀러 가기</a>
                     </div>
                 `;
                 return;
             }
 
-            // 통계
-            const sources = [...new Set(notes.map(n => n.url))];
             let statsHtml = `
                 <div class="stats-bar">
                     <div class="stat-item"><div class="stat-num">${notes.length}</div><div class="stat-label">틀린 문제</div></div>
-                    <div class="stat-item"><div class="stat-num">${sources.length}</div><div class="stat-label">단원 수</div></div>
                 </div>
             `;
 
-            // 필터 버튼
-            let filterHtml = `<div class="filter-bar">
-                <button class="filter-btn ${currentFilter === 'all' ? 'active' : ''}" onclick="setFilter('all')">전체</button>`;
-            sources.forEach(src => {
-                const label = pageNames[src] || src;
-                filterHtml += `<button class="filter-btn ${currentFilter === src ? 'active' : ''}" onclick="setFilter('${src}')">${label}</button>`;
-            });
-            filterHtml += `</div>`;
-
-            // 필터링된 노트 (최신순)
-            const filtered = notes
-                .map((n, idx) => ({ ...n, idx }))
-                .filter(n => currentFilter === 'all' || n.url === currentFilter)
-                .reverse();
+            const filtered = notes.map((n, idx) => ({ ...n, idx })).reverse();
 
             let cardsHtml = '';
             filtered.forEach(note => {
                 const dateStr = note.date ? new Date(note.date).toLocaleDateString('ko-KR', { month: 'short', day: 'numeric' }) : '';
                 const locked = !!(note.lockedUntil && Date.now() < note.lockedUntil);
-                let optionsHtml = '';
-                // 풀 때마다(다시 렌더링될 때마다) 보기 순서를 섞어서 위치만 외워서
-                // 맞히는 걸 막음. 정답 판정은 원래 인덱스(note.correctIdx) 기준이라
-                // 섞어도 정답 로직은 그대로 유지됨
-                const order = shuffledIndices(note.options.length);
-                order.forEach(i => {
-                    const opt = note.options[i];
-                    const isAnswer = locked && i === note.correctIdx;
-                    const clickHandler = locked ? `lockedClick(${note.idx})` : `checkAnswer(${note.idx}, ${i}, this)`;
-                    optionsHtml += `<button type="button" class="note-option-btn${isAnswer ? ' correct-pick' : ''}${locked ? ' is-locked' : ''}" onclick="${clickHandler}">${opt}</button>`;
-                });
+
                 const feedbackHtml = locked
-                    ? `땡! 정답은 <b>${note.options[note.correctIdx]}</b> 이다${ny()} 😿<br>💡 ${note.explanation}<br><span id="lock-timer-${note.idx}" style="display:inline-block;margin-top:4px;color:#8985a8;"></span>`
+                    ? `땡! 정답은 <b>${note.answer}</b> 이다${ny()} 😿<br><span id="lock-timer-${note.idx}" style="display:inline-block;margin-top:4px;color:#8985a8;"></span>`
                     : '';
                 const lockBadgeHtml = locked ? `<span class="lock-badge" id="lock-badge-${note.idx}">🔒 잠김</span>` : '';
                 const remainNow = locked ? Math.max(0, Math.ceil((note.lockedUntil - Date.now()) / 1000)) : 0;
@@ -465,50 +360,53 @@
                             <span class="lock-timer-text" id="lock-overlay-timer-${note.idx}">${remainNow}초</span>
                        </div>`
                     : '';
+                const inputDisabled = locked ? 'disabled' : '';
                 cardsHtml += `
                     <div class="note-card${locked ? ' locked' : ''}" id="note-card-${note.idx}">
                         <div class="note-meta">
-                            <span class="note-source">${pageNames[note.url] || note.page}</span>
-                            ${lockBadgeHtml}
                             <span class="note-date">${dateStr}</span>
+                            ${lockBadgeHtml}
                         </div>
                         <div class="note-q">Q. ${note.question}</div>
-                        <div class="note-options">${optionsHtml}${lockOverlayHtml}</div>
+                        <div class="note-answer-row">
+                            <input type="text" class="note-text-input" id="note-input-${note.idx}" placeholder="정답 입력" ${inputDisabled}
+                                onkeypress="if(event.key==='Enter'){ checkAnswer(${note.idx}); }">
+                            <button type="button" class="note-submit-btn" ${inputDisabled} onclick="checkAnswer(${note.idx})">제출</button>
+                            ${lockOverlayHtml}
+                        </div>
                         <div class="note-feedback${locked ? ' wrong' : ''}" id="note-feedback-${note.idx}">${feedbackHtml}</div>
                     </div>
                 `;
             });
 
-            contentEl.innerHTML = statsHtml + filterHtml + cardsHtml;
+            contentEl.innerHTML = statsHtml + cardsHtml;
         }
 
-        function setFilter(f) {
-            currentFilter = f;
-            render();
-        }
-
-        function checkAnswer(idx, chosenIdx, btnEl) {
+        function checkAnswer(idx) {
             const card = document.getElementById(`note-card-${idx}`);
             if (!card || card.dataset.solved === '1') return;
 
             const notes = getNotes();
             const note = notes[idx];
             if (!note) return;
-            if (note.lockedUntil && Date.now() < note.lockedUntil) return; // 잠긴 문제는 클릭 무시
+            if (note.lockedUntil && Date.now() < note.lockedUntil) return; // 잠긴 문제는 무시
+
+            const inputEl = document.getElementById(`note-input-${idx}`);
+            const val = inputEl ? inputEl.value : '';
+            if (!val.trim()) { alert('정답을 입력해주세요'); return; }
 
             const feedbackEl = document.getElementById(`note-feedback-${idx}`);
 
-            if (chosenIdx === note.correctIdx) {
+            if (normalizeAnswer(val) === normalizeAnswer(note.answer)) {
                 card.dataset.solved = '1';
-                card.querySelectorAll('.note-option-btn').forEach(b => b.disabled = true);
-                btnEl.classList.add('correct-pick');
+                if (inputEl) inputEl.disabled = true;
+                const btn = card.querySelector('.note-submit-btn');
+                if (btn) btn.disabled = true;
                 feedbackEl.className = 'note-feedback correct';
-                feedbackEl.textContent = `🎉 정답이다${ny()}! 💡 ${note.explanation}`;
+                feedbackEl.textContent = `🎉 정답이다${ny()}!`;
                 if (typeof recordReviewClear === 'function') recordReviewClear();
 
-                showAnswerModal('🎉', '맞았습니다!', `💡 ${note.explanation}<br><br>오답노트에서 삭제할게요`, () => {
-                    // getNotes()는 매번 JSON.parse로 새 객체를 만들기 때문에
-                    // note와 참조가 달라 indexOf로는 절대 못 찾음 -> 내용으로 매칭해야 함
+                showAnswerModal('🎉', '맞았습니다!', `정답: <b>${note.answer}</b><br><br>오답노트에서 삭제할게요`, () => {
                     const latest = getNotes();
                     const stillIdx = latest.findIndex(n =>
                         n.date === note.date && n.question === note.question && n.url === note.url
@@ -520,15 +418,12 @@
                     render();
                 });
             } else {
-                // 오답: 정답/해설을 바로 보여주고, 1분 동안 이 문제를 다시 못 누르게 잠가서
-                // 마구 찍어서 우연히 맞히는 걸 막음. disabled 속성 대신 onclick을 lockedClick으로
-                // 바꿔서, 눌러도 "잠겼어요" 안내가 뜨도록 해 클릭이 씹히는 것처럼 보이지 않게 함
+                // 오답: 정답을 바로 보여주고, 1분 동안 이 문제를 다시 못 풀게 잠가서
+                // 마구 찍어서 우연히 맞히는 걸 막음
                 card.classList.add('locked');
-                card.querySelectorAll('.note-option-btn').forEach(b => {
-                    b.classList.add('is-locked');
-                    b.setAttribute('onclick', `lockedClick(${idx})`);
-                });
-                btnEl.classList.add('wrong-pick');
+                if (inputEl) inputEl.disabled = true;
+                const btn = card.querySelector('.note-submit-btn');
+                if (btn) btn.setAttribute('onclick', `lockedClick(${idx})`);
 
                 const metaEl = card.querySelector('.note-meta');
                 if (metaEl && !metaEl.querySelector('.lock-badge')) {
@@ -536,18 +431,16 @@
                     badge.className = 'lock-badge';
                     badge.id = `lock-badge-${idx}`;
                     badge.textContent = '🔒 잠김';
-                    const dateEl = metaEl.querySelector('.note-date');
-                    if (dateEl) metaEl.insertBefore(badge, dateEl);
-                    else metaEl.appendChild(badge);
+                    metaEl.appendChild(badge);
                 }
 
-                const optionsEl = card.querySelector('.note-options');
-                if (optionsEl && !optionsEl.querySelector('.lock-overlay')) {
+                const rowEl = card.querySelector('.note-answer-row');
+                if (rowEl && !rowEl.querySelector('.lock-overlay')) {
                     const overlay = document.createElement('div');
                     overlay.className = 'lock-overlay';
                     overlay.setAttribute('onclick', `lockedClick(${idx})`);
                     overlay.innerHTML = `<span class="lock-icon">🔒</span><span class="lock-timer-text" id="lock-overlay-timer-${idx}">60초</span>`;
-                    optionsEl.appendChild(overlay);
+                    rowEl.appendChild(overlay);
                 }
 
                 const lockedUntil = Date.now() + 60 * 1000;
@@ -558,9 +451,9 @@
                 }
 
                 feedbackEl.className = 'note-feedback wrong';
-                feedbackEl.innerHTML = `땡! 정답은 <b>${note.options[note.correctIdx]}</b> 이다${ny()} 😿<br>💡 ${note.explanation}<br><span id="lock-timer-${idx}" style="display:inline-block;margin-top:4px;color:#8985a8;"></span>`;
+                feedbackEl.innerHTML = `땡! 정답은 <b>${note.answer}</b> 이다${ny()} 😿<br><span id="lock-timer-${idx}" style="display:inline-block;margin-top:4px;color:#8985a8;"></span>`;
 
-                showAnswerModal('😿', '틀렸습니다', `정답은 <b>${note.options[note.correctIdx]}</b> 이다${ny()}<br>💡 ${note.explanation}<br><br>⏱ 1분 동안 이 문제는 잠긴다${ny()}`, null);
+                showAnswerModal('😿', '틀렸습니다', `정답은 <b>${note.answer}</b> 이다${ny()}<br><br>⏱ 1분 동안 이 문제는 잠긴다${ny()}`, null);
 
                 startLockTicker();
                 tickLockTimers();
@@ -594,16 +487,12 @@
             return `⏱ ${s}초 후에 다시 풀 수 있어요`;
         }
 
-        // 잠긴 문제의 보기를 눌렀을 때 호출됨. 그냥 씹히는 것처럼 보이지 않도록
-        // "아직 잠겨있다"는 걸 팝업으로 명확히 알려줌
         function lockedClick(idx) {
             const notes = getNotes();
             const note = notes[idx];
             if (!note || !note.lockedUntil) { render(); return; }
             const remain = note.lockedUntil - Date.now();
             if (remain <= 0) {
-                // 이미 풀렸는데 화면이 안 갱신된 경우: lockedUntil도 같이 지워줘야
-                // 다음 tick에서 계속 "방금 만료됨"으로 잡히지 않음
                 delete note.lockedUntil;
                 saveNotes(notes);
                 render();
@@ -620,9 +509,6 @@
                 if (!note.lockedUntil) return;
                 const remain = note.lockedUntil - Date.now();
                 if (remain <= 0) {
-                    // 잠금이 풀리면 lockedUntil을 지워야 함. 안 지우면 다음 tick에서도
-                    // 계속 "방금 만료됨"으로 잡혀서 1초마다 render()가 호출되고,
-                    // 그때마다 보기 순서가 다시 섞여서 화면이 계속 바뀌어 보이는 버그가 있었음
                     delete note.lockedUntil;
                     anyExpired = true;
                     changed = true;

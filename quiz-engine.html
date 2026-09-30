@@ -171,6 +171,28 @@
             cursor: pointer;
         }
 
+        .text-answer-input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.11);
+            background: rgba(255,255,255,0.05);
+            color: var(--text);
+            font-size: 17px;
+            font-family: 'Noto Sans KR', sans-serif;
+            text-align: center;
+            box-sizing: border-box;
+            margin-bottom: 1.2rem;
+        }
+        .text-answer-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255,255,255,0.08);
+        }
+        .text-answer-input.disabled { pointer-events: none; opacity: 0.7; }
+        .text-answer-input.correct { border-color: var(--success); background: rgba(0, 255, 136, 0.1); }
+        .text-answer-input.incorrect { border-color: var(--danger); background: rgba(255, 68, 102, 0.1); }
+
         .option.correct {
             background: rgba(0, 255, 136, 0.2);
         }
@@ -585,7 +607,7 @@
 </head>
 <body>
     <a href="hub.html" class="home-float" id="home-float-link">🏠 홈</a>
-    <div class="version-tag">v2026.09.27-21</div>
+    <div class="version-tag">v2026.10.01-22</div>
     <div class="game-container">
         <div class="header" id="quiz-header">불러오는 중...</div>
 
@@ -946,19 +968,37 @@
         const wrongNotesKey = `${subject}WrongNotes_v2`;
         const quizProgressKey = `${subject}QuizProgress_v2`;
 
+        // 정답 비교: 띄어쓰기 차이만 허용하고 나머지는 정확히 일치해야 함
+        function normalizeAnswer(s) {
+            return String(s || '').replace(/\s+/g, '').trim();
+        }
+
         function saveWrongAnswer(q, selected) {
             try {
                 const notes = JSON.parse(localStorage.getItem(wrongNotesKey) || '[]');
-                notes.push({
-                    page: document.title,
-                    url: storageKey,
-                    question: q.q,
-                    options: q.options,
-                    correctIdx: q.correct,
-                    selectedIdx: selected,
-                    explanation: q.explanation,
-                    date: new Date().toISOString()
-                });
+                if (q.type === 'text') {
+                    notes.push({
+                        type: 'text',
+                        page: document.title,
+                        url: storageKey,
+                        question: q.q,
+                        answer: q.answer,
+                        userAnswer: selected,
+                        explanation: q.explanation,
+                        date: new Date().toISOString()
+                    });
+                } else {
+                    notes.push({
+                        page: document.title,
+                        url: storageKey,
+                        question: q.q,
+                        options: q.options,
+                        correctIdx: q.correct,
+                        selectedIdx: selected,
+                        explanation: q.explanation,
+                        date: new Date().toISOString()
+                    });
+                }
                 localStorage.setItem(wrongNotesKey, JSON.stringify(notes));
             } catch (e) { console.log('오답노트 저장 실패:', e); }
         }
@@ -978,23 +1018,38 @@
 
             const optionsDiv = document.getElementById('options');
             optionsDiv.innerHTML = '';
-            // 보기 순서를 문제마다 무작위로 섞어서 위치만 외워서 맞히는 걸 방지.
-            // 정답 판정은 원래 인덱스(q.correct) 기준이라 순서를 섞어도 채점 로직은 그대로
-            shuffledIndices(q.options.length).forEach(idx => {
-                const opt = q.options[idx];
-                const label = document.createElement('label');
-                label.className = 'option';
-                label.dataset.idx = idx;
-                label.innerHTML = `
-                    <input type="radio" name="answer" value="${idx}" onchange="selectOption(${idx})">
-                    <span>${opt}</span>
-                `;
-                optionsDiv.appendChild(label);
-            });
-
-            document.getElementById('submit-btn').style.display = 'block';
             answered = false;
             selectedOption = null;
+
+            if (q.type === 'text') {
+                // 주관식: 빈 텍스트 입력창 하나만 표시
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'text-answer-input';
+                input.id = 'text-answer-input';
+                input.placeholder = '정답을 입력하세요';
+                input.autocomplete = 'off';
+                input.addEventListener('input', () => { selectedOption = input.value; });
+                input.addEventListener('keypress', (e) => { if (e.key === 'Enter') submitAnswer(); });
+                optionsDiv.appendChild(input);
+                setTimeout(() => input.focus(), 50);
+            } else {
+                // 보기 순서를 문제마다 무작위로 섞어서 위치만 외워서 맞히는 걸 방지.
+                // 정답 판정은 원래 인덱스(q.correct) 기준이라 순서를 섞어도 채점 로직은 그대로
+                shuffledIndices(q.options.length).forEach(idx => {
+                    const opt = q.options[idx];
+                    const label = document.createElement('label');
+                    label.className = 'option';
+                    label.dataset.idx = idx;
+                    label.innerHTML = `
+                        <input type="radio" name="answer" value="${idx}" onchange="selectOption(${idx})">
+                        <span>${opt}</span>
+                    `;
+                    optionsDiv.appendChild(label);
+                });
+            }
+
+            document.getElementById('submit-btn').style.display = 'block';
         }
 
         function selectOption(idx) {
@@ -1002,15 +1057,23 @@
         }
 
         function submitAnswer() {
-            if (selectedOption === null) {
+            const q = questions[currentQuestion];
+            const isTextType = q.type === 'text';
+
+            if (isTextType) {
+                if (!selectedOption || !String(selectedOption).trim()) {
+                    alert('정답을 입력해주세요');
+                    return;
+                }
+            } else if (selectedOption === null) {
                 alert('선택지를 선택해주세요');
                 return;
             }
 
-            const q = questions[currentQuestion];
-            const isCorrect = selectedOption === q.correct;
+            const isCorrect = isTextType
+                ? normalizeAnswer(selectedOption) === normalizeAnswer(q.answer)
+                : selectedOption === q.correct;
             const catEl = document.getElementById('cat');
-            const options = document.querySelectorAll('.option');
 
             if (isCorrect) {
                 correctCount++;
@@ -1041,14 +1104,26 @@
                 saveWrongAnswer(q, selectedOption);
             }
 
-            options.forEach(opt => {
-                const idx = parseInt(opt.dataset.idx, 10);
-                opt.classList.add('disabled');
-                if (idx === q.correct) opt.classList.add('correct');
-                else if (idx === selectedOption && !isCorrect) opt.classList.add('incorrect');
-            });
+            if (isTextType) {
+                const input = document.getElementById('text-answer-input');
+                if (input) {
+                    input.classList.add('disabled');
+                    input.classList.add(isCorrect ? 'correct' : 'incorrect');
+                }
+            } else {
+                const options = document.querySelectorAll('.option');
+                options.forEach(opt => {
+                    const idx = parseInt(opt.dataset.idx, 10);
+                    opt.classList.add('disabled');
+                    if (idx === q.correct) opt.classList.add('correct');
+                    else if (idx === selectedOption && !isCorrect) opt.classList.add('incorrect');
+                });
+            }
 
-            document.getElementById('modal-explanation').textContent = q.explanation;
+            const explanationText = isTextType && !isCorrect
+                ? `정답: ${q.answer}` + (q.explanation ? ` — ${q.explanation}` : '')
+                : (q.explanation || '');
+            document.getElementById('modal-explanation').textContent = explanationText;
             document.getElementById('feedback-modal').classList.add('show');
             document.getElementById('submit-btn').style.display = 'none';
             answered = true;

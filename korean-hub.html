@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>냥공스쿨 · 영어</title>
+    <title>냥공스쿨 · 국어</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -107,57 +107,64 @@
         }
         .section-title:first-of-type { margin-top: 0; }
 
-        .card-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .quiz-card {
+        .quiz-card-single {
             position: relative;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            align-items: center;
+            text-align: center;
             background: #262340;
-            border-radius: 16px;
-            padding: 1rem;
+            border-radius: 20px;
+            padding: 2rem 1.2rem;
             text-decoration: none;
             color: var(--text);
-            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.12);
-            border: 1px solid transparent;
-            transition: transform 0.15s, border-color 0.15s;
-            min-height: 118px;
+            box-shadow: 0 4px 24px rgba(0, 212, 255, 0.15);
+            border: 1px solid rgba(139, 147, 255, 0.25);
+            transition: transform 0.15s;
         }
-        .quiz-card:active { transform: scale(0.97); }
-        .quiz-card .icon { font-size: 30px; margin-bottom: 0.5rem; }
-        .quiz-card .name {
-            font-size: 14px;
+        .quiz-card-single:active { transform: scale(0.98); }
+        .quiz-card-single .icon { font-size: 44px; margin-bottom: 0.7rem; }
+        .quiz-card-single .name {
+            font-size: 18px;
             font-weight: 700;
-            line-height: 1.35;
-            margin-bottom: 0.3rem;
+            margin-bottom: 0.4rem;
         }
-        .quiz-card .count {
-            font-size: 11px;
-            color: #8985a8;
+        .quiz-card-single .desc {
+            font-size: 13px;
+            color: #a5a2c4;
+            margin-bottom: 0.8rem;
         }
-        .quiz-card .score-badge {
+        .quiz-card-single .count {
+            font-size: 12px;
+            color: var(--primary);
+            font-weight: 700;
+            background: rgba(139, 147, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 12px;
+        }
+        .quiz-card-single .score-badge {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 14px;
+            right: 14px;
             background: rgba(0, 255, 136, 0.15);
             color: var(--success);
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 700;
-            padding: 3px 8px;
+            padding: 4px 10px;
             border-radius: 10px;
         }
-        .quiz-card .score-badge.perfect {
+        .quiz-card-single .score-badge.perfect {
             background: linear-gradient(135deg, rgba(255, 215, 0, 0.28), rgba(255, 180, 0, 0.2));
             color: #f0c14b;
             box-shadow: 0 0 10px rgba(255, 215, 0, 0.35);
         }
 
-        .quiz-card.tier-basic { border-color: rgba(0, 212, 255, 0.25); }
+        .type-note {
+            text-align: center;
+            font-size: 12px;
+            color: #8985a8;
+            margin-bottom: 1.6rem;
+        }
 
         .footer-note {
             text-align: center;
@@ -165,10 +172,6 @@
             color: #6f6c8c;
             margin-top: 2.5rem;
             line-height: 1.7;
-        }
-
-        @media (max-width: 380px) {
-            .card-grid { grid-template-columns: 1fr; }
         }
 
         .modal-overlay {
@@ -252,76 +255,32 @@
 
     <div class="wrap">
         <div class="hero">
-            <div class="cat">🔤</div>
-            <h1>영어</h1>
-            <p>5과·6과 본문 빈칸 채우기 · 68문장 전체 수록</p>
+            <div class="cat">📖</div>
+            <h1>국어</h1>
+            <p>기억 속의 들꽃 어휘 · 63문제 전체 수록</p>
             <div class="greeting" id="hub-greeting"></div>
         </div>
 
-        <a href="english-wrong-notes.html" class="notes-link">
+        <a href="korean-wrong-notes.html" class="notes-link">
             📓 오답노트 보기
             <span class="badge">복습</span>
         </a>
-        <a href="english-ranking.html" class="notes-link">
+        <a href="korean-ranking.html" class="notes-link">
             🏆 랭킹 보기
             <span class="badge" style="background:var(--gold, #f0c14b); color:#3a2a00;">경쟁</span>
         </a>
 
-        <div class="section-title">📝 본문 빈칸 채우기 (68문장)</div>
-        <div class="card-grid" id="stage1-grid">
-            <a href="quiz-engine.html?id=eng-blank-1&subject=english" class="quiz-card tier-basic" data-file="eng-blank-1.html">
-                <div>
-                    <div class="icon">🔤</div>
-                    <div class="name">5과 1~10번 문장</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-            <a href="quiz-engine.html?id=eng-blank-2&subject=english" class="quiz-card tier-basic" data-file="eng-blank-2.html">
-                <div>
-                    <div class="icon">🔤</div>
-                    <div class="name">5과 11~20번 문장</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-            <a href="quiz-engine.html?id=eng-blank-3&subject=english" class="quiz-card tier-basic" data-file="eng-blank-3.html">
-                <div>
-                    <div class="icon">🔤</div>
-                    <div class="name">5과 21~30번 문장</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-            <a href="quiz-engine.html?id=eng-blank-4&subject=english" class="quiz-card tier-basic" data-file="eng-blank-4.html">
-                <div>
-                    <div class="icon">🔤</div>
-                    <div class="name">5과 31~37 · 6과 1~3번 문장</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-            <a href="quiz-engine.html?id=eng-blank-5&subject=english" class="quiz-card tier-basic" data-file="eng-blank-5.html">
-                <div>
-                    <div class="icon">🔤</div>
-                    <div class="name">6과 4~13번 문장</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-            <a href="quiz-engine.html?id=eng-blank-6&subject=english" class="quiz-card tier-basic" data-file="eng-blank-6.html">
-                <div>
-                    <div class="icon">🔤</div>
-                    <div class="name">6과 14~23번 문장</div>
-                </div>
-                <div class="count">10문제</div>
-            </a>
-            <a href="quiz-engine.html?id=eng-blank-7&subject=english" class="quiz-card tier-basic" data-file="eng-blank-7.html">
-                <div>
-                    <div class="icon">🔤</div>
-                    <div class="name">6과 24~31번 문장</div>
-                </div>
-                <div class="count">8문제</div>
-            </a>
-        </div>
+        <div class="section-title">✏️ 어휘 뜻풀이 주관식 (63문제)</div>
+        <div class="type-note">뜻풀이를 보고 알맞은 낱말을 직접 입력하는 문제다냥!</div>
+        <a href="quiz-engine.html?id=korean-vocab&subject=korean" class="quiz-card-single" data-file="korean-vocab.html">
+            <div class="icon">📖</div>
+            <div class="name">기억 속의 들꽃 어휘</div>
+            <div class="desc">1~63번 전체 · 뜻풀이 보고 낱말 쓰기</div>
+            <div class="count">63문제</div>
+        </a>
 
         <div class="footer-note">
-            본문 문장이 다 나올 때까지 빈칸 채우기 연습이다냥 🐟
+            뜻풀이를 보고 정답 낱말을 직접 입력한다냥. 띄어쓰기 차이는 괜찮지만<br>그 외엔 정확히 써야 정답으로 인정된다냥 🐟
         </div>
     </div>
 
@@ -391,27 +350,23 @@
 
         function getProgress() {
             try {
-                return JSON.parse(localStorage.getItem('englishQuizProgress_v2') || '{}');
+                return JSON.parse(localStorage.getItem('koreanQuizProgress_v2') || '{}');
             } catch (e) { return {}; }
         }
 
-        // 이미 푼 퀴즈는 "완료" 같은 텍스트 대신, 카드에 최고 점수를 배지로 붙여줌 (예: 7/10)
+        // 이미 푼 퀴즈는 "완료" 같은 텍스트 대신, 카드에 최고 점수를 배지로 붙여줌 (예: 58/63)
         function renderScoreBadges() {
             const progress = getProgress();
-            document.querySelectorAll('.quiz-card[data-file]').forEach(card => {
+            document.querySelectorAll('.quiz-card-single[data-file]').forEach(card => {
                 const file = card.dataset.file;
                 const entry = progress[file];
                 if (!entry) return;
 
                 let label = '✔';
-                let detailText = '';
                 let perfect = false;
                 if (typeof entry === 'object' && typeof entry.correct === 'number' && typeof entry.total === 'number') {
                     perfect = entry.total > 0 && entry.correct === entry.total;
                     label = perfect ? `🌟 만점 ${entry.correct}/${entry.total}` : `${entry.correct}/${entry.total}`;
-                    detailText = perfect
-                        ? `${entry.total}문제 중 ${entry.correct}개 정답 · 만점이다냥!`
-                        : `${entry.total}문제 중 ${entry.correct}개 정답`;
                 }
 
                 let badge = card.querySelector('.score-badge');
@@ -422,12 +377,6 @@
                 }
                 badge.textContent = label;
                 badge.classList.toggle('perfect', perfect);
-
-                // 완료 배지(오른쪽 위) 아래, 카드 본문에도 몇 문제 중 몇 개 맞았는지 표시
-                const countEl = card.querySelector('.count');
-                if (countEl && detailText) {
-                    countEl.textContent = detailText;
-                }
             });
         }
 

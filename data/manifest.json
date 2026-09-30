@@ -54,5 +54,9 @@
     "eng-blank-5": { "title": "6과 4~13번 문장", "icon": "🔤", "tier": "basic", "stage": 1, "count": "10문제" },
     "eng-blank-6": { "title": "6과 14~23번 문장", "icon": "🔤", "tier": "basic", "stage": 1, "count": "10문제" },
     "eng-blank-7": { "title": "6과 24~31번 문장", "icon": "🔤", "tier": "basic", "stage": 1, "count": "8문제" }
+  },
+  "korean": {
+    "_meta": { "label": "중학교 국어 어휘 리뷰 테스트 준비다냥!", "hubTitle": "냥공스쿨" },
+    "korean-vocab": { "title": "기억 속의 들꽃 어휘", "icon": "📖", "tier": "basic", "stage": 1, "count": "63문제" }
   }
 }
